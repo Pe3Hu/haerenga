@@ -1,16 +1,17 @@
-extends MarginContainer
+extends SubViewportContainer
 
-
-@onready var polygons = $Polygons
-@onready var rooms = $Polygons/Rooms
-@onready var doors = $Polygons/Doors
-@onready var outposts = $Polygons/Outposts
-@onready var obstacles = $Polygons/Obstacles
-@onready var contents = $Polygons/Obstacles
-@onready var indexs = $Indexs
-@onready var roomindexs = $Indexs/Room
-@onready var doorindexs = $Indexs/Door
-#@onready var camera = $Camera
+@onready var sv = $SubViewport
+@onready var polygons = $SubViewport/Polygons
+@onready var rooms = $SubViewport/Polygons/Rooms
+@onready var doors = $SubViewport/Polygons/Doors
+@onready var outposts = $SubViewport/Polygons/Outposts
+@onready var obstacles = $SubViewport/Polygons/Obstacles
+@onready var contents = $SubViewport/Polygons/Obstacles
+@onready var icons = $SubViewport/Icons
+@onready var iroom = $SubViewport/Icons/Room
+@onready var idoor = $SubViewport/Icons/Door
+@onready var ilength = $SubViewport/Icons/Length
+@onready var camera = $SubViewport/Camera
 
 var sketch = null
 var rings = {}
@@ -18,6 +19,7 @@ var shift = false
 var complete = false
 var sectors = {}
 var equals = {}
+var corners = {}
 var focus = null
 
 
@@ -160,6 +162,8 @@ func add_doors(type_: String) -> void:
 	
 		#connect lift
 		if rings.type[n - 1] == "equal":# and type_ != "triple":
+			var l = 2
+			
 			if type_ == "single":
 				var m = 0
 				
@@ -167,9 +171,9 @@ func add_doors(type_: String) -> void:
 					m += equals[equal].size()
 				
 				if m % 2 == 0:
-					indexs = []
+					l = 0
 			
-			for _j in 2:
+			for _j in l:
 				segment.elder = rings.room[n - 2].size() / 3
 				index.elder = _i * segment.elder
 				index.child = _i * segment.child
@@ -337,7 +341,7 @@ func update_doors() -> void:
 
 
 func update_size() -> void:
-	var corners = {}
+	corners = {}
 	corners.leftop = Vector2(rooms.get_child(0).position)
 	corners.rightbot = Vector2()
 	
@@ -347,15 +351,17 @@ func update_size() -> void:
 		corners.rightbot.x = max(room.position.x, corners.rightbot.x)
 		corners.rightbot.y = max(room.position.x, corners.rightbot.y)
 	
-	corners.leftop.x -= get("theme_override_constants/margin_left")
-	corners.leftop.y -= get("theme_override_constants/margin_top")
-	corners.rightbot.x += get("theme_override_constants/margin_right")
-	corners.rightbot.y += get("theme_override_constants/margin_bottom")
+#	corners.leftop.x -= get("theme_override_constants/margin_left")
+#	corners.leftop.y -= get("theme_override_constants/margin_top")
+#	corners.rightbot.x += get("theme_override_constants/margin_right")
+#	corners.rightbot.y += get("theme_override_constants/margin_bottom")
 	
-	custom_minimum_size = corners.rightbot - corners.leftop + Vector2.ONE * (Global.num.outpost.r * 2)# * 2
-	polygons.position += custom_minimum_size * 0.5
-	#indexs.position += custom_minimum_size * 0.5
-	#camera.maze = self
+	#sv.size = corners.rightbot - corners.leftop + Vector2.ONE * (Global.num.outpost.r * 2)# * 2
+	#sv.size = Vector2(200, 200)
+	#position = Vector2()
+	polygons.position += sv.size * 0.5# - Vector2(Global.vec.size.number) * 0.5
+	#icons.position -= Vector2.ONE * 5
+	camera.maze = self
 
 
 func init_sectors() -> void:
@@ -396,6 +402,9 @@ func init_sectors() -> void:
 	for sector in sectors:
 		for room in sectors[sector]:
 			room.set_sector(sector)
+	
+	for door in doors.get_children():
+		door.add_length()
 
 
 func init_outposts() -> void:
@@ -411,7 +420,7 @@ func init_outposts() -> void:
 		else:
 			var option = options.back()
 			option.append(room)
-			remoteness[room] = round(custom_minimum_size.length() / 10)
+			remoteness[room] = round(sv.size.length() / 10)
 	
 	
 	for backdoor in backdoors:
@@ -442,8 +451,8 @@ func init_room_obstacles_and_contents() -> void:
 func focus_on_room(room_: Polygon2D) -> void:
 	focus = room_
 	onfocus()
-	#camera.focus = room_
-	#camera.onfocus()
+	camera.focus = room_
+	camera.onfocus()
 
 
 func onfocus() -> void:
@@ -459,4 +468,22 @@ func init_minimap() -> void:
 	minimap.set_attributes(input)
 
 
+
+
+func move_icons(direction_: String) -> void:
+	var vector = Vector2()
+	print(icons.position)
+	
+	match direction_:
+		"up":
+			vector += Vector2(0, -1)
+		"right":
+			vector += Vector2(1, 0)
+		"down":
+			vector += Vector2(0, 1)
+		"left":
+			vector += Vector2(-1, 0)
+	
+	icons.position += vector * 10
+	print(icons.position)
 

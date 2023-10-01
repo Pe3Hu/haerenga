@@ -2,9 +2,10 @@
 
 [ext_resource type="Script" path="res://scene/4/pathway.gd" id="1_s811t"]
 [ext_resource type="FontFile" uid="uid://bvnpo88mdytkv" path="res://asset/font/letter/JosefinSans-Bold.ttf" id="1_vn74r"]
-[ext_resource type="PackedScene" path="res://scene/0/icon.tscn" id="3_l5t2b"]
+[ext_resource type="PackedScene" uid="uid://ciw38iqel0v5a" path="res://scene/0/icon.tscn" id="3_l5t2b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
+bg_color = Color(0, 0.654902, 0.862745, 1)
 
 [node name="Pathway" type="MarginContainer"]
 custom_minimum_size = Vector2(5, 5)

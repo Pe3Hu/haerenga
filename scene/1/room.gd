@@ -26,14 +26,13 @@ func set_attributes(input_: Dictionary) -> void:
 	var input = {}
 	input.type = "number"
 	input.subtype = index
-	
 	icon = Global.scene.icon.instantiate()
-	maze.roomindexs.add_child(icon)
+	maze.iroom.add_child(icon)
 	icon.set_attributes(input)
 	icon.position = position
 	
-	icon.position.x -= maze.get("theme_override_constants/margin_left")
-	icon.position.y -= maze.get("theme_override_constants/margin_top")
+	#icon.position.x -= maze.get("theme_override_constants/margin_left")
+	#icon.position.y -= maze.get("theme_override_constants/margin_top")
 	
 	maze.rings.room[ring].append(self)
 	update_color_based_on_ring()

@@ -6,6 +6,8 @@ func _ready() -> void:
 	Global.node.game.get_node("Layer0").add_child(Global.node.sketch)
 	#datas.sort_custom(func(a, b): return a.value < b.value)
 	#012 description
+	#Global.rng.randomize()
+	#var value = Global.rng.randi_range(min, max)
 	pass
 
 
@@ -14,19 +16,19 @@ func _input(event) -> void:
 		match event.keycode:
 			KEY_SPACE:
 				if event.is_pressed() && !event.is_echo():
-					Global.node.sketch.maze.onfocus()
+					Global.node.sketch.maze.camera.onfocus()
 			KEY_W:
 				if event.is_pressed():
-					Global.node.sketch.maze.move_camera("up")
+					Global.node.sketch.maze.move_icons("up")
 			KEY_D:
 				if event.is_pressed():
-					Global.node.sketch.maze.move_camera("right")
+					Global.node.sketch.maze.move_icons("right")
 			KEY_S:
 				if event.is_pressed():
-					Global.node.sketch.maze.move_camera("down")
+					Global.node.sketch.maze.move_icons("down")
 			KEY_A:
 				if event.is_pressed():
-					Global.node.sketch.maze.move_camera("left")
+					Global.node.sketch.maze.move_icons("left")
 
 
 func _process(delta_) -> void:

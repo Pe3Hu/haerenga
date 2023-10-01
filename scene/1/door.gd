@@ -26,12 +26,12 @@ func set_attributes(input_: Dictionary) -> void:
 	input.subtype = index
 	
 	icon = Global.scene.icon.instantiate()
-	maze.doorindexs.add_child(icon)
+	maze.idoor.add_child(icon)
 	icon.set_attributes(input)
 	icon.position = center
 	
-	icon.position.x -= maze.get("theme_override_constants/margin_left")
-	icon.position.y -= maze.get("theme_override_constants/margin_top")
+	#icon.position.x -= maze.get("theme_override_constants/margin_left")
+	#icon.position.y -= maze.get("theme_override_constants/margin_top")
 
 
 func connect_rooms() -> void:
@@ -52,7 +52,7 @@ func collapse() -> void:
 	rooms.back().doors.erase(self)
 	
 	maze.doors.remove_child(self)
-	maze.doorindexs.remove_child(icon)
+	maze.idoor.remove_child(icon)
 	queue_free()
 
 
@@ -61,3 +61,27 @@ func get_another_room(room_: Polygon2D) -> Polygon2D:
 	rooms_.append_array(rooms)
 	rooms_.erase(room_)
 	return rooms_.front()
+
+
+func add_length() -> void:
+	roll_length()
+	var input = {}
+	input.type = "number"
+	input.subtype = length
+	
+	var icon = Global.scene.icon.instantiate()
+	maze.ilength.add_child(icon)
+	icon.set_attributes(input)
+	icon.position = center
+
+
+func roll_length() -> void:
+	var sector = 0
+	
+	for room in rooms:
+		sector += room.sector
+	
+	sector /= rooms.size()
+	Global.rng.randomize()
+	length = Global.rng.randi_range(Global.num.door.length.sector[sector].min, Global.num.door.length.sector[sector].max)
+	

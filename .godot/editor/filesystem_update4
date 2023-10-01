@@ -31,3 +31,5 @@ res://scene/0/minimap.tscn
 res://scene/0/camera.tscn
 res://scene/0/camera.gd
 res://scene/0/minimap.gd
+res://scene/0/icon.gd
+res://scene/0/icon.tscn

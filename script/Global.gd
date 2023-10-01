@@ -45,6 +45,25 @@ func init_num() -> void:
 	num.room = {}
 	num.room.r = 8
 	
+	num.door = {}
+	num.door.length = {}
+	num.door.length.sector = {}
+	num.door.length.sector[0] = {}
+	num.door.length.sector[0].min = 2
+	num.door.length.sector[0].max = 4
+	num.door.length.sector[0.5] = {}
+	num.door.length.sector[0.5].min = 4
+	num.door.length.sector[0.5].max = 4
+	num.door.length.sector[1] = {}
+	num.door.length.sector[1].min = 3
+	num.door.length.sector[1].max = 6
+	num.door.length.sector[1.5] = {}
+	num.door.length.sector[1.5].min = 6
+	num.door.length.sector[1.5].max = 6
+	num.door.length.sector[2] = {}
+	num.door.length.sector[2].min = 4
+	num.door.length.sector[2].max = 8
+	
 	num.outpost = {}
 	num.outpost.r = num.room.r * 1.5
 	
@@ -85,7 +104,6 @@ func init_also() -> void:
 	dict.aspect.slot["power"] = "Head"
 	dict.aspect.slot["autonomy"] = "Torso"
 	dict.aspect.slot["velocity"] = "Limb"
-	
 	
 	dict.room = {}
 	dict.room.rarity = {}

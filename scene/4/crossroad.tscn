@@ -4,6 +4,7 @@
 [ext_resource type="FontFile" uid="uid://bvnpo88mdytkv" path="res://asset/font/letter/JosefinSans-Bold.ttf" id="1_5mdhg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
+bg_color = Color(0.901961, 0.211765, 1, 1)
 
 [node name="Crossroad" type="MarginContainer"]
 custom_minimum_size = Vector2(5, 5)
@@ -37,3 +38,4 @@ vertical_alignment = 1
 
 [node name="Pathways" type="VBoxContainer" parent="."]
 layout_mode = 2
+alignment = 1
