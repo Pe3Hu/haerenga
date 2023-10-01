@@ -19,7 +19,7 @@ func init_vertexs() -> void:
 	var angle = PI * 2 / n
 	
 	for _i in n:
-		var vertex = Vector2().from_angle(angle * _i) * Global.num.outpost.r
+		var vertex = Vector2.from_angle(angle * _i) * Global.num.outpost.r
 		vertexs.append(vertex)
 	
 	set_polygon(vertexs)

@@ -1,22 +1,33 @@
 extends MarginContainer
 
 
-@onready var rooms = $Rooms
-@onready var doors = $Doors
-@onready var outposts = $Outposts
+@onready var polygons = $Polygons
+@onready var rooms = $Polygons/Rooms
+@onready var doors = $Polygons/Doors
+@onready var outposts = $Polygons/Outposts
+@onready var obstacles = $Polygons/Obstacles
+@onready var contents = $Polygons/Obstacles
+@onready var indexs = $Indexs
+@onready var roomindexs = $Indexs/Room
+@onready var doorindexs = $Indexs/Door
+#@onready var camera = $Camera
 
 var sketch = null
 var rings = {}
 var shift = false
 var complete = false
+var sectors = {}
 var equals = {}
-
+var focus = null
 
 
 func set_attributes(input_: Dictionary) -> void:
 	sketch = input_.sketch
 	init_rooms()
+	init_sectors()
 	init_outposts()
+	init_room_obstacles_and_contents()
+	#init_minimap()
 
 
 func init_rooms() -> void:
@@ -27,7 +38,6 @@ func init_rooms() -> void:
 	add_ring("triple", false)
 	add_ring("single", true)
 	add_ring("triple", true)
-#	add_ring("single", true)
 #	add_ring("equal", true)
 #	add_ring("trapeze", true)
 #	add_ring("double", true)
@@ -95,12 +105,12 @@ func add_ring(type_: String, only_parent_: bool) -> void:
 		angle.current = angle.step * _j - PI / 2
 		
 		if type_ == "equal":
-			var sign = -1
+			var sign_ = -1
 			
 			if !shift:
-				sign = 0
+				sign_ = 0
 			
-			angle.current += sign * angle.step / 2
+			angle.current += sign_ * angle.step / 2
 			
 		add_room(angle.current, segment)
 	
@@ -119,7 +129,7 @@ func add_room(angle_: float, segment_: int) -> void:
 		rings.type.append(null)
 	
 	#input.position = size * 0.5
-	input.position = Vector2().from_angle(angle_) * Global.num.ring.r * input.ring
+	input.position = Vector2.from_angle(angle_) * Global.num.ring.r * input.ring
 	input.order = rings.room[input.ring].size()
 	input.backdoor = false
 
@@ -150,8 +160,6 @@ func add_doors(type_: String) -> void:
 	
 		#connect lift
 		if rings.type[n - 1] == "equal":# and type_ != "triple":
-			var indexs = [0, 1]
-			
 			if type_ == "single":
 				var m = 0
 				
@@ -161,12 +169,12 @@ func add_doors(type_: String) -> void:
 				if m % 2 == 0:
 					indexs = []
 			
-			for index_ in indexs:
+			for _j in 2:
 				segment.elder = rings.room[n - 2].size() / 3
 				index.elder = _i * segment.elder
 				index.child = _i * segment.child
 				
-				if index_ % 2 == 0:
+				if _j % 2 == 0:
 					index.elder += segment.elder - 1
 					index.child += segment.child - 1
 				else:
@@ -344,10 +352,50 @@ func update_size() -> void:
 	corners.rightbot.x += get("theme_override_constants/margin_right")
 	corners.rightbot.y += get("theme_override_constants/margin_bottom")
 	
-	custom_minimum_size = corners.rightbot - corners.leftop + Vector2.ONE * (Global.num.room.r * 2)# * 2
-	doors.position += custom_minimum_size * 0.5
-	rooms.position += custom_minimum_size * 0.5
-	outposts.position += custom_minimum_size * 0.5
+	custom_minimum_size = corners.rightbot - corners.leftop + Vector2.ONE * (Global.num.outpost.r * 2)# * 2
+	polygons.position += custom_minimum_size * 0.5
+	#indexs.position += custom_minimum_size * 0.5
+	#camera.maze = self
+
+
+func init_sectors() -> void:
+	var datas = {}
+	var total = 0
+	var sectors_ = {}
+	
+	for ring in rings.room.size():
+		datas[ring] = rings.room[ring]
+		total += rings.room[ring].size()
+	
+	var ring = 0
+	
+	for _i in Global.num.sectors.primary:
+		sectors_[_i] = []
+		
+		while sectors_[_i].size() + rings.room[ring].size() < total / Global.num.sectors.primary:
+			sectors_[_i].append_array(rings.room[ring])
+			datas.erase(ring)
+			ring += 1
+	
+	while !datas.keys().is_empty():
+		var key = datas.keys().front()
+		sectors_[Global.num.sectors.primary - 1].append_array(rings.room[key])
+		datas.erase(key)
+	
+	for sector in Global.num.sectors.final:
+		sectors[sector] = []
+	
+	for sector in Global.num.sectors.primary:
+		if sector == 0: 
+			sectors[sector].append_array(sectors_[sector])
+		elif sector == Global.num.sectors.primary - 1:
+			sectors[Global.num.sectors.final - 1].append_array(sectors_[Global.num.sectors.primary - 1])
+		else:
+			sectors[1].append_array(sectors_[sector])
+		
+	for sector in sectors:
+		for room in sectors[sector]:
+			room.set_sector(sector)
 
 
 func init_outposts() -> void:
@@ -372,17 +420,43 @@ func init_outposts() -> void:
 				var d = round(room.position.distance_to(backdoor.position) / 10)
 				remoteness[room] = min(d, remoteness[room])
 	
-	
 	for options_ in options:
 		var datas = {}
 		
 		for room in options_:
 			datas[room] = remoteness[room]
 		
-		var input = {}
-		input.maze = self
-		input.room = Global.get_random_key(datas)
-		
-		var outpost = Global.scene.outpost.instantiate()
-		outposts.add_child(outpost)
-		outpost.set_attributes(input)
+		var room = Global.get_random_key(datas)
+		room.add_outpost()
+
+
+func init_room_obstacles_and_contents() -> void:
+	for sector in sectors:
+		for room in sectors[sector]:
+			if room.outpost == null:
+				var result = Global.get_random_obstacle_and_content(sector)
+				room.add_obstacle(result.obstacle)
+				room.add_content(result.content)
+
+
+func focus_on_room(room_: Polygon2D) -> void:
+	focus = room_
+	onfocus()
+	#camera.focus = room_
+	#camera.onfocus()
+
+
+func onfocus() -> void:
+	if focus != null:
+		set_position(-focus.position)
+
+
+func init_minimap() -> void:
+	var input = {}
+	input.maze = self
+	var minimap = Global.scene.minimap.instantiate()
+	#camera.add_child(minimap)
+	minimap.set_attributes(input)
+
+
+

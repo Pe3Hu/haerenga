@@ -3,12 +3,15 @@
 [ext_resource type="Script" path="res://scene/1/maze.gd" id="1_i47v1"]
 
 [node name="Maze" type="MarginContainer"]
+clip_contents = true
 custom_minimum_size = Vector2(200, 200)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
@@ -19,8 +22,33 @@ script = ExtResource("1_i47v1")
 layout_mode = 2
 color = Color(0.65098, 0.65098, 0.65098, 1)
 
-[node name="Doors" type="Node2D" parent="."]
+[node name="Indexs" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+auto_translate = false
+localize_numeral_system = false
 
-[node name="Outposts" type="Node2D" parent="."]
+[node name="Room" type="Control" parent="Indexs"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="Rooms" type="Node2D" parent="."]
+[node name="Door" type="Control" parent="Indexs"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Polygons" type="Node2D" parent="."]
+
+[node name="Doors" type="Node2D" parent="Polygons"]
+
+[node name="Outposts" type="Node2D" parent="Polygons"]
+
+[node name="Obstacles" type="Node2D" parent="Polygons"]
+
+[node name="Contents" type="Node2D" parent="Polygons"]
+
+[node name="Rooms" type="Node2D" parent="Polygons"]
+visible = false

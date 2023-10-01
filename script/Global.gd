@@ -27,6 +27,7 @@ func init_arr() -> void:
 	arr.sequence["A000040"] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 	arr.edge = [1, 2, 3, 4, 5, 6]
 	
+	
 	arr.aspect = ["power", "autonomy", "velocity"]
 	arr.synergy = ["totem", "origin", "kind"]
 	arr.purpose = ["dominance", "obedience"]
@@ -38,19 +39,33 @@ func init_num() -> void:
 	num.index.door = 0
 	
 	num.ring = {}
-	num.ring.r = 24
-	num.ring.segment = 11#9
+	num.ring.r = 50
+	num.ring.segment = 18#9
 	
 	num.room = {}
-	num.room.r = 7
+	num.room.r = 8
 	
 	num.outpost = {}
-	num.outpost.r = num.room.r * 2
+	num.outpost.r = num.room.r * 1.5
+	
+	num.obstacle = {}
+	num.obstacle.r = num.room.r * 1.25
+	
+	num.content = {}
+	num.content.r = num.room.r * 0.75
+	
+	num.sectors = {}
+	num.sectors.primary = 4
+	num.sectors.final = 3
 
 
 func init_dict() -> void:
 	init_neighbor()
+	init_also()
 	
+
+
+func init_also() -> void:
 	dict.ring = {}
 	dict.ring.weight = {}
 	dict.ring.weight["single"] = 7
@@ -70,6 +85,50 @@ func init_dict() -> void:
 	dict.aspect.slot["power"] = "Head"
 	dict.aspect.slot["autonomy"] = "Torso"
 	dict.aspect.slot["velocity"] = "Limb"
+	
+	
+	dict.room = {}
+	dict.room.rarity = {}
+	dict.room.rarity.obstacle = {}
+	dict.room.rarity.obstacle["empty"] = {}
+	dict.room.rarity.obstacle["empty"][2] = 3
+	dict.room.rarity.obstacle["empty"][1] = 2
+	dict.room.rarity.obstacle["empty"][0] = 1
+	dict.room.rarity.obstacle["labyrinth"] = {}
+	dict.room.rarity.obstacle["labyrinth"][2] = 8
+	dict.room.rarity.obstacle["labyrinth"][1] = 6
+	dict.room.rarity.obstacle["labyrinth"][0] = 4
+	dict.room.rarity.obstacle["encounter"] = {}
+	dict.room.rarity.obstacle["encounter"][2] = 2
+	dict.room.rarity.obstacle["encounter"][1] = 7
+	dict.room.rarity.obstacle["encounter"][0] = 12
+	dict.room.rarity.obstacle["conundrum"] = {}
+	dict.room.rarity.obstacle["conundrum"][2] = 5
+	dict.room.rarity.obstacle["conundrum"][1] = 8
+	dict.room.rarity.obstacle["conundrum"][0] = 5
+	
+	dict.room.rarity.content = {}
+	dict.room.rarity.content["empty"] = {}
+	dict.room.rarity.content["empty"][2] = 1
+	dict.room.rarity.content["empty"][1] = 1
+	dict.room.rarity.content["empty"][0] = 1
+	dict.room.rarity.content["mine"] = {}
+	dict.room.rarity.content["mine"][2] = 4
+	dict.room.rarity.content["mine"][1] = 7
+	dict.room.rarity.content["mine"][0] = 12
+	dict.room.rarity.content["terminal"] = {}
+	dict.room.rarity.content["terminal"][2] = 3
+	dict.room.rarity.content["terminal"][1] = 5
+	dict.room.rarity.content["terminal"][0] = 7
+	dict.room.rarity.content["chest"] = {}
+	dict.room.rarity.content["chest"][2] = 7
+	dict.room.rarity.content["chest"][1] = 9
+	dict.room.rarity.content["chest"][0] = 11
+	
+	dict.thousand = {}
+	dict.thousand[""] = "k"
+	dict.thousand["k"] = "m"
+	dict.thousand["m"] = "b"
 
 
 func init_neighbor() -> void:
@@ -124,12 +183,24 @@ func init_node() -> void:
 
 func init_scene() -> void:
 	scene.sketch = load("res://scene/0/sketch.tscn")
+	scene.icon = load("res://scene/0/icon.tscn")
+	scene.minimap = load("res://scene/0/minimap.tscn")
+	
 	
 	scene.door = load("res://scene/1/door.tscn")
 	scene.room = load("res://scene/1/room.tscn")
 	
 	
 	scene.outpost = load("res://scene/2/outpost.tscn")
+	scene.obstacle = load("res://scene/2/obstacle.tscn")
+	scene.content = load("res://scene/2/content.tscn")
+	
+	scene.nexus = load("res://scene/3/nexus.tscn")
+	scene.core = load("res://scene/3/core.tscn")
+	
+	scene.crossroad = load("res://scene/4/crossroad.tscn")
+	scene.pathway = load("res://scene/4/pathway.tscn")
+	scene.destination = load("res://scene/4/destination.tscn")
 	
 	
 	pass
@@ -137,6 +208,15 @@ func init_scene() -> void:
 
 func init_vec():
 	vec.size = {}
+	vec.size.letter = Vector2(20, 20)
+	vec.size.resource = Vector2(32, 32)
+	vec.size.number = Vector2(32, 32)
+	
+	
+	for key in vec.size:
+		if key != "letter":
+			vec.size[key] = Vector2(32, 32)
+	
 	init_window_size()
 
 
@@ -148,7 +228,19 @@ func init_window_size():
 
 
 func init_color():
-	color.indicator = {}
+	var max_h = 360.0
+	
+	color.obstacle = {}
+	color.obstacle["empty"] = Color.from_hsv(180 / max_h, 1.0, 0.75)
+	color.obstacle["conundrum"] = Color.from_hsv(270 / max_h, 1.0, 0.75)
+	color.obstacle["encounter"] = Color.from_hsv(0 / max_h, 1.0, 0.75)
+	color.obstacle["labyrinth"] = Color.from_hsv(90 / max_h, 1.0, 0.75)
+	
+	color.content = {}
+	color.content["empty"] =  Color.from_hsv(240/ max_h, 0.75, 1.0)
+	color.content["mine"] =  Color.from_hsv(330 / max_h, 0.75, 1.0)
+	color.content["chest"] = Color.from_hsv(60 / max_h,  0.75, 1.0)
+	color.content["terminal"] = Color.from_hsv(150 / max_h, 0.75, 1.0)
 
 
 func save(path_: String, data_: String):
@@ -212,10 +304,32 @@ func get_lines_intersection(lines_: Array) -> Variant:
 
 
 func check_point_inside_rect(point_: Vector2, rect_: Array) -> bool:
-	var min = Vector2()
-	min.x = min(rect_.front().x, rect_.back().x)
-	min.y = min(rect_.front().y, rect_.back().y)
-	var max = Vector2()
-	max.x = max(rect_.front().x, rect_.back().x)
-	max.y = max(rect_.front().y, rect_.back().y)
-	return point_.x >= min.x and point_.x <= max.x and point_.y >= min.y and point_.y <= max.y
+	var value = {}
+	value.min = Vector2()
+	value.max = Vector2()
+	value.min.x = min(rect_.front().x, rect_.back().x)
+	value.min.y = min(rect_.front().y, rect_.back().y)
+	value.max.x = max(rect_.front().x, rect_.back().x)
+	value.max.y = max(rect_.front().y, rect_.back().y)
+	return point_.x >= value.min.x and point_.x <= value.max.x and point_.y >= value.min.y and point_.y <= value.max.y
+
+
+func get_random_obstacle_and_content(sector_: int) -> Dictionary:
+	var result = {}
+	var weights = {}
+	weights.content = {}
+	
+	for content in dict.room.rarity.content:
+		weights.content[content] = dict.room.rarity.content[content][sector_]
+	
+	result.content = get_random_key(weights.content)
+	weights.obstacle = {}
+	
+	for obstacle in dict.room.rarity.obstacle:
+		weights.obstacle[obstacle] = dict.room.rarity.obstacle[obstacle][sector_]
+	
+	if result.content == "empty":
+		weights.obstacle["empty"] *= 3
+	
+	result.obstacle = get_random_key(weights.obstacle)
+	return result

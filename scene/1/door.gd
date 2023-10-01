@@ -5,8 +5,11 @@ extends Line2D
 var maze = null
 var rooms = null
 var type = null
+var icon = null
 var index = null
+var length = 0
 var ring = {}
+var center = Vector2()
 var intersections = []
 
 
@@ -18,6 +21,17 @@ func set_attributes(input_: Dictionary) -> void:
 	Global.num.index.door += 1
 	connect_rooms()
 	
+	var input = {}
+	input.type = "number"
+	input.subtype = index
+	
+	icon = Global.scene.icon.instantiate()
+	maze.doorindexs.add_child(icon)
+	icon.set_attributes(input)
+	icon.position = center
+	
+	icon.position.x -= maze.get("theme_override_constants/margin_left")
+	icon.position.y -= maze.get("theme_override_constants/margin_top")
 
 
 func connect_rooms() -> void:
@@ -26,7 +40,9 @@ func connect_rooms() -> void:
 	
 	for room in rooms:
 		add_point(room.position)
+		center += room.position
 	
+	center /= rooms.size()
 	ring.begin = min(rooms.back().ring, rooms.front().ring)
 	ring.end = max(rooms.back().ring, rooms.front().ring)
 
@@ -36,5 +52,12 @@ func collapse() -> void:
 	rooms.back().doors.erase(self)
 	
 	maze.doors.remove_child(self)
+	maze.doorindexs.remove_child(icon)
 	queue_free()
 
+
+func get_another_room(room_: Polygon2D) -> Polygon2D:
+	var rooms_ = []
+	rooms_.append_array(rooms)
+	rooms_.erase(room_)
+	return rooms_.front()

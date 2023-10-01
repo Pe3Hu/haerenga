@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://c8p8p11wpyu27"]
+[gd_scene load_steps=6 format=3 uid="uid://c8p8p11wpyu27"]
 
 [ext_resource type="FontFile" uid="uid://bvnpo88mdytkv" path="res://asset/font/letter/JosefinSans-Bold.ttf" id="1_b8lal"]
 [ext_resource type="Script" path="res://scene/0/sketch.gd" id="1_gqg1a"]
 [ext_resource type="PackedScene" uid="uid://bwrtp53p4onlo" path="res://scene/1/maze.tscn" id="3_61e7u"]
+[ext_resource type="PackedScene" uid="uid://bk0lqdobbwi56" path="res://scene/3/nexus.tscn" id="4_dtpc5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 bg_color = Color(0.372549, 0.372549, 0.372549, 1)
@@ -42,4 +43,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="Maze" parent="HBox" instance=ExtResource("3_61e7u")]
+layout_mode = 2
+
+[node name="Nexus" parent="HBox" instance=ExtResource("4_dtpc5")]
 layout_mode = 2
