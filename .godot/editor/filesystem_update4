@@ -8,3 +8,6 @@ res://scene/1/maze.tscn
 res://scene/1/room.gd
 res://scene/1/door.tscn
 res://scene/1/door.gd
+res://scene/0/game.gd
+res://scene/2/outpost.gd
+res://scene/2/outpost.tscn

@@ -38,11 +38,14 @@ func init_num() -> void:
 	num.index.door = 0
 	
 	num.ring = {}
-	num.ring.r = 25
+	num.ring.r = 24
 	num.ring.segment = 11#9
 	
 	num.room = {}
 	num.room.r = 7
+	
+	num.outpost = {}
+	num.outpost.r = num.room.r * 2
 
 
 func init_dict() -> void:
@@ -124,6 +127,11 @@ func init_scene() -> void:
 	
 	scene.door = load("res://scene/1/door.tscn")
 	scene.room = load("res://scene/1/room.tscn")
+	
+	
+	scene.outpost = load("res://scene/2/outpost.tscn")
+	
+	
 	pass
 
 
@@ -184,10 +192,11 @@ func get_random_key(dict_: Dictionary):
 
 func check_lines_intersection(lines_: Array) -> bool:
 	var intersection = get_lines_intersection(lines_)
+	
 	if intersection != null:
 		return check_point_inside_rect(intersection, lines_[0]) and check_point_inside_rect(intersection, lines_[1])
 	else:
-		return true
+		return false
 
 
 func get_lines_intersection(lines_: Array) -> Variant:

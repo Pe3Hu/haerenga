@@ -3,15 +3,20 @@ extends MarginContainer
 
 @onready var rooms = $Rooms
 @onready var doors = $Doors
+@onready var outposts = $Outposts
 
+var sketch = null
 var rings = {}
 var shift = false
 var complete = false
 var equals = {}
 
 
-func _ready() -> void:
+
+func set_attributes(input_: Dictionary) -> void:
+	sketch = input_.sketch
 	init_rooms()
+	init_outposts()
 
 
 func init_rooms() -> void:
@@ -22,29 +27,16 @@ func init_rooms() -> void:
 	add_ring("triple", false)
 	add_ring("single", true)
 	add_ring("triple", true)
-	add_ring("equal", true)
-	add_ring("equal", true)
-	add_ring("equal", true)
-	add_ring("single", true)
-	add_ring("equal", true)
-	add_ring("single", true)
-	add_ring("equal", true)
-	add_ring("single", true)
-	add_ring("equal", true)
-	add_ring("single", true)
-#	add_ring("equal", true)
-#	add_ring("equal", true)
-#	add_ring("single", true)
 #	add_ring("single", true)
 #	add_ring("equal", true)
 #	add_ring("trapeze", true)
 #	add_ring("double", true)
 	
-#		var n = rings.type.size() - 1
-#		if rings.type[n] == rings.type[n - 1] and  rings.type[n] == "equal":
-#			types.erase("equal")
 	while !complete:
 		var types = Global.dict.ring.weight.duplicate()
+		var n = rings.type.size() - 1
+		if rings.type[n] == rings.type[n - 1] and  rings.type[n] == "equal":
+			types.erase("equal")
 
 		var type = Global.get_random_key(types)
 		add_ring(type, true)
@@ -54,7 +46,6 @@ func init_rooms() -> void:
 
 	update_doors()
 	update_size()
-	#print(rings.room.back().size() / 3 - 1)
 
 
 func add_ring(type_: String, only_parent_: bool) -> void:
@@ -160,8 +151,7 @@ func add_doors(type_: String) -> void:
 		#connect lift
 		if rings.type[n - 1] == "equal":# and type_ != "triple":
 			var indexs = [0, 1]
-				
-				
+			
 			if type_ == "single":
 				var m = 0
 				
@@ -170,23 +160,6 @@ func add_doors(type_: String) -> void:
 				
 				if m % 2 == 0:
 					indexs = []
-#			var m = segment.child - segment.parent + n + equals.keys().size() + 1
-#
-#			if type_ != "equal":
-#				m += 1
-#			else:
-#				for equal in equals:
-#					m += equals[equal].size()
-			
-			#if shift:
-			#	m += 1
-			
-			#if equals.keys().size() > 1:
-			#	m += equals.keys().size() #equals[equals.keys().back()].size() + 
-			
-#			if _i == 0:
-#				print([n, equals, m, type_])
-				
 			
 			for index_ in indexs:
 				segment.elder = rings.room[n - 2].size() / 3
@@ -213,7 +186,7 @@ func add_doors(type_: String) -> void:
 				index.child = _i * segment.child  + 1
 				a = parents[index.parent]
 				b = childs[index.child]
-				connect_rooms(a, b, "floor")
+				connect_rooms(a, b, "letter")
 		else:
 			for _j in segment.parent - 1:
 				index.parent = _i * segment.parent + _j + 1
@@ -285,25 +258,72 @@ func connect_rooms(a_: Polygon2D, b_: Polygon2D, type_: String) -> void:
 
 
 func update_doors() -> void:
-	for room in rooms.get_children():
-		for door in room.doors:
-			if door.type == "lift":
-				for room_door in room.doors:
-					if door != null:
-						var neighbor_room = room.doors[room_door]
-						
-						for neighbor_door in neighbor_room.doors:
-							var vertexs = [door.get_points(), []]
+	var intersections = []
+	
+	for ring in rings.room:
+		for room in ring:
+			for door in room.doors:
+				if door.type == "lift" and door != null:
+					for room_door in room.doors:
+						if door != null:
+							var neighbor_room = room.doors[room_door]
 							
-							for vertex in neighbor_door.get_points():
-								if !vertexs[0].has(vertex):
-									vertexs[1].append(vertex)
-							
-							if vertexs[1].size() == 2:
-								if Global.check_lines_intersection(vertexs):
-									door.collapse()
-									door = null
-									break
+							for neighbor_door in neighbor_room.doors:
+								if door != null:
+									var vertexs = [door.get_points(), []]
+									
+									for vertex in neighbor_door.get_points():
+										if !vertexs[0].has(vertex):
+											vertexs[1].append(vertex)
+									
+									if vertexs[1].size() == 2:
+										if Global.check_lines_intersection(vertexs):
+											if !door.intersections.has(neighbor_door):
+												door.intersections.append(neighbor_door)
+											
+											if !intersections.has(door):
+												intersections.append(door)
+#											if neighbor_door.type == "lift":
+#												print([door.ring.begin, neighbor_door.ring.begin])
+#												if door.ring.begin <= neighbor_door.ring.begin:
+#													neighbor_door.collapse()
+#												else:
+#													door.collapse()
+#													door = null
+#											else:
+#												door.collapse()
+#												door = null
+	
+	for door in intersections:
+		var flag = true
+		var datas = []
+		var data = {}
+		data.door = door
+		data.begin = door.ring.begin
+		datas.append(data)
+		
+		if !door.intersections.is_empty():
+			for intersection in door.intersections:
+				if intersection.type == "lift":
+					data = {}
+					data.door = intersection
+					data.begin = intersection.ring.begin
+					datas.append(data)
+				else:
+					flag = false
+			
+			if !flag:
+				pass
+				door.collapse()
+			else:
+				datas.sort_custom(func(a, b): return a.begin > b.begin)
+				var door_ = datas.front().door
+				
+				for intersection in door_.intersections:
+					intersection.intersections.erase(self)
+				intersections.erase(door_)
+				door_.collapse()
+				#door_.visible = false
 	
 	return 
 
@@ -327,4 +347,42 @@ func update_size() -> void:
 	custom_minimum_size = corners.rightbot - corners.leftop + Vector2.ONE * (Global.num.room.r * 2)# * 2
 	doors.position += custom_minimum_size * 0.5
 	rooms.position += custom_minimum_size * 0.5
+	outposts.position += custom_minimum_size * 0.5
 
+
+func init_outposts() -> void:
+	var options = []
+	var ring = rings.room.size() - 1
+	var remoteness = {}
+	var backdoors = []
+	
+	for room in rings.room[ring]:
+		if room.backdoor:
+			options.append([])
+			backdoors.append(room)
+		else:
+			var option = options.back()
+			option.append(room)
+			remoteness[room] = round(custom_minimum_size.length() / 10)
+	
+	
+	for backdoor in backdoors:
+		for room in rings.room[ring]:
+			if remoteness.has(room):
+				var d = round(room.position.distance_to(backdoor.position) / 10)
+				remoteness[room] = min(d, remoteness[room])
+	
+	
+	for options_ in options:
+		var datas = {}
+		
+		for room in options_:
+			datas[room] = remoteness[room]
+		
+		var input = {}
+		input.maze = self
+		input.room = Global.get_random_key(datas)
+		
+		var outpost = Global.scene.outpost.instantiate()
+		outposts.add_child(outpost)
+		outpost.set_attributes(input)

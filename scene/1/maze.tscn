@@ -21,4 +21,6 @@ color = Color(0.65098, 0.65098, 0.65098, 1)
 
 [node name="Doors" type="Node2D" parent="."]
 
+[node name="Outposts" type="Node2D" parent="."]
+
 [node name="Rooms" type="Node2D" parent="."]

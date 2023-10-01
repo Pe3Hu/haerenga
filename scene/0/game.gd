@@ -14,7 +14,7 @@ func _input(event) -> void:
 		match event.keycode:
 			KEY_SPACE:
 				if event.is_pressed() && !event.is_echo():
-					pass
+					Global.node.sketch.maze.update_doors()
 
 
 func _process(delta_) -> void:

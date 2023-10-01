@@ -6,6 +6,8 @@ var maze = null
 var rooms = null
 var type = null
 var index = null
+var ring = {}
+var intersections = []
 
 
 func set_attributes(input_: Dictionary) -> void:
@@ -24,6 +26,9 @@ func connect_rooms() -> void:
 	
 	for room in rooms:
 		add_point(room.position)
+	
+	ring.begin = min(rooms.back().ring, rooms.front().ring)
+	ring.end = max(rooms.back().ring, rooms.front().ring)
 
 
 func collapse() -> void:
@@ -31,5 +36,5 @@ func collapse() -> void:
 	rooms.back().doors.erase(self)
 	
 	maze.doors.remove_child(self)
-	#queue_free()
+	queue_free()
 
