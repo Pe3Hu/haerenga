@@ -5,6 +5,7 @@ var maze = null
 var ring = null
 var backdoor = null
 var order = null
+var index = null
 var doors = {}
 
 
@@ -14,6 +15,8 @@ func set_attributes(input_: Dictionary) -> void:
 	ring = input_.ring
 	backdoor = input_.backdoor
 	position = input_.position
+	index = Global.num.index.room
+	Global.num.index.room += 1
 	
 	
 	maze.rings.room[ring].append(self)

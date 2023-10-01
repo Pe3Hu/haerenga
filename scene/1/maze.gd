@@ -7,6 +7,7 @@ extends MarginContainer
 var rings = {}
 var shift = false
 var complete = false
+var equals = {}
 
 
 func _ready() -> void:
@@ -21,13 +22,22 @@ func init_rooms() -> void:
 	add_ring("triple", false)
 	add_ring("single", true)
 	add_ring("triple", true)
-	#add_ring("single", true)
-#	add_ring("trapeze", true)
+	add_ring("equal", true)
+	add_ring("equal", true)
+	add_ring("equal", true)
+	add_ring("single", true)
+	add_ring("equal", true)
+	add_ring("single", true)
+	add_ring("equal", true)
+	add_ring("single", true)
+	add_ring("equal", true)
+	add_ring("single", true)
 #	add_ring("equal", true)
-#	add_ring("trapeze", true)
 #	add_ring("equal", true)
 #	add_ring("single", true)
 #	add_ring("single", true)
+#	add_ring("equal", true)
+#	add_ring("trapeze", true)
 #	add_ring("double", true)
 	
 #		var n = rings.type.size() - 1
@@ -41,7 +51,8 @@ func init_rooms() -> void:
 
 		if Global.num.ring.segment < rings.room.back().size() / 3 - 1:
 			complete = true
-	
+
+	update_doors()
 	update_size()
 	#print(rings.room.back().size() / 3 - 1)
 
@@ -67,6 +78,11 @@ func add_ring(type_: String, only_parent_: bool) -> void:
 			"equal":
 				childs = parents
 				shift = !shift
+				
+				if rings.type.back() == "equal":
+					equals[equals.keys().back()].append(rings.type.size())
+				else:
+					equals[rings.type.size()] = [rings.type.size()]
 			"trapeze":
 				if parents % 2 == 1:
 					childs = (parents / 2) * 3 + 2
@@ -85,7 +101,7 @@ func add_ring(type_: String, only_parent_: bool) -> void:
 	angle.step = PI * 2 / n
 	
 	for _j in n:
-		angle.current = angle.step * _j# - PI / 2
+		angle.current = angle.step * _j - PI / 2
 		
 		if type_ == "equal":
 			var sign = -1
@@ -111,8 +127,8 @@ func add_room(angle_: float, segment_: int) -> void:
 		rings.room.append([])
 		rings.type.append(null)
 	
-	input.position = size * 0.5
-	input.position += Vector2().from_angle(angle_) * Global.num.ring.r * input.ring
+	#input.position = size * 0.5
+	input.position = Vector2().from_angle(angle_) * Global.num.ring.r * input.ring
 	input.order = rings.room[input.ring].size()
 	input.backdoor = false
 
@@ -139,33 +155,56 @@ func add_doors(type_: String) -> void:
 		#connect backdoor
 		var a = parents[_i * segment.parent]
 		var b = childs[_i * segment.child]
-		connect_rooms(a, b)
+		connect_rooms(a, b, "backdoor")
 	
-		#connect letter
-		if rings.type[n] == "equal" and rings.type[n - 1] == "equal":
-			var m = n
-		
-			while rings.type[m] == "equal":
-				m -= 1
-			
-			m -= n
-			m = abs(m) - 2
-			segment.elder = rings.room[n - 2].size() / 3
-			index.elder = _i * segment.elder
-			index.child = _i * segment.child
-			
-			if m % 2 == 0:
-				index.elder += segment.elder - 1
-				index.child += segment.child - 1
-			else:
-				segment.elder = rings.room[n - 2].size() / 3
-				index.elder += 1
-				index.child += 1
-			
-			a = rings.room[n - 2][index.elder]
-			b = childs[index.child]
-			connect_rooms(a, b)
+		#connect lift
+		if rings.type[n - 1] == "equal":# and type_ != "triple":
+			var indexs = [0, 1]
 				
+				
+			if type_ == "single":
+				var m = 0
+				
+				for equal in equals:
+					m += equals[equal].size()
+				
+				if m % 2 == 0:
+					indexs = []
+#			var m = segment.child - segment.parent + n + equals.keys().size() + 1
+#
+#			if type_ != "equal":
+#				m += 1
+#			else:
+#				for equal in equals:
+#					m += equals[equal].size()
+			
+			#if shift:
+			#	m += 1
+			
+			#if equals.keys().size() > 1:
+			#	m += equals.keys().size() #equals[equals.keys().back()].size() + 
+			
+#			if _i == 0:
+#				print([n, equals, m, type_])
+				
+			
+			for index_ in indexs:
+				segment.elder = rings.room[n - 2].size() / 3
+				index.elder = _i * segment.elder
+				index.child = _i * segment.child
+				
+				if index_ % 2 == 0:
+					index.elder += segment.elder - 1
+					index.child += segment.child - 1
+				else:
+					segment.elder = rings.room[n - 2].size() / 3
+					index.elder += 1
+					index.child += 1
+			
+				a = rings.room[n - 2][index.elder]
+				b = childs[index.child]
+				connect_rooms(a, b, "lift")
+			
 		
 		#connect segment
 		if n == 2:
@@ -174,7 +213,7 @@ func add_doors(type_: String) -> void:
 				index.child = _i * segment.child  + 1
 				a = parents[index.parent]
 				b = childs[index.child]
-				connect_rooms(a, b)
+				connect_rooms(a, b, "floor")
 		else:
 			for _j in segment.parent - 1:
 				index.parent = _i * segment.parent + _j + 1
@@ -185,29 +224,29 @@ func add_doors(type_: String) -> void:
 							for _k in k:
 								index.child = _i * segment.child + _j + _k + 1
 								b = childs[index.child]
-								connect_rooms(a, b)
+								connect_rooms(a, b, "letter")
 					"double":
 						for _k in k:
 							index.child =  _i * segment.child + _j * k + _k + 1
 							b = childs[index.child]
-							connect_rooms(a, b)
+							connect_rooms(a, b, "letter")
 					"triple":
 						k = 3
 						
 						for _k in k:
 							index.child =  _i * segment.child + _j * k + _k + 1
 							b = childs[index.child]
-							connect_rooms(a, b)
+							connect_rooms(a, b, "letter")
 					"trapeze":
 						if _j % 2 == 1:
 							index.child = _i * segment.child + (_j / 2 + 1) * (k + 1)
 							b = childs[index.child]
-							connect_rooms(a, b)
+							connect_rooms(a, b, "letter")
 						else:
 							for _k in k:
 								index.child = _i * segment.child + (_j / 2) * (k + 1) + _k + 1
 								b = childs[index.child]
-								connect_rooms(a, b)
+								connect_rooms(a, b, "letter")
 					"equal":
 						for _k in k:
 							index.child = (_i * segment.child + _j + _k) % childs.size()
@@ -218,7 +257,7 @@ func add_doors(type_: String) -> void:
 							b = childs[index.child]
 							
 							if !b.backdoor:
-								connect_rooms(a, b)
+								connect_rooms(a, b, "letter")
 	
 	#connect ring
 	if n > 2:
@@ -227,13 +266,14 @@ func add_doors(type_: String) -> void:
 			var b = childs[(_i + 1) % childs.size()]
 			
 			if !(type_ == "equal" and (a.backdoor or b.backdoor)):
-				connect_rooms(a, b)
+				connect_rooms(a, b, "floor")
 
 
-func connect_rooms(a_: Polygon2D, b_: Polygon2D) -> void:
+func connect_rooms(a_: Polygon2D, b_: Polygon2D, type_: String) -> void:
 	if !a_.doors.has(b_):
 		var input = {}
 		input.maze = self
+		input.type = type_
 		input.rooms = [a_, b_]
 		var door = Global.scene.door.instantiate()
 		doors.add_child(door)
@@ -244,7 +284,47 @@ func connect_rooms(a_: Polygon2D, b_: Polygon2D) -> void:
 		b_.paint_white()
 
 
+func update_doors() -> void:
+	for room in rooms.get_children():
+		for door in room.doors:
+			if door.type == "lift":
+				for room_door in room.doors:
+					if door != null:
+						var neighbor_room = room.doors[room_door]
+						
+						for neighbor_door in neighbor_room.doors:
+							var vertexs = [door.get_points(), []]
+							
+							for vertex in neighbor_door.get_points():
+								if !vertexs[0].has(vertex):
+									vertexs[1].append(vertex)
+							
+							if vertexs[1].size() == 2:
+								if Global.check_lines_intersection(vertexs):
+									door.collapse()
+									door = null
+									break
+	
+	return 
+
+
 func update_size() -> void:
 	var corners = {}
-	corners.leftop = Vector2()
+	corners.leftop = Vector2(rooms.get_child(0).position)
 	corners.rightbot = Vector2()
+	
+	for room in rooms.get_children():
+		corners.leftop.x = min(room.position.x, corners.leftop.x)
+		corners.leftop.y = min(room.position.x, corners.leftop.y)
+		corners.rightbot.x = max(room.position.x, corners.rightbot.x)
+		corners.rightbot.y = max(room.position.x, corners.rightbot.y)
+	
+	corners.leftop.x -= get("theme_override_constants/margin_left")
+	corners.leftop.y -= get("theme_override_constants/margin_top")
+	corners.rightbot.x += get("theme_override_constants/margin_right")
+	corners.rightbot.y += get("theme_override_constants/margin_bottom")
+	
+	custom_minimum_size = corners.rightbot - corners.leftop + Vector2.ONE * (Global.num.room.r * 2)# * 2
+	doors.position += custom_minimum_size * 0.5
+	rooms.position += custom_minimum_size * 0.5
+

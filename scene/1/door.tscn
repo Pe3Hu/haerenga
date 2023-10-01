@@ -3,5 +3,5 @@
 [ext_resource type="Script" path="res://scene/1/door.gd" id="1_hv8ku"]
 
 [node name="Door" type="Line2D"]
-width = 8.0
+width = 1.0
 script = ExtResource("1_hv8ku")

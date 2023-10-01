@@ -34,14 +34,15 @@ func init_arr() -> void:
 
 func init_num() -> void:
 	num.index = {}
-	num.index.servant = 0
+	num.index.room = 0
+	num.index.door = 0
 	
 	num.ring = {}
-	num.ring.r = 32
-	num.ring.segment = 9
+	num.ring.r = 25
+	num.ring.segment = 11#9
 	
 	num.room = {}
-	num.room.r = 12
+	num.room.r = 7
 
 
 func init_dict() -> void:
@@ -179,3 +180,33 @@ func get_random_key(dict_: Dictionary):
 	
 	print("!bug! index_r error in get_random_key func")
 	return null
+
+
+func check_lines_intersection(lines_: Array) -> bool:
+	var intersection = get_lines_intersection(lines_)
+	if intersection != null:
+		return check_point_inside_rect(intersection, lines_[0]) and check_point_inside_rect(intersection, lines_[1])
+	else:
+		return true
+
+
+func get_lines_intersection(lines_: Array) -> Variant:
+	var a = lines_[0][0]
+	var b = lines_[0][1]
+	var c = lines_[1][0]
+	var d = lines_[1][1]
+	
+	var dir_a = b - a
+	var dir_c = d - c
+	var vertex = Geometry2D.line_intersects_line(a, dir_a, c, dir_c)
+	return vertex
+
+
+func check_point_inside_rect(point_: Vector2, rect_: Array) -> bool:
+	var min = Vector2()
+	min.x = min(rect_.front().x, rect_.back().x)
+	min.y = min(rect_.front().y, rect_.back().y)
+	var max = Vector2()
+	max.x = max(rect_.front().x, rect_.back().x)
+	max.y = max(rect_.front().y, rect_.back().y)
+	return point_.x >= min.x and point_.x <= max.x and point_.y >= min.y and point_.y <= max.y
