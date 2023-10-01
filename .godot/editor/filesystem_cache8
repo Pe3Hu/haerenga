@@ -1,0 +1,32 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1696138347
+::res://asset/::1696136291
+default_env.tres::Environment::-1::1690116911::0::1::::<><>::
+icon.png::CompressedTexture2D::2432420761471245026::1690116911::1690116911::1::::<><>::
+icon.svg::CompressedTexture2D::9162371498834860976::1690116911::1690116911::1::::<><>::
+README.md::TextFile::-1::1690795285::0::1::::<><>::
+::res://asset/font/::1696136291
+::res://asset/font/digital/::1696136291
+Cilok There.otf::FontFile::5203477456367898423::1692120832::1693215257::1::::<><>::
+Montserrat-Regular.ttf::FontFile::8955316622152098618::1390883084::1693215257::1::::<><>::
+SwilyBright-Italic.otf::FontFile::4711532664557462683::1689611680::1693215257::1::::<><>::
+::res://asset/font/letter/::1696136291
+Chunk Five Print.otf::FontFile::7482982434189746187::1693025532::1693215257::1::::<><>::
+JosefinSans-Bold.ttf::FontFile::3888160851700023909::1693025548::1693215257::1::::<><>::
+LeagueGothic-Regular.otf::FontFile::2105460648084705691::1693025542::1693215257::1::::<><>::
+::res://asset/json/::1690795113
+::res://scene/::1696136291
+::res://scene/0/::1696136291
+blank.tscn::PackedScene::706186300528003691::1693571295::0::1::::<><>::uid://bvnpo88mdytkv::::res://asset/font/letter/JosefinSans-Bold.ttf
+game.gd::GDScript::-1::1693571279::0::1::::<>Node<>::
+game.tscn::PackedScene::8246655032211948728::1693571295::0::1::::<><>::res://scene/0/game.gd
+sketch.tscn::PackedScene::7122070728214644470::1693571295::0::1::::<><>::uid://bvnpo88mdytkv::::res://asset/font/letter/JosefinSans-Bold.ttf
+::res://scene/1/::1696136307
+door.tscn::PackedScene::7447623457392423723::1691147405::0::1::::<><>::
+maze.gd::GDScript::-1::1690895079::0::1::::<>MarginContainer<>::
+maze.tscn::PackedScene::3966851694995844696::1696136238::0::1::::<><>::res://scene/1/maze.gd
+room.gd::GDScript::-1::1690894539::0::1::::<>Polygon2D<>::
+room.tscn::PackedScene::1749993056958071237::1691147405::0::1::::<><>::res://scene/1/room.gd
+::res://scene/2/::1693571354
+::res://script/::1696136291
+Global.gd::GDScript::-1::1693571279::0::1::::<>Node<>::

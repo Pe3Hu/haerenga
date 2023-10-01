@@ -1,0 +1,10 @@
+res://scene/0/sketch.tscn
+res://scene/0/sketch.gd
+res://scene/0/game.tscn
+res://scene/0/blank.tscn
+res://script/Global.gd
+res://scene/1/maze.gd
+res://scene/1/maze.tscn
+res://scene/1/room.gd
+res://scene/1/door.tscn
+res://scene/1/door.gd
