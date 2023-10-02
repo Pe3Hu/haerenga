@@ -1,0 +1,98 @@
+[
+ {
+  "type": "empty",
+  "input": "free",
+  "output": "no",
+  "repetition": "no",
+  "value sector 0": 0,
+  "value sector 1": 0,
+  "value sector 2": 0,
+  "rarity sector 0": 1,
+  "rarity sector 1": 1,
+  "rarity sector 2": 1
+ },
+ {
+  "type": "mine",
+  "input": "extraction",
+  "output": "mineral",
+  "repetition": "yes",
+  "value sector 0": 3,
+  "value sector 1": 6,
+  "value sector 2": 10,
+  "rarity sector 0": 12,
+  "rarity sector 1": 7,
+  "rarity sector 2": 4
+ },
+ {
+  "type": "terminal",
+  "input": "acceleration",
+  "output": "knowledge",
+  "repetition": "yes",
+  "value sector 0": 3,
+  "value sector 1": 5,
+  "value sector 2": 7,
+  "rarity sector 0": 8,
+  "rarity sector 1": 7,
+  "rarity sector 2": 6
+ },
+ {
+  "type": "ruin",
+  "input": "identification",
+  "output": "knowledge",
+  "repetition": "yes",
+  "value sector 0": 1,
+  "value sector 1": 2,
+  "value sector 2": 3,
+  "rarity sector 0": 7,
+  "rarity sector 1": 5,
+  "rarity sector 2": 3
+ },
+ {
+  "type": "watchtower",
+  "input": "scan",
+  "output": "knowledge",
+  "repetition": "no",
+  "value sector 0": 3,
+  "value sector 1": 7,
+  "value sector 2": 12,
+  "rarity sector 0": 5,
+  "rarity sector 1": 5,
+  "rarity sector 2": 5
+ },
+ {
+  "type": "powerhouse",
+  "input": "free",
+  "output": "energy",
+  "repetition": "yes",
+  "value sector 0": 2,
+  "value sector 1": 4,
+  "value sector 2": 7,
+  "rarity sector 0": 6,
+  "rarity sector 1": 4,
+  "rarity sector 2": 2
+ },
+ {
+  "type": "warehouse",
+  "input": "free",
+  "output": "mineral",
+  "repetition": "no",
+  "value sector 0": 5,
+  "value sector 1": 12,
+  "value sector 2": 21,
+  "rarity sector 0": 5,
+  "rarity sector 1": 6,
+  "rarity sector 2": 7
+ },
+ {
+  "type": "library",
+  "input": "free",
+  "output": "knowledge",
+  "repetition": "no",
+  "value sector 0": 2,
+  "value sector 1": 3,
+  "value sector 2": 4,
+  "rarity sector 0": 10,
+  "rarity sector 1": 9,
+  "rarity sector 2": 8
+ }
+]

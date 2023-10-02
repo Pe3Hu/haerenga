@@ -1,0 +1,32 @@
+[
+ {
+  "sector": 0,
+  "min": 2,
+  "max": 4,
+  "avg": 3
+ },
+ {
+  "sector": 0.5,
+  "min": 4,
+  "max": 4,
+  "avg": 4
+ },
+ {
+  "sector": 1,
+  "min": 3,
+  "max": 6,
+  "avg": 4.5
+ },
+ {
+  "sector": 1.5,
+  "min": 6,
+  "max": 6,
+  "avg": 6
+ },
+ {
+  "sector": 2,
+  "min": 5,
+  "max": 9,
+  "avg": 7
+ }
+]

@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://biacva8rspoly"]
+
+[ext_resource type="FontFile" uid="uid://deu2vlj4q8un0" path="res://asset/font/letter/Chunk Five Print.otf" id="1_71v6f"]
+[ext_resource type="PackedScene" uid="uid://dx5anbuure0tu" path="res://scene/5/cardstack.tscn" id="2_exo0t"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
+
+[node name="Gameboard" type="MarginContainer"]
+custom_minimum_size = Vector2(5, 5)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="BG" type="Panel" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7paps")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_71v6f")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Cards" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Hand" parent="VBox/Cards" instance=ExtResource("2_exo0t")]
+layout_mode = 2
+
+[node name="Discard" parent="VBox/Cards" instance=ExtResource("2_exo0t")]
+layout_mode = 2
+
+[node name="Deck" parent="VBox/Cards" instance=ExtResource("2_exo0t")]
+layout_mode = 2

@@ -76,12 +76,12 @@ func add_length() -> void:
 
 
 func roll_length() -> void:
-	var sector = 0
+	var sector = 0.0
 	
 	for room in rooms:
 		sector += room.sector
 	
 	sector /= rooms.size()
 	Global.rng.randomize()
-	length = Global.rng.randi_range(Global.num.door.length.sector[sector].min, Global.num.door.length.sector[sector].max)
+	length = Global.rng.randi_range(Global.dict.door.length.sector[sector].min, Global.dict.door.length.sector[sector].max)
 	

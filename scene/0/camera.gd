@@ -38,3 +38,10 @@ func move_camera(direction_: String) -> void:
 	
 	position += vector * 10
 
+
+func zoom_it(direction_: String) -> void:
+	match direction_:
+		"-":
+			zoom += Vector2(-0.1, -0.1)
+		"+":
+			zoom += Vector2(0.1, 0.1)

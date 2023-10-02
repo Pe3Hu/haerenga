@@ -19,16 +19,22 @@ func _input(event) -> void:
 					Global.node.sketch.maze.camera.onfocus()
 			KEY_W:
 				if event.is_pressed():
-					Global.node.sketch.maze.move_icons("up")
+					Global.node.sketch.maze.camera.move_camera("up")
 			KEY_D:
 				if event.is_pressed():
-					Global.node.sketch.maze.move_icons("right")
+					Global.node.sketch.maze.camera.move_camera("right")
 			KEY_S:
 				if event.is_pressed():
-					Global.node.sketch.maze.move_icons("down")
+					Global.node.sketch.maze.camera.move_camera("down")
 			KEY_A:
 				if event.is_pressed():
-					Global.node.sketch.maze.move_icons("left")
+					Global.node.sketch.maze.camera.move_camera("left")
+			KEY_Q:
+				if event.is_pressed():
+					Global.node.sketch.maze.camera.zoom_it("+")
+			KEY_E:
+				if event.is_pressed():
+					Global.node.sketch.maze.camera.zoom_it("-")
 
 
 func _process(delta_) -> void:

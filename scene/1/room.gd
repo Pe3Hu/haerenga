@@ -109,7 +109,7 @@ func add_obstacle(obstacle_: String) -> void:
 	var input = {}
 	input.maze = maze
 	input.room = self
-	input.type = obstacle_
+	input.subtype = obstacle_
 	
 	obstacle = Global.scene.obstacle.instantiate()
 	maze.obstacles.add_child(obstacle)

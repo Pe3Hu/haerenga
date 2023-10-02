@@ -4,14 +4,16 @@ extends Polygon2D
 var maze = null
 var room = null
 var type = null
+var subtype = null
 
 
 func set_attributes(input_: Dictionary) -> void:
 	maze = input_.maze
 	room = input_.room
-	type = input_.type
+	#type = input_.type
+	subtype = input_.subtype
 	position = room.position
-	color = Global.color.obstacle[type]
+	color = Global.color.obstacle[subtype]
 	
 	init_vertexs()
 

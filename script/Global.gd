@@ -45,25 +45,6 @@ func init_num() -> void:
 	num.room = {}
 	num.room.r = 8
 	
-	num.door = {}
-	num.door.length = {}
-	num.door.length.sector = {}
-	num.door.length.sector[0] = {}
-	num.door.length.sector[0].min = 2
-	num.door.length.sector[0].max = 4
-	num.door.length.sector[0.5] = {}
-	num.door.length.sector[0.5].min = 4
-	num.door.length.sector[0.5].max = 4
-	num.door.length.sector[1] = {}
-	num.door.length.sector[1].min = 3
-	num.door.length.sector[1].max = 6
-	num.door.length.sector[1.5] = {}
-	num.door.length.sector[1.5].min = 6
-	num.door.length.sector[1.5].max = 6
-	num.door.length.sector[2] = {}
-	num.door.length.sector[2].min = 4
-	num.door.length.sector[2].max = 8
-	
 	num.outpost = {}
 	num.outpost.r = num.room.r * 1.5
 	
@@ -81,7 +62,9 @@ func init_num() -> void:
 func init_dict() -> void:
 	init_neighbor()
 	init_also()
-	
+	init_door()
+	init_content()
+	init_obstacle()
 
 
 func init_also() -> void:
@@ -105,43 +88,43 @@ func init_also() -> void:
 	dict.aspect.slot["autonomy"] = "Torso"
 	dict.aspect.slot["velocity"] = "Limb"
 	
-	dict.room = {}
-	dict.room.rarity = {}
-	dict.room.rarity.obstacle = {}
-	dict.room.rarity.obstacle["empty"] = {}
-	dict.room.rarity.obstacle["empty"][2] = 3
-	dict.room.rarity.obstacle["empty"][1] = 2
-	dict.room.rarity.obstacle["empty"][0] = 1
-	dict.room.rarity.obstacle["labyrinth"] = {}
-	dict.room.rarity.obstacle["labyrinth"][2] = 8
-	dict.room.rarity.obstacle["labyrinth"][1] = 6
-	dict.room.rarity.obstacle["labyrinth"][0] = 4
-	dict.room.rarity.obstacle["encounter"] = {}
-	dict.room.rarity.obstacle["encounter"][2] = 2
-	dict.room.rarity.obstacle["encounter"][1] = 7
-	dict.room.rarity.obstacle["encounter"][0] = 12
-	dict.room.rarity.obstacle["conundrum"] = {}
-	dict.room.rarity.obstacle["conundrum"][2] = 5
-	dict.room.rarity.obstacle["conundrum"][1] = 8
-	dict.room.rarity.obstacle["conundrum"][0] = 5
-	
-	dict.room.rarity.content = {}
-	dict.room.rarity.content["empty"] = {}
-	dict.room.rarity.content["empty"][2] = 1
-	dict.room.rarity.content["empty"][1] = 1
-	dict.room.rarity.content["empty"][0] = 1
-	dict.room.rarity.content["mine"] = {}
-	dict.room.rarity.content["mine"][2] = 4
-	dict.room.rarity.content["mine"][1] = 7
-	dict.room.rarity.content["mine"][0] = 12
-	dict.room.rarity.content["terminal"] = {}
-	dict.room.rarity.content["terminal"][2] = 3
-	dict.room.rarity.content["terminal"][1] = 5
-	dict.room.rarity.content["terminal"][0] = 7
-	dict.room.rarity.content["chest"] = {}
-	dict.room.rarity.content["chest"][2] = 7
-	dict.room.rarity.content["chest"][1] = 9
-	dict.room.rarity.content["chest"][0] = 11
+#	dict.room = {}
+#	dict.room.rarity = {}
+#	dict.room.rarity.obstacle = {}
+#	dict.room.rarity.obstacle["empty"] = {}
+#	dict.room.rarity.obstacle["empty"][2] = 3
+#	dict.room.rarity.obstacle["empty"][1] = 2
+#	dict.room.rarity.obstacle["empty"][0] = 1
+#	dict.room.rarity.obstacle["labyrinth"] = {}
+#	dict.room.rarity.obstacle["labyrinth"][2] = 8
+#	dict.room.rarity.obstacle["labyrinth"][1] = 6
+#	dict.room.rarity.obstacle["labyrinth"][0] = 4
+#	dict.room.rarity.obstacle["encounter"] = {}
+#	dict.room.rarity.obstacle["encounter"][2] = 2
+#	dict.room.rarity.obstacle["encounter"][1] = 7
+#	dict.room.rarity.obstacle["encounter"][0] = 12
+#	dict.room.rarity.obstacle["conundrum"] = {}
+#	dict.room.rarity.obstacle["conundrum"][2] = 5
+#	dict.room.rarity.obstacle["conundrum"][1] = 8
+#	dict.room.rarity.obstacle["conundrum"][0] = 5
+#
+#	dict.room.rarity.content = {}
+#	dict.room.rarity.content["empty"] = {}
+#	dict.room.rarity.content["empty"][2] = 1
+#	dict.room.rarity.content["empty"][1] = 1
+#	dict.room.rarity.content["empty"][0] = 1
+#	dict.room.rarity.content["mine"] = {}
+#	dict.room.rarity.content["mine"][2] = 4
+#	dict.room.rarity.content["mine"][1] = 7
+#	dict.room.rarity.content["mine"][0] = 12
+#	dict.room.rarity.content["terminal"] = {}
+#	dict.room.rarity.content["terminal"][2] = 3
+#	dict.room.rarity.content["terminal"][1] = 5
+#	dict.room.rarity.content["terminal"][0] = 7
+#	dict.room.rarity.content["chest"] = {}
+#	dict.room.rarity.content["chest"][2] = 7
+#	dict.room.rarity.content["chest"][1] = 9
+#	dict.room.rarity.content["chest"][0] = 11
 	
 	dict.thousand = {}
 	dict.thousand[""] = "k"
@@ -194,6 +177,87 @@ func init_neighbor() -> void:
 		]
 	]
 
+
+func init_door() -> void:
+	dict.door = {}
+	dict.door.length = {}
+	dict.door.length.sector = {}
+	
+	var path = "res://asset/json/haerenga_door_length.json"
+	var array = load_data(path)
+	
+	for length in array:
+		dict.door.length.sector[float(length.sector)] = {}
+		
+		for key in length:
+			if key != "sector":
+				dict.door.length.sector[float(length.sector)][key] = float(length[key])
+
+
+func init_content() -> void:
+	dict.room = {}
+	dict.room.content = {}
+	
+	var path = "res://asset/json/haerenga_content.json"
+	var array = load_data(path)
+	
+	for content in array:
+		var data = {}
+		data.sector = {}
+		
+		for key in content:
+			var words = key.split(" ")
+			
+			if words.has("sector"):
+				var sector = int(words[2])
+				
+				if !data.sector.has(sector):
+					data.sector[sector] = {}
+				
+				data.sector[sector][words[0]] = content[key]
+			else:
+				data[key] = content[key]
+		
+		dict.room.content[content.type] = data
+	
+	#print(dict.room.rarity.content)
+
+
+func init_obstacle() -> void:
+	dict.room.obstacle = {}
+	
+	var path = "res://asset/json/haerenga_obstacle.json"
+	var array = load_data(path)
+	
+	for obstacle in array:
+		var data = {}
+		data.sector = {}
+		data.action = {}
+		data.impact = {}
+		
+		for key in obstacle:
+			var words = key.split(" ")
+			
+			if words.size() > 1:
+				if words.has("sector"):
+					var sector = int(words[2])
+					
+					if !data.sector.has(sector):
+						data.sector[sector] = {}
+					
+					data.sector[sector][words[0]] = obstacle[key]
+			
+				if words.has("action"):
+					data.action[words[0]] = obstacle[key]
+				
+				if words.has("impact"):
+					data.impact[words[0]] = obstacle[key]
+			else:
+				data[key] = obstacle[key]
+		
+		dict.room.obstacle[obstacle.subtype] = data
+	
+	print(dict.room.obstacle)
 
 func init_node() -> void:
 	node.game = get_node("/root/Game")
@@ -251,14 +315,23 @@ func init_color():
 	color.obstacle = {}
 	color.obstacle["empty"] = Color.from_hsv(180 / max_h, 1.0, 0.75)
 	color.obstacle["conundrum"] = Color.from_hsv(270 / max_h, 1.0, 0.75)
-	color.obstacle["encounter"] = Color.from_hsv(0 / max_h, 1.0, 0.75)
+	color.obstacle["raid"] = Color.from_hsv(0 / max_h, 1.0, 0.75)
 	color.obstacle["labyrinth"] = Color.from_hsv(90 / max_h, 1.0, 0.75)
+	
+	color.obstacle["landslide"] = Color.from_hsv(0 / max_h, 1.0, 0.75)
+	color.obstacle["anomaly"] = Color.from_hsv(0 / max_h, 1.0, 0.75)
+	color.obstacle["ambush"] = Color.from_hsv(0 / max_h, 1.0, 0.75)
 	
 	color.content = {}
 	color.content["empty"] =  Color.from_hsv(240/ max_h, 0.75, 1.0)
 	color.content["mine"] =  Color.from_hsv(330 / max_h, 0.75, 1.0)
-	color.content["chest"] = Color.from_hsv(60 / max_h,  0.75, 1.0)
 	color.content["terminal"] = Color.from_hsv(150 / max_h, 0.75, 1.0)
+	
+	color.content["ruin"] = Color.from_hsv(0 / max_h, 0.75, 1.0)
+	color.content["watchtower"] = Color.from_hsv(0 / max_h, 0.75, 1.0)
+	color.content["powerhouse"] = Color.from_hsv(0 / max_h, 0.75, 1.0)
+	color.content["warehouse"] = Color.from_hsv(0 / max_h, 0.75, 1.0)
+	color.content["library"] = Color.from_hsv(0 / max_h, 0.75, 1.0)
 
 
 func save(path_: String, data_: String):
@@ -336,15 +409,16 @@ func get_random_obstacle_and_content(sector_: int) -> Dictionary:
 	var result = {}
 	var weights = {}
 	weights.content = {}
+	var a = dict.room.content
 	
-	for content in dict.room.rarity.content:
-		weights.content[content] = dict.room.rarity.content[content][sector_]
+	for content in dict.room.content:
+		weights.content[content] = dict.room.content[content].sector[sector_].rarity
 	
 	result.content = get_random_key(weights.content)
 	weights.obstacle = {}
 	
-	for obstacle in dict.room.rarity.obstacle:
-		weights.obstacle[obstacle] = dict.room.rarity.obstacle[obstacle][sector_]
+	for obstacle in dict.room.obstacle:
+		weights.obstacle[obstacle] = dict.room.obstacle[obstacle].sector[sector_].rarity
 	
 	if result.content == "empty":
 		weights.obstacle["empty"] *= 3
