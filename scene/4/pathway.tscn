@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://ciw38iqel0v5a" path="res://scene/0/icon.tscn" id="3_l5t2b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
-bg_color = Color(0, 0.654902, 0.862745, 1)
+bg_color = Color(0.756863, 0.756863, 0.756863, 1)
 
 [node name="Pathway" type="MarginContainer"]
 custom_minimum_size = Vector2(5, 5)
@@ -39,9 +39,36 @@ vertical_alignment = 1
 
 [node name="HBox" type="HBoxContainer" parent="."]
 layout_mode = 2
+alignment = 1
 
-[node name="Destination" parent="HBox" instance=ExtResource("3_l5t2b")]
+[node name="Door" type="HBoxContainer" parent="HBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Icon" parent="HBox/Door" instance=ExtResource("3_l5t2b")]
 layout_mode = 2
 
-[node name="Length" parent="HBox" instance=ExtResource("3_l5t2b")]
+[node name="Length" parent="HBox/Door" instance=ExtResource("3_l5t2b")]
+layout_mode = 2
+
+[node name="Room" type="HBoxContainer" parent="HBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Icon" parent="HBox/Room" instance=ExtResource("3_l5t2b")]
+visible = false
+layout_mode = 2
+
+[node name="Obstacle" parent="HBox/Room" instance=ExtResource("3_l5t2b")]
+layout_mode = 2
+
+[node name="Requirement" parent="HBox/Room" instance=ExtResource("3_l5t2b")]
+layout_mode = 2
+
+[node name="Content" parent="HBox/Room" instance=ExtResource("3_l5t2b")]
+layout_mode = 2
+
+[node name="Value" parent="HBox/Room" instance=ExtResource("3_l5t2b")]
 layout_mode = 2

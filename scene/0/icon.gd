@@ -14,10 +14,10 @@ func set_attributes(input_: Dictionary) -> void:
 	
 	custom_minimum_size = Vector2(Global.vec.size.letter)
 	var path = "res://asset/png/icon/"
-	var types = ["resource", "servant", "outcome", "terrain", "economy"]
+	var types = ["resource", "action", "obstacle", "content", "node"]
 	
 	if types.has(type):
-		custom_minimum_size = Vector2(Global.vec.size[type])
+		custom_minimum_size = Vector2(Global.vec.size.icon)
 		path += type + "/" + subtype + ".png"
 		tr.texture = load(path)
 	

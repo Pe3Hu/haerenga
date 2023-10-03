@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3sk6jpty78ee"
-path="res://.godot/imported/icon.svg-635c9cd9560944100972280930a50328.ctex"
+uid="uid://bkdt43234v3jg"
+path="res://.godot/imported/salvo.png-da742a353eb5f1106ff8686bc3f04b9c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/icon.svg"
-dest_files=["res://.godot/imported/icon.svg-635c9cd9560944100972280930a50328.ctex"]
+source_file="res://asset/png/icon/action/salvo.png"
+dest_files=["res://.godot/imported/salvo.png-da742a353eb5f1106ff8686bc3f04b9c.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

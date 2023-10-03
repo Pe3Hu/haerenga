@@ -1,9 +1,9 @@
+HBoxContainer
 SubViewport
 SubViewportContainer
 Node2D
 Camera2D
 TextureRect
-HBoxContainer
 VBoxContainer
 GridContainer
 Control

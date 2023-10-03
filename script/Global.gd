@@ -219,8 +219,6 @@ func init_content() -> void:
 				data[key] = content[key]
 		
 		dict.room.content[content.type] = data
-	
-	#print(dict.room.rarity.content)
 
 
 func init_obstacle() -> void:
@@ -256,8 +254,7 @@ func init_obstacle() -> void:
 				data[key] = obstacle[key]
 		
 		dict.room.obstacle[obstacle.subtype] = data
-	
-	print(dict.room.obstacle)
+
 
 func init_node() -> void:
 	node.game = get_node("/root/Game")
@@ -291,7 +288,7 @@ func init_scene() -> void:
 func init_vec():
 	vec.size = {}
 	vec.size.letter = Vector2(20, 20)
-	vec.size.resource = Vector2(32, 32)
+	vec.size.icon = Vector2(48, 48)
 	vec.size.number = Vector2(32, 32)
 	
 	
@@ -313,25 +310,25 @@ func init_color():
 	var max_h = 360.0
 	
 	color.obstacle = {}
-	color.obstacle["empty"] = Color.from_hsv(180 / max_h, 1.0, 0.75)
-	color.obstacle["conundrum"] = Color.from_hsv(270 / max_h, 1.0, 0.75)
-	color.obstacle["raid"] = Color.from_hsv(0 / max_h, 1.0, 0.75)
-	color.obstacle["labyrinth"] = Color.from_hsv(90 / max_h, 1.0, 0.75)
-	
-	color.obstacle["landslide"] = Color.from_hsv(0 / max_h, 1.0, 0.75)
-	color.obstacle["anomaly"] = Color.from_hsv(0 / max_h, 1.0, 0.75)
-	color.obstacle["ambush"] = Color.from_hsv(0 / max_h, 1.0, 0.75)
+	color.obstacle["empty"] =  Color.from_hsv(47 / max_h, 1.0, 0.96)
+	color.obstacle["conundrum"] = Color.from_hsv(277 / max_h, 0.58, 0.91)
+	color.obstacle["raid"] = Color.from_hsv(5 / max_h, 0.92, 0.98)
+	color.obstacle["labyrinth"] = Color.from_hsv(152 / max_h, 0.87, 0.85)
+	color.obstacle["landslide"] = Color.from_hsv(181 / max_h, 1.0, 1.0)
+	color.obstacle["ambush"] = Color.from_hsv(207 / max_h, 0.47, 0.37)
+	color.obstacle["anomaly"] = Color.from_hsv(224 / max_h, 0.71, 1.0)
 	
 	color.content = {}
-	color.content["empty"] =  Color.from_hsv(240/ max_h, 0.75, 1.0)
-	color.content["mine"] =  Color.from_hsv(330 / max_h, 0.75, 1.0)
-	color.content["terminal"] = Color.from_hsv(150 / max_h, 0.75, 1.0)
+	color.content["unknown"] =  Color.from_hsv(47 / max_h, 1.0, 0.96)
+	color.content["empty"] =  Color.from_hsv(47 / max_h, 1.0, 0.96)
+	color.content["mine"] =  Color.from_hsv(29 / max_h, 0.44, 0.94)
+	color.content["terminal"] = Color.from_hsv(218 / max_h, 0.68, 0.48)
 	
-	color.content["ruin"] = Color.from_hsv(0 / max_h, 0.75, 1.0)
-	color.content["watchtower"] = Color.from_hsv(0 / max_h, 0.75, 1.0)
-	color.content["powerhouse"] = Color.from_hsv(0 / max_h, 0.75, 1.0)
-	color.content["warehouse"] = Color.from_hsv(0 / max_h, 0.75, 1.0)
-	color.content["library"] = Color.from_hsv(0 / max_h, 0.75, 1.0)
+	color.content["ruin"] = Color.from_hsv(20 / max_h, 0.8, 1.0)
+	color.content["watchtower"] = Color.from_hsv(168 / max_h, 0.74, 0.83)
+	color.content["powerhouse"] = Color.from_hsv(210 / max_h, 0.14, 0.97)
+	color.content["warehouse"] = Color.from_hsv(207 / max_h, 0.15, 0.23)
+	color.content["library"] = Color.from_hsv(10 / max_h, 0.1, 0.47)
 
 
 func save(path_: String, data_: String):

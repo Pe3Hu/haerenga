@@ -5,15 +5,15 @@
   "primary prerequisite action": "no",
   "alternative prerequisite action": "no",
   "shortcut action": "no",
-  "requirement sector 0": 0,
-  "requirement sector 1": 0,
   "requirement sector 2": 0,
+  "requirement sector 1": 0,
+  "requirement sector 0": 0,
   "primary impact": 0,
   "alternative impact": 0,
   "shortcut impact": 0,
-  "rarity sector 0": 1,
+  "rarity sector 2": 1,
   "rarity sector 1": 2,
-  "rarity sector 2": 3
+  "rarity sector 0": 3
  },
  {
   "type": "track",
@@ -21,15 +21,15 @@
   "primary prerequisite action": "motion",
   "alternative prerequisite action": "acceleration",
   "shortcut action": "scan",
-  "requirement sector 0": 10,
+  "requirement sector 2": 10,
   "requirement sector 1": 16,
-  "requirement sector 2": 25,
+  "requirement sector 0": 25,
   "primary impact": 3,
   "alternative impact": 2,
   "shortcut impact": 4,
-  "rarity sector 0": 4,
+  "rarity sector 2": 4,
   "rarity sector 1": 6,
-  "rarity sector 2": 8
+  "rarity sector 0": 8
  },
  {
   "type": "track",
@@ -37,15 +37,15 @@
   "primary prerequisite action": "motion",
   "alternative prerequisite action": "salvo",
   "shortcut action": "extraction",
-  "requirement sector 0": 12,
+  "requirement sector 2": 12,
   "requirement sector 1": 16,
-  "requirement sector 2": 20,
+  "requirement sector 0": 20,
   "primary impact": 2,
   "alternative impact": 1,
   "shortcut impact": 6,
-  "rarity sector 0": 6,
+  "rarity sector 2": 6,
   "rarity sector 1": 4,
-  "rarity sector 2": 6
+  "rarity sector 0": 6
  },
  {
   "type": "enigma",
@@ -53,15 +53,15 @@
   "primary prerequisite action": "acceleration",
   "alternative prerequisite action": "motion",
   "shortcut action": "identification",
-  "requirement sector 0": 13,
+  "requirement sector 2": 13,
   "requirement sector 1": 17,
-  "requirement sector 2": 21,
+  "requirement sector 0": 21,
   "primary impact": 2,
   "alternative impact": 1,
   "shortcut impact": 5,
-  "rarity sector 0": 7,
+  "rarity sector 2": 7,
   "rarity sector 1": 7,
-  "rarity sector 2": 7
+  "rarity sector 0": 7
  },
  {
   "type": "enigma",
@@ -69,15 +69,15 @@
   "primary prerequisite action": "acceleration",
   "alternative prerequisite action": "salvo",
   "shortcut action": "extraction",
-  "requirement sector 0": 14,
+  "requirement sector 2": 14,
   "requirement sector 1": 22,
-  "requirement sector 2": 26,
+  "requirement sector 0": 26,
   "primary impact": 4,
   "alternative impact": 2,
   "shortcut impact": 2,
-  "rarity sector 0": 5,
+  "rarity sector 2": 5,
   "rarity sector 1": 8,
-  "rarity sector 2": 5
+  "rarity sector 0": 5
  },
  {
   "type": "combat",
@@ -85,15 +85,15 @@
   "primary prerequisite action": "salvo",
   "alternative prerequisite action": "acceleration",
   "shortcut action": "identification",
-  "requirement sector 0": 20,
+  "requirement sector 2": 20,
   "requirement sector 1": 28,
-  "requirement sector 2": 40,
+  "requirement sector 0": 40,
   "primary impact": 5,
   "alternative impact": 2,
   "shortcut impact": 3,
-  "rarity sector 0": 14,
+  "rarity sector 2": 14,
   "rarity sector 1": 7,
-  "rarity sector 2": 2
+  "rarity sector 0": 2
  },
  {
   "type": "combat",
@@ -101,14 +101,14 @@
   "primary prerequisite action": "salvo",
   "alternative prerequisite action": "motion",
   "shortcut action": "scan",
-  "requirement sector 0": 22,
+  "requirement sector 2": 22,
   "requirement sector 1": 27,
-  "requirement sector 2": 33,
+  "requirement sector 0": 33,
   "primary impact": 5,
   "alternative impact": 3,
   "shortcut impact": 7,
-  "rarity sector 0": 11,
+  "rarity sector 2": 11,
   "rarity sector 1": 5,
-  "rarity sector 2": 1
+  "rarity sector 0": 1
  }
 ]

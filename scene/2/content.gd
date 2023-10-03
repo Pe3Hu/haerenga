@@ -4,6 +4,7 @@ extends Polygon2D
 var maze = null
 var room = null
 var type = null
+var value = null
 
 
 func set_attributes(input_: Dictionary) -> void:
@@ -14,6 +15,7 @@ func set_attributes(input_: Dictionary) -> void:
 	color = Global.color.content[type]
 	
 	init_vertexs()
+	set_value()
 
 
 func init_vertexs() -> void:
@@ -26,3 +28,7 @@ func init_vertexs() -> void:
 		vertexs.append(vertex)
 	
 	set_polygon(vertexs)
+
+
+func set_value() -> void:
+	value = Global.dict.room.content[type].sector[room.sector].value
