@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpetxaw8s4p48"
-path="res://.godot/imported/recharge.png-caa4b16f7964c5b2c0f079320fb46936.ctex"
+uid="uid://bc424t70h6sxd"
+path="res://.godot/imported/extraction.png-d526f7d45846c73c3f0c8bc825d64147.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/png/icon/action/recharge.png"
-dest_files=["res://.godot/imported/recharge.png-caa4b16f7964c5b2c0f079320fb46936.ctex"]
+source_file="res://asset/png/icon/token/extraction.png"
+dest_files=["res://.godot/imported/extraction.png-d526f7d45846c73c3f0c8bc825d64147.ctex"]
 
 [params]
 

@@ -1,0 +1,65 @@
+[
+	{
+		"title": "ordinary engine",
+		"kind": "ordinary",
+		"type": "engine",
+		"starter kit": 6,
+		"first token name": "motion",
+		"first token value": 3,
+		"first token type": "definitely"
+	},
+	{
+		"title": "ordinary processor",
+		"kind": "ordinary",
+		"type": "processor",
+		"starter kit": 4,
+		"first token name": "acceleration",
+		"first token value": 2,
+		"first token type": "definitely"
+	},
+	{
+		"title": "ordinary drill",
+		"kind": "ordinary",
+		"type": "drill",
+		"starter kit": 1,
+		"first token name": "extraction",
+		"first token value": 1,
+		"first token type": "definitely"
+	},
+	{
+		"title": "ordinary parser ",
+		"kind": "ordinary",
+		"type": "parser ",
+		"starter kit": 1,
+		"first token name": "identification",
+		"first token value": 1,
+		"first token type": "definitely"
+	},
+	{
+		"title": "ordinary radar",
+		"kind": "ordinary",
+		"type": "radar",
+		"starter kit": 1,
+		"first token name": "scan",
+		"first token value": 1,
+		"first token type": "definitely"
+	},
+	{
+		"title": "unusual engine",
+		"kind": "unusual",
+		"type": "engine",
+		"starter kit": 1,
+		"first token name": "motion",
+		"first token value": 5,
+		"first token type": "definitely"
+	},
+	{
+		"title": "unusual processor",
+		"kind": "unusual",
+		"type": "processor",
+		"starter kit": 1,
+		"first token name": "acceleration",
+		"first token value": 4,
+		"first token type": "definitely"
+	}
+]

@@ -27,6 +27,7 @@ func init_arr() -> void:
 	arr.sequence["A000040"] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 	arr.edge = [1, 2, 3, 4, 5, 6]
 	
+	arr.token = ["motion", "acceleration", "salvo", "extraction", "identification", "scan"]
 	
 	arr.aspect = ["power", "autonomy", "velocity"]
 	arr.synergy = ["totem", "origin", "kind"]
@@ -65,6 +66,7 @@ func init_dict() -> void:
 	init_door()
 	init_content()
 	init_obstacle()
+	init_card()
 
 
 func init_also() -> void:
@@ -87,44 +89,6 @@ func init_also() -> void:
 	dict.aspect.slot["power"] = "Head"
 	dict.aspect.slot["autonomy"] = "Torso"
 	dict.aspect.slot["velocity"] = "Limb"
-	
-#	dict.room = {}
-#	dict.room.rarity = {}
-#	dict.room.rarity.obstacle = {}
-#	dict.room.rarity.obstacle["empty"] = {}
-#	dict.room.rarity.obstacle["empty"][2] = 3
-#	dict.room.rarity.obstacle["empty"][1] = 2
-#	dict.room.rarity.obstacle["empty"][0] = 1
-#	dict.room.rarity.obstacle["labyrinth"] = {}
-#	dict.room.rarity.obstacle["labyrinth"][2] = 8
-#	dict.room.rarity.obstacle["labyrinth"][1] = 6
-#	dict.room.rarity.obstacle["labyrinth"][0] = 4
-#	dict.room.rarity.obstacle["encounter"] = {}
-#	dict.room.rarity.obstacle["encounter"][2] = 2
-#	dict.room.rarity.obstacle["encounter"][1] = 7
-#	dict.room.rarity.obstacle["encounter"][0] = 12
-#	dict.room.rarity.obstacle["conundrum"] = {}
-#	dict.room.rarity.obstacle["conundrum"][2] = 5
-#	dict.room.rarity.obstacle["conundrum"][1] = 8
-#	dict.room.rarity.obstacle["conundrum"][0] = 5
-#
-#	dict.room.rarity.content = {}
-#	dict.room.rarity.content["empty"] = {}
-#	dict.room.rarity.content["empty"][2] = 1
-#	dict.room.rarity.content["empty"][1] = 1
-#	dict.room.rarity.content["empty"][0] = 1
-#	dict.room.rarity.content["mine"] = {}
-#	dict.room.rarity.content["mine"][2] = 4
-#	dict.room.rarity.content["mine"][1] = 7
-#	dict.room.rarity.content["mine"][0] = 12
-#	dict.room.rarity.content["terminal"] = {}
-#	dict.room.rarity.content["terminal"][2] = 3
-#	dict.room.rarity.content["terminal"][1] = 5
-#	dict.room.rarity.content["terminal"][0] = 7
-#	dict.room.rarity.content["chest"] = {}
-#	dict.room.rarity.content["chest"][2] = 7
-#	dict.room.rarity.content["chest"][1] = 9
-#	dict.room.rarity.content["chest"][0] = 11
 	
 	dict.thousand = {}
 	dict.thousand[""] = "k"
@@ -230,7 +194,7 @@ func init_obstacle() -> void:
 	for obstacle in array:
 		var data = {}
 		data.sector = {}
-		data.action = {}
+		data.token = {}
 		data.impact = {}
 		
 		for key in obstacle:
@@ -245,8 +209,8 @@ func init_obstacle() -> void:
 					
 					data.sector[sector][words[0]] = obstacle[key]
 			
-				if words.has("action"):
-					data.action[words[0]] = obstacle[key]
+				if words.has("token"):
+					data.token[words[0]] = obstacle[key]
 				
 				if words.has("impact"):
 					data.impact[words[0]] = obstacle[key]
@@ -255,6 +219,32 @@ func init_obstacle() -> void:
 		
 		dict.room.obstacle[obstacle.subtype] = data
 
+
+func init_card() -> void:
+	dict.card = {}
+	var path = "res://asset/json/haerenga_card.json"
+	var array = load_data(path)
+	
+	for card in array:
+		var data = {}
+		data.token = {}
+		
+		for key in card:
+			if key.contains("token"):
+				var words = key.split(" ")
+				
+				if !data.token.has(words[0]):
+					data.token[words[0]] = {}
+			
+				if !data.token.has(words[0]):
+					data.token[words[0]] = {}
+				
+				data.token[words[0]][words[2]] = card[key]
+			else:
+				data[key] = card[key]
+		
+		dict.card[card.title] = data
+ 
 
 func init_node() -> void:
 	node.game = get_node("/root/Game")
@@ -265,10 +255,8 @@ func init_scene() -> void:
 	scene.icon = load("res://scene/0/icon.tscn")
 	scene.minimap = load("res://scene/0/minimap.tscn")
 	
-	
 	scene.door = load("res://scene/1/door.tscn")
 	scene.room = load("res://scene/1/room.tscn")
-	
 	
 	scene.outpost = load("res://scene/2/outpost.tscn")
 	scene.obstacle = load("res://scene/2/obstacle.tscn")
@@ -279,7 +267,9 @@ func init_scene() -> void:
 	
 	scene.crossroad = load("res://scene/4/crossroad.tscn")
 	scene.pathway = load("res://scene/4/pathway.tscn")
-	scene.destination = load("res://scene/4/destination.tscn")
+	
+	scene.card = load("res://scene/5/card.tscn")
+	scene.token = load("res://scene/5/token.tscn")
 	
 	
 	pass
@@ -406,7 +396,6 @@ func get_random_obstacle_and_content(sector_: int) -> Dictionary:
 	var result = {}
 	var weights = {}
 	weights.content = {}
-	var a = dict.room.content
 	
 	for content in dict.room.content:
 		weights.content[content] = dict.room.content[content].sector[sector_].rarity

@@ -69,10 +69,10 @@ func add_length() -> void:
 	input.type = "number"
 	input.subtype = length
 	
-	var icon = Global.scene.icon.instantiate()
-	maze.ilength.add_child(icon)
-	icon.set_attributes(input)
-	icon.position = center
+	var icon_ = Global.scene.icon.instantiate()
+	maze.ilength.add_child(icon_)
+	icon_.set_attributes(input)
+	icon_.position = center
 
 
 func roll_length() -> void:

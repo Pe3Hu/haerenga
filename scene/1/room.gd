@@ -104,7 +104,6 @@ func add_outpost() -> void:
 	outpost.set_attributes(input)
 
 
-
 func add_obstacle(obstacle_: String) -> void:
 	var input = {}
 	input.maze = maze

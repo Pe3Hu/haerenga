@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://b2o7remo0had4"]
+[gd_scene load_steps=6 format=3 uid="uid://b2o7remo0had4"]
 
 [ext_resource type="Script" path="res://scene/3/core.gd" id="1_5e2lx"]
 [ext_resource type="FontFile" uid="uid://bvnpo88mdytkv" path="res://asset/font/letter/JosefinSans-Bold.ttf" id="1_fhmbp"]
 [ext_resource type="PackedScene" uid="uid://bqda7dxi6k03a" path="res://scene/4/crossroad.tscn" id="3_00gox"]
+[ext_resource type="PackedScene" uid="uid://biacva8rspoly" path="res://scene/5/gameboard.tscn" id="3_b3d3t"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 
@@ -37,6 +38,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Gameboard" parent="VBox" instance=ExtResource("3_b3d3t")]
 layout_mode = 2
 
 [node name="Crossroad" parent="VBox" instance=ExtResource("3_00gox")]

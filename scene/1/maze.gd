@@ -39,10 +39,7 @@ func init_rooms() -> void:
 	add_room(0, 0)
 	add_ring("triple", false)
 	add_ring("single", true)
-	add_ring("triple", true)
-#	add_ring("equal", true)
-#	add_ring("trapeze", true)
-#	add_ring("double", true)
+	add_ring("triple", true) #equal trapeze double
 	
 	while !complete:
 		var types = Global.dict.ring.weight.duplicate()
@@ -295,16 +292,6 @@ func update_doors() -> void:
 											
 											if !intersections.has(door):
 												intersections.append(door)
-#											if neighbor_door.type == "lift":
-#												print([door.ring.begin, neighbor_door.ring.begin])
-#												if door.ring.begin <= neighbor_door.ring.begin:
-#													neighbor_door.collapse()
-#												else:
-#													door.collapse()
-#													door = null
-#											else:
-#												door.collapse()
-#												door = null
 	
 	for door in intersections:
 		var flag = true
@@ -351,17 +338,9 @@ func update_size() -> void:
 		corners.rightbot.x = max(room.position.x, corners.rightbot.x)
 		corners.rightbot.y = max(room.position.x, corners.rightbot.y)
 	
-#	corners.leftop.x -= get("theme_override_constants/margin_left")
-#	corners.leftop.y -= get("theme_override_constants/margin_top")
-#	corners.rightbot.x += get("theme_override_constants/margin_right")
-#	corners.rightbot.y += get("theme_override_constants/margin_bottom")
-	
-	#sv.size = corners.rightbot - corners.leftop + Vector2.ONE * (Global.num.outpost.r * 2)# * 2
-	#sv.size = Vector2(200, 200)
-	#position = Vector2()
 	polygons.position += sv.size * 0.5# - Vector2(Global.vec.size.number) * 0.5
-	#icons.position -= Vector2.ONE * 5
 	camera.maze = self
+	camera.zoom += Vector2.ONE * 0.5 
 
 
 func init_sectors() -> void:
@@ -472,7 +451,6 @@ func init_minimap() -> void:
 
 func move_icons(direction_: String) -> void:
 	var vector = Vector2()
-	print(icons.position)
 	
 	match direction_:
 		"up":
@@ -485,5 +463,4 @@ func move_icons(direction_: String) -> void:
 			vector += Vector2(-1, 0)
 	
 	icons.position += vector * 10
-	print(icons.position)
 

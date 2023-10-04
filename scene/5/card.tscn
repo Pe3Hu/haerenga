@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dfuv0acoxowgd"]
+[gd_scene load_steps=4 format=3 uid="uid://dfuv0acoxowgd"]
 
 [ext_resource type="FontFile" uid="uid://deu2vlj4q8un0" path="res://asset/font/letter/Chunk Five Print.otf" id="1_hnxxy"]
+[ext_resource type="Script" path="res://scene/5/card.gd" id="1_yyd8l"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 
@@ -19,6 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+script = ExtResource("1_yyd8l")
 
 [node name="BG" type="Panel" parent="."]
 layout_mode = 2
@@ -32,3 +34,30 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_hnxxy")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="VBox"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_hnxxy")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tokens" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Definitely" type="VBoxContainer" parent="VBox/Tokens"]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="Alternative" type="VBoxContainer" parent="VBox/Tokens"]
+visible = false
+layout_mode = 2
+alignment = 1

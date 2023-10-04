@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://biacva8rspoly"]
+[gd_scene load_steps=6 format=3 uid="uid://biacva8rspoly"]
 
+[ext_resource type="Script" path="res://scene/5/gameboard.gd" id="1_7bwy5"]
 [ext_resource type="FontFile" uid="uid://deu2vlj4q8un0" path="res://asset/font/letter/Chunk Five Print.otf" id="1_71v6f"]
 [ext_resource type="PackedScene" uid="uid://dx5anbuure0tu" path="res://scene/5/cardstack.tscn" id="2_exo0t"]
+[ext_resource type="PackedScene" uid="uid://ciru2q4vt5hi7" path="res://scene/5/hand.tscn" id="4_w8y4j"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 
@@ -20,6 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+script = ExtResource("1_7bwy5")
 
 [node name="BG" type="Panel" parent="."]
 layout_mode = 2
@@ -34,7 +37,11 @@ theme_override_fonts/font = ExtResource("1_71v6f")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="VBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Tokens" type="VBoxContainer" parent="VBox"]
 layout_mode = 2
 alignment = 1
 
@@ -42,11 +49,13 @@ alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="Hand" parent="VBox/Cards" instance=ExtResource("2_exo0t")]
+[node name="Deck" parent="VBox/Cards" instance=ExtResource("2_exo0t")]
+visible = false
+layout_mode = 2
+
+[node name="Hand" parent="VBox/Cards" instance=ExtResource("4_w8y4j")]
 layout_mode = 2
 
 [node name="Discard" parent="VBox/Cards" instance=ExtResource("2_exo0t")]
-layout_mode = 2
-
-[node name="Deck" parent="VBox/Cards" instance=ExtResource("2_exo0t")]
+visible = false
 layout_mode = 2

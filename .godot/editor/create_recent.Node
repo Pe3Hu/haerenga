@@ -1,10 +1,10 @@
 HBoxContainer
+VBoxContainer
+GridContainer
 SubViewport
 SubViewportContainer
 Node2D
 Camera2D
 TextureRect
-VBoxContainer
-GridContainer
 Control
 Polygon2D
