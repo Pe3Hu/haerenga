@@ -84,4 +84,4 @@ func roll_length() -> void:
 	sector /= rooms.size()
 	Global.rng.randomize()
 	length = Global.rng.randi_range(Global.dict.door.length.sector[sector].min, Global.dict.door.length.sector[sector].max)
-	
+

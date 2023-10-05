@@ -22,7 +22,7 @@ func refill() -> void:
 func draw_card() -> void:
 	var card = gameboard.pull_card_from("deck")
 	cards.add_child(card)
-	
+
 
 func apply() -> void:
 	while cards.get_child_count() > 0:
@@ -35,8 +35,7 @@ func apply_card(card_: MarginContainer) -> void:
 	for token in card_.definitely.get_children():
 		var value = token.stack.get_number()
 		gameboard.change_token_value(token.title.subtype, value)
-	
-	
+
 
 func discard_card(card_: MarginContainer) -> void:
 	cards.remove_child(card_)

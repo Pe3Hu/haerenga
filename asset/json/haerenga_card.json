@@ -30,7 +30,7 @@
 		"title": "ordinary parser ",
 		"kind": "ordinary",
 		"type": "parser ",
-		"starter kit": 1,
+		"starter kit": 0,
 		"first token name": "identification",
 		"first token value": 1,
 		"first token type": "definitely"

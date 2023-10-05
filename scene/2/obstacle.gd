@@ -6,6 +6,7 @@ var room = null
 var type = null
 var subtype = null
 var requirement = 0
+var active = true
 
 
 func set_attributes(input_: Dictionary) -> void:

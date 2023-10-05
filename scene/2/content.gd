@@ -5,6 +5,7 @@ var maze = null
 var room = null
 var type = null
 var value = null
+var active = true
 
 
 func set_attributes(input_: Dictionary) -> void:

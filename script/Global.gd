@@ -27,11 +27,8 @@ func init_arr() -> void:
 	arr.sequence["A000040"] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 	arr.edge = [1, 2, 3, 4, 5, 6]
 	
-	arr.token = ["motion", "acceleration", "salvo", "extraction", "identification", "scan"]
-	
-	arr.aspect = ["power", "autonomy", "velocity"]
-	arr.synergy = ["totem", "origin", "kind"]
-	arr.purpose = ["dominance", "obedience"]
+	arr.token = ["motion", "acceleration", "salvo", "extraction", "scan"]
+	arr.resource = ["mineral", "knowledge", "intelligence", "energy"]
 
 
 func init_num() -> void:
@@ -58,6 +55,13 @@ func init_num() -> void:
 	num.sectors = {}
 	num.sectors.primary = 4
 	num.sectors.final = 3
+	
+	num.relevance = {}
+	num.relevance.resource = {}
+	num.relevance.resource.mineral = 2
+	num.relevance.resource.knowledge = 3
+	num.relevance.resource.energy = 4
+	num.relevance.resource.intelligence = 6
 
 
 func init_dict() -> void:
@@ -94,6 +98,13 @@ func init_also() -> void:
 	dict.thousand[""] = "k"
 	dict.thousand["k"] = "m"
 	dict.thousand["m"] = "b"
+	
+	dict.conversion = {}
+	dict.conversion.token = {}
+	dict.conversion.token.resource = {}
+	dict.conversion.token.resource["extraction"] = "mineral"
+	dict.conversion.token.resource["acceleration"] = "knowledge"
+	dict.conversion.token.resource["scan"] = "intelligence"
 
 
 func init_neighbor() -> void:
