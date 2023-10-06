@@ -37,11 +37,12 @@ theme_override_fonts/font = ExtResource("1_fhmbp")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Gameboard" parent="HBox" instance=ExtResource("3_b3d3t")]
 layout_mode = 2
 
-[node name="Gameboard" parent="VBox" instance=ExtResource("3_b3d3t")]
-layout_mode = 2
-
-[node name="Crossroad" parent="VBox" instance=ExtResource("3_00gox")]
+[node name="Crossroad" parent="HBox" instance=ExtResource("3_00gox")]
 layout_mode = 2

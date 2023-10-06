@@ -1,7 +1,7 @@
 extends MarginContainer
 
-@onready var gameboard = $VBox/Gameboard
-@onready var crossroad = $VBox/Crossroad
+@onready var gameboard = $HBox/Gameboard
+@onready var crossroad = $HBox/Crossroad
 
 var nexus = null
 var maze = null
@@ -25,13 +25,25 @@ func spaw_on_outpost() -> void:
 	outpost = maze.outposts.get_children().pick_random()
 	room = outpost.room
 	maze.focus_on_room(room)
-	crossroad.update_room()
+	crossroad.set_room(room)
 
 
 func set_local_ambition() -> void:
+	crossroad.fill_pathways()
+#	var destinations = get_all_destinations()
 	var solutions = get_local_solutions()
 	var rewards = get_local_rewards(solutions)
 	choice_of_loacl_options(rewards)
+
+
+#func get_all_destinations() -> Dictionary:
+#	var tracks = []
+#	var destinations = {}
+#
+#	for pathway in crossroad.pathways.get_children():
+#		pass
+#
+#	return destinations
 
 
 func get_local_solutions() -> Dictionary:
@@ -51,7 +63,7 @@ func get_local_solutions() -> Dictionary:
 			if !solution.has("motion"):
 				solution["motion"] = 0
 			
-			solution["motion"] += pathway.doorlength.get_number()
+			solution["motion"] += pathway.motionvalue.get_number()
 			
 			#print(solution)
 			
@@ -71,8 +83,9 @@ func get_local_rewards(destinations_: Dictionary) -> Dictionary:
 			if description.output != "no":
 				rewards[destination] = {}
 				rewards[destination].reward = {}
-				rewards[destination].reward.resource = description.output
-				rewards[destination].reward.value = description.sector[destination.sector].value
+				rewards[destination].reward[description.output] = description.sector[destination.sector].value
+				#rewards[destination].reward.resource = description.output
+				#rewards[destination].reward.value = description.sector[destination.sector].value
 				rewards[destination].solutions = []
 				
 				for solution in destinations_[destination]:
@@ -88,7 +101,6 @@ func get_local_rewards(destinations_: Dictionary) -> Dictionary:
 						
 							solution[description.input] += 1
 						
-						
 						rewards[destination].solutions.append(solution)
 	
 	return rewards
@@ -96,7 +108,7 @@ func get_local_rewards(destinations_: Dictionary) -> Dictionary:
 
 func choice_of_loacl_options(destinations_: Dictionary) -> void:
 	var datas = []
-	#print(destinations_)
+	
 	for destination in destinations_:
 		for solution in destinations_[destination].solutions:
 			var data = {}
@@ -119,15 +131,37 @@ func choice_of_loacl_options(destinations_: Dictionary) -> void:
 						data.weight.solution += unspent[token] * Global.num.relevance.resource[resource]
 			
 			
-			#for resource in data.reward:
-			data.weight.reward = data.reward.value * Global.num.relevance.resource[data.reward.resource]
-			data.weight.total = data.weight.solution + data.weight.reward
-			datas.append(data)
+			for resource in data.reward:
+				data.weight.reward = data.reward[resource] * Global.num.relevance.resource[resource]
+				data.weight.total = data.weight.solution + data.weight.reward
+				datas.append(data)
 	
 	
 	datas.sort_custom(func(a, b): return a.weight.total > b.weight.total)
+	var destinations = {}
+	
 	for data in datas:
-		print([data.destination.obstacle.subtype, data])
+		if !destinations.has(data.destination):
+			destinations[data.destination] = data
+	
+	
+	for destination in destinations:
+		var pathway = crossroad.get_pathway(destination)
+		var data = destinations[destination]
+		
+		for token in data.solution:
+			pathway.add_tokens("input", token, data.solution[token])
+		
+		
+		for reward in data.reward:
+			if Global.arr.token.has(reward):
+				pathway.add_tokens("output", reward, data.reward[reward])
+			if Global.arr.resource.has(reward):
+				pathway.add_resources(reward, data.reward[reward])
+	
+	for pathway in crossroad.pathways.get_children():
+		pathway.visible = pathway.output.visible
+
 
 
 func solution_availability_check(solution_: Dictionary) -> bool:

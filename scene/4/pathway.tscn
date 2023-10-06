@@ -41,15 +41,26 @@ vertical_alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="Door" type="HBoxContainer" parent="HBox"]
+[node name="Destination" type="HBoxContainer" parent="HBox"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Icon" parent="HBox/Door" instance=ExtResource("3_l5t2b")]
+[node name="Icon" parent="HBox/Destination" instance=ExtResource("3_l5t2b")]
 layout_mode = 2
 
-[node name="Length" parent="HBox/Door" instance=ExtResource("3_l5t2b")]
+[node name="Index" parent="HBox/Destination" instance=ExtResource("3_l5t2b")]
+layout_mode = 2
+
+[node name="Motion" type="HBoxContainer" parent="HBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Icon" parent="HBox/Motion" instance=ExtResource("3_l5t2b")]
+layout_mode = 2
+
+[node name="Value" parent="HBox/Motion" instance=ExtResource("3_l5t2b")]
 layout_mode = 2
 
 [node name="Room" type="HBoxContainer" parent="HBox"]
@@ -72,3 +83,33 @@ layout_mode = 2
 
 [node name="Value" parent="HBox/Room" instance=ExtResource("3_l5t2b")]
 layout_mode = 2
+
+[node name="Input" type="HBoxContainer" parent="HBox"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Icon" parent="HBox/Input" instance=ExtResource("3_l5t2b")]
+layout_mode = 2
+
+[node name="Tokens" type="HBoxContainer" parent="HBox/Input"]
+layout_mode = 2
+alignment = 1
+
+[node name="Output" type="HBoxContainer" parent="HBox"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Icon" parent="HBox/Output" instance=ExtResource("3_l5t2b")]
+layout_mode = 2
+
+[node name="Tokens" type="HBoxContainer" parent="HBox/Output"]
+layout_mode = 2
+alignment = 1
+
+[node name="Resources" type="HBoxContainer" parent="HBox/Output"]
+layout_mode = 2
+alignment = 1

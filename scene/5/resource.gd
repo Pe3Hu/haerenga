@@ -12,8 +12,8 @@ func set_attributes(input_: Dictionary) -> void:
 	proprietor = input_.proprietor
 	
 	var input = {}
-	input.type = "token"
-	input.subtype = input_.token
+	input.type = "resource"
+	input.subtype = input_.resource
 	title.set_attributes(input)
 	
 	input = {}

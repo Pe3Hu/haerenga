@@ -102,6 +102,8 @@ func add_outpost() -> void:
 	outpost = Global.scene.outpost.instantiate()
 	maze.outposts.add_child(outpost)
 	outpost.set_attributes(input)
+	add_obstacle("empty")
+	add_content("empty")
 
 
 func add_obstacle(obstacle_: String) -> void:
@@ -124,3 +126,11 @@ func add_content(content_: String) -> void:
 	content = Global.scene.content.instantiate()
 	maze.contents.add_child(content)
 	content.set_attributes(input)
+
+
+func get_door_based_on_neighbor(neighbor_: Polygon2D) -> Variant:
+	for door in doors:
+		if doors[door] == neighbor_:
+			return door
+	
+	return null

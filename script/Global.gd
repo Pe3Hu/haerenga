@@ -278,10 +278,11 @@ func init_scene() -> void:
 	
 	scene.crossroad = load("res://scene/4/crossroad.tscn")
 	scene.pathway = load("res://scene/4/pathway.tscn")
+	scene.tree = load("res://scene/4/tree.tscn")
 	
 	scene.card = load("res://scene/5/card.tscn")
 	scene.token = load("res://scene/5/token.tscn")
-	
+	scene.resource = load("res://scene/5/resource.tscn")
 	
 	pass
 

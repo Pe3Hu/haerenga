@@ -98,7 +98,6 @@ func get_token(subtype_: String) -> Variant:
 
 
 func get_token_stack_value(subtype_: String) -> Variant:
-	var a = tokens.get_children()
 	var token = get_token(subtype_)
 	return token.stack.get_number()
 

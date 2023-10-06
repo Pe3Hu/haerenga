@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bqda7dxi6k03a"]
+[gd_scene load_steps=5 format=3 uid="uid://bqda7dxi6k03a"]
 
 [ext_resource type="Script" path="res://scene/4/crossroad.gd" id="1_3pcyn"]
 [ext_resource type="FontFile" uid="uid://bvnpo88mdytkv" path="res://asset/font/letter/JosefinSans-Bold.ttf" id="1_5mdhg"]
+[ext_resource type="PackedScene" uid="uid://chr2t5lcie6fw" path="res://scene/4/tree.tscn" id="3_jeqfc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 bg_color = Color(0.901961, 0.211765, 1, 1)
@@ -35,6 +36,10 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_5mdhg")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Tree" parent="." instance=ExtResource("3_jeqfc")]
+visible = false
+layout_mode = 2
 
 [node name="Pathways" type="VBoxContainer" parent="."]
 layout_mode = 2
