@@ -7,6 +7,7 @@ var nexus = null
 var maze = null
 var outpost = null
 var room = null
+var intelligence = []
 
 
 func set_attributes(input_: Dictionary) -> void:
@@ -26,24 +27,28 @@ func spaw_on_outpost() -> void:
 	room = outpost.room
 	maze.focus_on_room(room)
 	crossroad.set_room(room)
+	get_outpost_intelligence()
+
+
+func get_outpost_intelligence() -> void:
+	for door in outpost.room.doors:
+		var room_ = outpost.room.doors[door]
+		get_intelligence(room_, true)
+
+
+func get_intelligence(room_: Polygon2D, free_: bool) -> void:
+	intelligence.append(room_)
+	
+	if !free_:
+		var resource = gameboard.get_resource("intelligence")
+		resource.stack.change_number(-1)
 
 
 func set_local_ambition() -> void:
 	crossroad.fill_pathways()
-#	var destinations = get_all_destinations()
 	var solutions = get_local_solutions()
 	var rewards = get_local_rewards(solutions)
-	choice_of_loacl_options(rewards)
-
-
-#func get_all_destinations() -> Dictionary:
-#	var tracks = []
-#	var destinations = {}
-#
-#	for pathway in crossroad.pathways.get_children():
-#		pass
-#
-#	return destinations
+	prepare_local_options(rewards)
 
 
 func get_local_solutions() -> Dictionary:
@@ -54,21 +59,20 @@ func get_local_solutions() -> Dictionary:
 		destinations[destination] = []
 		var solutions = []
 		
-		if destination.obstacle.subtype != "empty" and destination.obstacle.active:
-			solutions = destination.obstacle.get_solutions()
-		else:
-			solutions.append({})
-		
-		for solution in solutions:
-			if !solution.has("motion"):
-				solution["motion"] = 0
+		if intelligence.has(destination):
+			if destination.obstacle.subtype != "empty" and destination.obstacle.active:
+				solutions = destination.obstacle.get_solutions()
+			else:
+				solutions.append({})
 			
-			solution["motion"] += pathway.motionvalue.get_number()
-			
-			#print(solution)
-			
-			if solution_availability_check(solution):
-				destinations[destination].append(solution)
+			for solution in solutions:
+				if !solution.has("motion"):
+					solution["motion"] = 0
+				
+				solution["motion"] += pathway.motionvalue.get_number()
+				
+				if solution_availability_check(solution):
+					destinations[destination].append(solution)
 	
 	return destinations
 
@@ -106,7 +110,7 @@ func get_local_rewards(destinations_: Dictionary) -> Dictionary:
 	return rewards
 
 
-func choice_of_loacl_options(destinations_: Dictionary) -> void:
+func prepare_local_options(destinations_: Dictionary) -> void:
 	var datas = []
 	
 	for destination in destinations_:
@@ -152,16 +156,16 @@ func choice_of_loacl_options(destinations_: Dictionary) -> void:
 		for token in data.solution:
 			pathway.add_tokens("input", token, data.solution[token])
 		
-		
 		for reward in data.reward:
 			if Global.arr.token.has(reward):
 				pathway.add_tokens("output", reward, data.reward[reward])
 			if Global.arr.resource.has(reward):
 				pathway.add_resources(reward, data.reward[reward])
+		
+		pathway.sort_puts() 
 	
 	for pathway in crossroad.pathways.get_children():
 		pathway.visible = pathway.output.visible
-
 
 
 func solution_availability_check(solution_: Dictionary) -> bool:

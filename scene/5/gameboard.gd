@@ -5,6 +5,8 @@ extends MarginContainer
 @onready var discard = $VBox/Cards/Discard
 @onready var hand = $VBox/Cards/Hand
 @onready var tokens = $VBox/Tokens
+@onready var resources = $VBox/Resources
+
 
 var core = null
 
@@ -13,11 +15,11 @@ func set_attributes(input_: Dictionary) -> void:
 	core = input_.core
 	input_.gameboard = self
 	init_tokens()
+	init_resources()
 	init_starter_kit_cards()
 	deck.set_attributes(input_)
 	discard.set_attributes(input_)
 	hand.set_attributes(input_)
-	
 	
 	hand.refill()
 	hand.apply()
@@ -34,6 +36,19 @@ func init_tokens() -> void:
 		tokens.add_child(token)
 		token.set_attributes(input)
 		token.visible = false
+
+
+func init_resources() -> void:
+	for subtype in Global.arr.resource:
+		var input = {}
+		input.proprietor = self
+		input.resource = subtype
+		input.stack = 0
+	
+		var resource = Global.scene.resource.instantiate()
+		resources.add_child(resource)
+		resource.set_attributes(input)
+		resource.visible = false
 
 
 func init_starter_kit_cards() -> void:
@@ -101,3 +116,16 @@ func get_token_stack_value(subtype_: String) -> Variant:
 	var token = get_token(subtype_)
 	return token.stack.get_number()
 
+
+func get_resource(subtype_: String) -> Variant:
+	for resource in resources.get_children():
+		if resource.title.subtype == subtype_:
+			return resource
+	
+	print("error: no resource", subtype_)
+	return null
+
+
+func get_resource_stack_value(subtype_: String) -> Variant:
+	var resource = get_resource(subtype_)
+	return resource.stack.get_number()

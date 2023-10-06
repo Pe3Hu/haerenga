@@ -136,3 +136,22 @@ func get_resource(resource_: String) -> Variant:
 			return resource
 	
 	return null
+
+
+func sort_puts() -> void:
+	var keys = ["inputtokens", "outputtokens", "outputresources"]
+	
+	for key in keys:
+		var parent = get(key)
+		var childs = []
+		
+		while parent.get_child_count() > 0:
+			var child = parent.get_child(0)
+			parent.remove_child(child)
+			childs.append(child)
+		
+		childs.sort_custom(func(a, b): return Global.arr.output.find(a.title.subtype) < Global.arr.output.find(b.title.subtype))
+
+		while !childs.is_empty():
+			var child = childs.pop_front()
+			parent.add_child(child)

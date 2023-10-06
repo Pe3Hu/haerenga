@@ -45,6 +45,10 @@ alignment = 1
 layout_mode = 2
 alignment = 1
 
+[node name="Resources" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+alignment = 1
+
 [node name="Cards" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
 alignment = 1

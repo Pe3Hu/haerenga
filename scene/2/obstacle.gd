@@ -52,20 +52,19 @@ func get_solutions() -> Array:
 		var description = Global.dict.room.obstacle[subtype]
 		var kinds = []
 		kinds = make_solution_based_on_kinds(kinds, "primary")
-		solutions.append(kinds)
+		solutions.append(kinds.duplicate())
 		
 		while kinds.has("primary"):
 			kinds = replace_primary_with_alternative(kinds)
-			solutions.append(kinds)
-		
+			solutions.append(kinds.duplicate())
 		
 		kinds = ["shortcut"]
 		kinds = make_solution_based_on_kinds(kinds, "primary")
-		solutions.append(kinds)
+		solutions.append(kinds.duplicate())
 		
 		while kinds.has("primary"):
 			kinds = replace_primary_with_alternative(kinds)
-			solutions.append(kinds)
+			solutions.append(kinds.duplicate())
 		
 		var result = []
 		
@@ -82,7 +81,6 @@ func get_solutions() -> Array:
 			
 			result.append(tokens)
 		
-		
 		return result
 	
 	return []
@@ -90,6 +88,7 @@ func get_solutions() -> Array:
 
 func replace_primary_with_alternative(kinds_: Array) -> Array:
 	kinds_.erase("primary")
+	kinds_.append("alternative")
 	return make_solution_based_on_kinds(kinds_, "alternative")
 
 

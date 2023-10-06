@@ -46,22 +46,6 @@ func fill_pathways() -> void:
 		#pathway.add_tokens("input", "motion", input.length)
 
 
-func reset_pathways_old() -> void:
-	for pathway in pathways.get_children():
-		pathways.remove_child(pathway)
-		pathway.queue_free()
-	
-	for door in room.doors:
-		var input = {}
-		input.door = door
-		input.departure = room
-		input.destination = door.get_another_room(room)
-		
-		var pathway = Global.scene.pathway.instantiate()
-		pathways.add_child(pathway)
-		pathway.set_attributes(input)
-
-
 func get_pathway(destination_: Polygon2D) -> Variant:
 	for pathway in pathways.get_children():
 		if pathway.rooms.destination == destination_:

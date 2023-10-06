@@ -29,7 +29,9 @@ func init_arr() -> void:
 	
 	arr.token = ["motion", "acceleration", "salvo", "extraction", "scan"]
 	arr.resource = ["mineral", "knowledge", "intelligence", "energy"]
-
+	arr.output = []
+	arr.output.append_array(arr.token)
+	arr.output.append_array(arr.resource)
 
 func init_num() -> void:
 	num.index = {}
@@ -312,6 +314,7 @@ func init_color():
 	var max_h = 360.0
 	
 	color.obstacle = {}
+	color.obstacle["unknown"] =  Color.from_hsv(6 / max_h, 0.61, 0.83)
 	color.obstacle["empty"] =  Color.from_hsv(47 / max_h, 1.0, 0.96)
 	color.obstacle["conundrum"] = Color.from_hsv(277 / max_h, 0.58, 0.91)
 	color.obstacle["raid"] = Color.from_hsv(5 / max_h, 0.92, 0.98)
@@ -321,11 +324,10 @@ func init_color():
 	color.obstacle["anomaly"] = Color.from_hsv(224 / max_h, 0.71, 1.0)
 	
 	color.content = {}
-	color.content["unknown"] =  Color.from_hsv(47 / max_h, 1.0, 0.96)
+	color.content["unknown"] =  Color.from_hsv(6 / max_h, 0.61, 0.83)
 	color.content["empty"] =  Color.from_hsv(47 / max_h, 1.0, 0.96)
 	color.content["mine"] =  Color.from_hsv(29 / max_h, 0.44, 0.94)
 	color.content["terminal"] = Color.from_hsv(218 / max_h, 0.68, 0.48)
-	
 	color.content["ruin"] = Color.from_hsv(20 / max_h, 0.8, 1.0)
 	color.content["watchtower"] = Color.from_hsv(168 / max_h, 0.74, 0.83)
 	color.content["powerhouse"] = Color.from_hsv(210 / max_h, 0.14, 0.97)
