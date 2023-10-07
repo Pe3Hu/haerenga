@@ -6,6 +6,7 @@ var room = null
 var type = null
 var subtype = null
 var requirement = 0
+var penalty = {}
 var active = true
 
 
@@ -15,7 +16,7 @@ func set_attributes(input_: Dictionary) -> void:
 	#type = input_.type
 	subtype = input_.subtype
 	position = room.position
-	color = Global.color.obstacle[subtype]
+	set_default_color()
 	
 	init_vertexs()
 	roll_requirement()
@@ -34,7 +35,9 @@ func init_vertexs() -> void:
 
 
 func roll_requirement() -> void:
-	var base = Global.dict.room.obstacle[subtype].sector[room.sector].requirement
+	var description = Global.dict.room.obstacle[subtype]
+	var base = description.sector[room.sector].requirement
+	penalty[description.token.penalty] = description.sector[room.sector].penalty
 	
 	if base > 0:
 		var limit = floor(base * 0.25)
@@ -105,3 +108,16 @@ func make_solution_based_on_kinds(kinds_: Array, priority_: String) -> Array:
 		value += Global.dict.room.obstacle[subtype].impact[priority_]
 	
 	return solution
+
+
+func update_color_based_on_core_intelligence(core_) -> void:
+	if core_ != null:
+		if core_.intelligence.room.has(room):
+			set_default_color()
+			return
+	
+	color = Global.color.obstacle["unknown"]
+
+
+func set_default_color() -> void:
+	color = Global.color.obstacle[subtype]

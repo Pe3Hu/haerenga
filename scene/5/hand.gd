@@ -15,12 +15,12 @@ func set_attributes(input_: Dictionary) -> void:
 
 
 func refill() -> void:
-	while cards.get_child_count() < capacity.current:
+	while cards.get_child_count() < capacity.current and gameboard.available.cards.get_child_count() > 0:
 		draw_card()
 
 
 func draw_card() -> void:
-	var card = gameboard.pull_card_from("deck")
+	var card = gameboard.pull_card()
 	cards.add_child(card)
 
 
@@ -39,4 +39,9 @@ func apply_card(card_: MarginContainer) -> void:
 
 func discard_card(card_: MarginContainer) -> void:
 	cards.remove_child(card_)
-	gameboard.discard.cards.add_child(card_)
+	card_.charge.current -= 1
+	
+	if card_.charge.current > 0:
+		gameboard.available.cards.add_child(card_)
+	else:
+		gameboard.discharged.cards.add_child(card_)

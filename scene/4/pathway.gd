@@ -10,24 +10,39 @@ extends MarginContainer
 @onready var roomrequirement = $HBox/Room/Requirement
 @onready var roomcontent = $HBox/Room/Content
 @onready var roomvalue = $HBox/Room/Value
-@onready var input = $HBox/Input
+@onready var inputbox = $HBox/Input
 @onready var inputicon = $HBox/Input/Icon
 @onready var inputtokens = $HBox/Input/Tokens
-@onready var output = $HBox/Output
+@onready var outputbox = $HBox/Output
 @onready var outputicon = $HBox/Output/Icon
 @onready var outputtokens = $HBox/Output/Tokens
 @onready var outputresources = $HBox/Output/Resources
+@onready var continuation = $HBox/Continuation
 
+var core = null
+var crossroad = null
 var doors = null
 var rooms = {}
 
 
 func set_attributes(input_: Dictionary) -> void:
-	#door = input_.door
+	core = input_.core
+	crossroad = input_.crossroad
 	rooms.departure = input_.departure
 	rooms.destination = input_.destination
 	
 	set_icons(input_.length)
+	
+	if crossroad.pathway != null:
+		for token in crossroad.pathway.inputtokens.get_children():
+			var subtype = token.title.subtype
+			var value = token.stack.get_number()
+			add_tokens("input", subtype, value)
+		
+		for token in crossroad.pathway.outputtokens.get_children():
+			var subtype = token.title.subtype
+			var value = token.stack.get_number()
+			add_tokens("output", subtype, value)
 
 
 func set_icons(length_: int) -> void:
@@ -82,18 +97,18 @@ func set_icons(length_: int) -> void:
 	outputicon.set_attributes(input)
 
 
-func add_tokens(put_: String, token_: String, value_: int) -> void:
+func add_tokens(put_: String, subtype_: String, value_: int) -> void:
 	if value_ != 0:
 		var tokens = get(put_+"tokens")
-		var hbox = get(put_)
+		var hbox = get(put_+"box")
 		hbox.visible = true
-		var token = get_token(put_, token_)
+		var token = get_token(put_, subtype_)
 		
 		if token == null:
 			var input = {}
 			input.proprietor = self
-			input.token = token_
-			input.stack = value_
+			input.subtype = subtype_
+			input.value = value_
 			
 			token = Global.scene.token.instantiate()
 			tokens.add_child(token)
@@ -104,7 +119,7 @@ func add_tokens(put_: String, token_: String, value_: int) -> void:
 
 func add_resources(resource_: String, value_: int) -> void:
 	if value_ != 0:
-		output.visible = true
+		outputbox.visible = true
 		var resource = get_resource(resource_)
 		
 		if resource == null:
@@ -120,12 +135,21 @@ func add_resources(resource_: String, value_: int) -> void:
 			resource.change_stack(value_)
 
 
-func get_token(put_: String, token_: String) -> Variant:
+func get_token(put_: String, subtype_: String) -> Variant:
 	var tokens = get(put_+"tokens")
 	
 	for token in tokens.get_children():
-		if token.title.subtype == token_:
+		if token.title.subtype == subtype_:
 			return token
+	
+	return null
+
+
+func get_token_stack_value(put_: String, subtype_: String) -> Variant:
+	var token = get_token(put_, subtype_)
+	
+	if token != null:
+		return token.stack.get_number()
 	
 	return null
 
@@ -155,3 +179,14 @@ func sort_puts() -> void:
 		while !childs.is_empty():
 			var child = childs.pop_front()
 			parent.add_child(child)
+
+
+func update_continuation() -> void:
+	if rooms.destination != core.room:
+		continuation.visible = true
+		var input = {}
+		input.core = core
+		input.pathway = self
+		continuation.set_attributes(input)
+		continuation.set_room(rooms.destination)
+		continuation.set_local_ambition()

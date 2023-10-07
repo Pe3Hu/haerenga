@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://huqm2ii7gpiq"]
+[gd_scene load_steps=6 format=3 uid="uid://huqm2ii7gpiq"]
 
 [ext_resource type="Script" path="res://scene/4/pathway.gd" id="1_s811t"]
 [ext_resource type="FontFile" uid="uid://bvnpo88mdytkv" path="res://asset/font/letter/JosefinSans-Bold.ttf" id="1_vn74r"]
 [ext_resource type="PackedScene" uid="uid://ciw38iqel0v5a" path="res://scene/0/icon.tscn" id="3_l5t2b"]
+[ext_resource type="PackedScene" uid="uid://bqda7dxi6k03a" path="res://scene/4/crossroad.tscn" id="4_cumnb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 bg_color = Color(0.756863, 0.756863, 0.756863, 1)
@@ -113,3 +114,7 @@ alignment = 1
 [node name="Resources" type="HBoxContainer" parent="HBox/Output"]
 layout_mode = 2
 alignment = 1
+
+[node name="Continuation" parent="HBox" instance=ExtResource("4_cumnb")]
+visible = false
+layout_mode = 2

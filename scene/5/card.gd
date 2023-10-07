@@ -8,6 +8,8 @@ extends MarginContainer
 
 
 var gameboard = null
+var charge = {}
+var toughness = {}
 
 
 func set_attributes(input_: Dictionary) -> void:
@@ -19,16 +21,20 @@ func set_attributes(input_: Dictionary) -> void:
 
 func fill_tokens() -> void:
 	var description = Global.dict.card[title.text]
+	charge.limit = description.charge
+	charge.current = charge.limit
+	toughness.limit = description.toughness
+	charge.current = charge.limit
 	
 	for key in description.token:
 		var input = {}
 		input.proprietor = self
-		input.token = description.token[key].name
-		input.stack = description.token[key].value
-		input.type = description.token[key].type
+		input.subtype = description.token[key].subtype
+		input.value = description.token[key].value
+		input.definiteness = description.token[key].definiteness
 	
 		var token = Global.scene.token.instantiate()
-		get(description.token[key].type).add_child(token)
+		get(description.token[key].definiteness).add_child(token)
 		token.set_attributes(input)
 	
 	

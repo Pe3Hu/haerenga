@@ -10,3 +10,6 @@ func _ready() -> void:
 	input.sketch = self
 	maze.set_attributes(input)
 	nexus.set_attributes(input)
+	
+	var core = nexus.cores.get_child(0)
+	maze.update_rooms_color_based_on_core_intelligence(core)

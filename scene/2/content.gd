@@ -13,7 +13,7 @@ func set_attributes(input_: Dictionary) -> void:
 	room = input_.room
 	type = input_.type
 	position = room.position
-	color = Global.color.content[type]
+	set_default_color()
 	
 	init_vertexs()
 	set_value()
@@ -33,3 +33,17 @@ func init_vertexs() -> void:
 
 func set_value() -> void:
 	value = Global.dict.room.content[type].sector[room.sector].value
+
+
+func update_color_based_on_core_intelligence(core_) -> void:
+	if core_ != null:
+		if core_.intelligence.room.has(room):
+			set_default_color()
+			return
+	
+	color = Global.color.content["unknown"]
+
+
+func set_default_color() -> void:
+	color = Global.color.content[type]
+

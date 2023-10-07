@@ -447,8 +447,6 @@ func init_minimap() -> void:
 	minimap.set_attributes(input)
 
 
-
-
 func move_icons(direction_: String) -> void:
 	var vector = Vector2()
 	
@@ -464,3 +462,12 @@ func move_icons(direction_: String) -> void:
 	
 	icons.position += vector * 10
 
+
+func update_rooms_color_based_on_core_intelligence(core_) -> void:
+	for room in rooms.get_children():
+		if core_ != null:
+			room.obstacle.update_color_based_on_core_intelligence(core_)
+			room.content.update_color_based_on_core_intelligence(core_)
+		else:
+			room.obstacle.set_default_color()
+			room.content.set_default_color()

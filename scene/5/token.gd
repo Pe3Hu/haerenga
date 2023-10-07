@@ -13,12 +13,12 @@ func set_attributes(input_: Dictionary) -> void:
 	
 	var input = {}
 	input.type = "token"
-	input.subtype = input_.token
+	input.subtype = input_.subtype
 	title.set_attributes(input)
 	
 	input = {}
 	input.type = "number"
-	input.subtype = input_.stack
+	input.subtype = input_.value
 	stack.set_attributes(input)
 
 

@@ -41,11 +41,11 @@ vertical_alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="Tokens" type="VBoxContainer" parent="VBox"]
+[node name="Resources" type="VBoxContainer" parent="VBox"]
 layout_mode = 2
 alignment = 1
 
-[node name="Resources" type="VBoxContainer" parent="VBox"]
+[node name="Tokens" type="VBoxContainer" parent="VBox"]
 layout_mode = 2
 alignment = 1
 
@@ -53,13 +53,17 @@ alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="Deck" parent="VBox/Cards" instance=ExtResource("2_exo0t")]
+[node name="Available" parent="VBox/Cards" instance=ExtResource("2_exo0t")]
 visible = false
 layout_mode = 2
 
 [node name="Hand" parent="VBox/Cards" instance=ExtResource("4_w8y4j")]
 layout_mode = 2
 
-[node name="Discard" parent="VBox/Cards" instance=ExtResource("2_exo0t")]
+[node name="Discharged" parent="VBox/Cards" instance=ExtResource("2_exo0t")]
+visible = false
+layout_mode = 2
+
+[node name="Broken" parent="VBox/Cards" instance=ExtResource("2_exo0t")]
 visible = false
 layout_mode = 2

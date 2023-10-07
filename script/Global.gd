@@ -27,8 +27,8 @@ func init_arr() -> void:
 	arr.sequence["A000040"] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 	arr.edge = [1, 2, 3, 4, 5, 6]
 	
-	arr.token = ["motion", "acceleration", "salvo", "extraction", "scan"]
-	arr.resource = ["mineral", "knowledge", "intelligence", "energy"]
+	arr.token = ["motion", "acceleration", "salvo", "extraction", "scan", "recharge"]
+	arr.resource = ["mineral", "knowledge", "intelligence", "fuel"]
 	arr.output = []
 	arr.output.append_array(arr.token)
 	arr.output.append_array(arr.resource)
@@ -62,8 +62,11 @@ func init_num() -> void:
 	num.relevance.resource = {}
 	num.relevance.resource.mineral = 2
 	num.relevance.resource.knowledge = 3
-	num.relevance.resource.energy = 4
 	num.relevance.resource.intelligence = 6
+	num.relevance.resource.fuel = 1
+	
+	num.relevance.token = {}
+	num.relevance.token.recharge = 4
 
 
 func init_dict() -> void:
@@ -246,9 +249,6 @@ func init_card() -> void:
 			if key.contains("token"):
 				var words = key.split(" ")
 				
-				if !data.token.has(words[0]):
-					data.token[words[0]] = {}
-			
 				if !data.token.has(words[0]):
 					data.token[words[0]] = {}
 				

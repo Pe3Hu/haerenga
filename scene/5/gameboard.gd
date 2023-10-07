@@ -1,8 +1,9 @@
 extends MarginContainer
 
 
-@onready var deck = $VBox/Cards/Deck
-@onready var discard = $VBox/Cards/Discard
+@onready var available = $VBox/Cards/Available
+@onready var discharged = $VBox/Cards/Discharged
+@onready var broken = $VBox/Cards/Broken
 @onready var hand = $VBox/Cards/Hand
 @onready var tokens = $VBox/Tokens
 @onready var resources = $VBox/Resources
@@ -17,8 +18,9 @@ func set_attributes(input_: Dictionary) -> void:
 	init_tokens()
 	init_resources()
 	init_starter_kit_cards()
-	deck.set_attributes(input_)
-	discard.set_attributes(input_)
+	available.set_attributes(input_)
+	discharged.set_attributes(input_)
+	broken.set_attributes(input_)
 	hand.set_attributes(input_)
 	
 	hand.refill()
@@ -29,8 +31,8 @@ func init_tokens() -> void:
 	for subtype in Global.arr.token:
 		var input = {}
 		input.proprietor = self
-		input.token = subtype
-		input.stack = 0
+		input.subtype = subtype
+		input.value = 0
 	
 		var token = Global.scene.token.instantiate()
 		tokens.add_child(token)
@@ -48,7 +50,9 @@ func init_resources() -> void:
 		var resource = Global.scene.resource.instantiate()
 		resources.add_child(resource)
 		resource.set_attributes(input)
-		resource.visible = false
+		#resource.visible = false
+	
+	change_resource_stack_value("fuel", 30)
 
 
 func init_starter_kit_cards() -> void:
@@ -59,35 +63,34 @@ func init_starter_kit_cards() -> void:
 			input.title = title
 		
 			var card = Global.scene.card.instantiate()
-			discard.cards.add_child(card)
+			available.cards.add_child(card)
 			card.set_attributes(input)
+	
+	reshuffle_available()
 
 
-func refill_deck() -> void:
+func reshuffle_available() -> void:
 	var cards = []
 	
-	while discard.cards.get_child_count() > 0:
-		var card = pull_card_from("discard")
+	while available.cards.get_child_count() > 0:
+		var card = pull_card()
 		cards.append(card)
 	
 	cards.shuffle()
 	
 	for card in cards:
-		deck.cards.add_child(card)
+		available.cards.add_child(card)
 
 
-func pull_card_from(area_: String) -> Variant:
-	var cards = get(area_).cards
-	
-	if cards.get_child_count() == 0 and area_ == "deck":
-		refill_deck()
+func pull_card() -> Variant:
+	var cards = available.cards
 	
 	if cards.get_child_count() > 0:
-		var card = cards.get_child(0)
+		var card = cards.get_children().pick_random()
 		cards.remove_child(card)
 		return card
 	
-	print("error: empty area", area_)
+	print("error: empty available")
 	return null
 
 
@@ -129,3 +132,8 @@ func get_resource(subtype_: String) -> Variant:
 func get_resource_stack_value(subtype_: String) -> Variant:
 	var resource = get_resource(subtype_)
 	return resource.stack.get_number()
+
+
+func change_resource_stack_value(subtype_: String, value_: int) -> void:
+	var resource = get_resource(subtype_)
+	resource.stack.change_number(value_)

@@ -7,19 +7,22 @@ var nexus = null
 var maze = null
 var outpost = null
 var room = null
-var intelligence = []
+var intelligence = {}
 
 
 func set_attributes(input_: Dictionary) -> void:
 	nexus = input_.nexus
 	maze = nexus.sketch.maze
 	
+	intelligence.room = []
 	var input = {}
 	input.core = self
+	input.pathway = null
 	crossroad.set_attributes(input)
 	spaw_on_outpost()
 	gameboard.set_attributes(input)
-	set_local_ambition()
+	crossroad.set_local_ambition()
+	crossroad.update_continuations()
 
 
 func spaw_on_outpost() -> void:
@@ -31,141 +34,20 @@ func spaw_on_outpost() -> void:
 
 
 func get_outpost_intelligence() -> void:
+	get_intelligence(outpost.room, true)
+		
 	for door in outpost.room.doors:
 		var room_ = outpost.room.doors[door]
 		get_intelligence(room_, true)
 
 
 func get_intelligence(room_: Polygon2D, free_: bool) -> void:
-	intelligence.append(room_)
+	intelligence.room.append(room_)
 	
 	if !free_:
 		var resource = gameboard.get_resource("intelligence")
 		resource.stack.change_number(-1)
 
-
-func set_local_ambition() -> void:
-	crossroad.fill_pathways()
-	var solutions = get_local_solutions()
-	var rewards = get_local_rewards(solutions)
-	prepare_local_options(rewards)
-
-
-func get_local_solutions() -> Dictionary:
-	var destinations = {}
-	
-	for pathway in crossroad.pathways.get_children():
-		var destination = pathway.rooms.destination
-		destinations[destination] = []
-		var solutions = []
-		
-		if intelligence.has(destination):
-			if destination.obstacle.subtype != "empty" and destination.obstacle.active:
-				solutions = destination.obstacle.get_solutions()
-			else:
-				solutions.append({})
-			
-			for solution in solutions:
-				if !solution.has("motion"):
-					solution["motion"] = 0
-				
-				solution["motion"] += pathway.motionvalue.get_number()
-				
-				if solution_availability_check(solution):
-					destinations[destination].append(solution)
-	
-	return destinations
-
-
-func get_local_rewards(destinations_: Dictionary) -> Dictionary:
-	var rewards = {}
-	
-	for destination in destinations_:
-		if destination.content.active:
-			var description = Global.dict.room.content[destination.content.type]
-			
-			if description.output != "no":
-				rewards[destination] = {}
-				rewards[destination].reward = {}
-				rewards[destination].reward[description.output] = description.sector[destination.sector].value
-				#rewards[destination].reward.resource = description.output
-				#rewards[destination].reward.value = description.sector[destination.sector].value
-				rewards[destination].solutions = []
-				
-				for solution in destinations_[destination]:
-					var fee = 1
-				
-					if solution.has(description.input):
-						fee += solution[description.input]
-					
-					if description.input == "free" or token_availability_check(description.input, fee):
-						if description.input != "free":
-							if !solution.has(description.input):
-								solution[description.input] = 0
-						
-							solution[description.input] += 1
-						
-						rewards[destination].solutions.append(solution)
-	
-	return rewards
-
-
-func prepare_local_options(destinations_: Dictionary) -> void:
-	var datas = []
-	
-	for destination in destinations_:
-		for solution in destinations_[destination].solutions:
-			var data = {}
-			data.destination = destination
-			data.solution = solution
-			data.reward = destinations_[destination].reward
-			data.weight = {}
-			data.weight.solution = 0
-			var unspent = {}
-			
-			for token in Global.arr.token:
-				if Global.dict.conversion.token.resource.has(token):
-					var resource = Global.dict.conversion.token.resource[token]
-					unspent[token] = gameboard.get_token_stack_value(token)
-					
-					if solution.has(token):
-						unspent[token] -= solution[token]
-					
-					if Global.num.relevance.resource.has(resource):
-						data.weight.solution += unspent[token] * Global.num.relevance.resource[resource]
-			
-			
-			for resource in data.reward:
-				data.weight.reward = data.reward[resource] * Global.num.relevance.resource[resource]
-				data.weight.total = data.weight.solution + data.weight.reward
-				datas.append(data)
-	
-	
-	datas.sort_custom(func(a, b): return a.weight.total > b.weight.total)
-	var destinations = {}
-	
-	for data in datas:
-		if !destinations.has(data.destination):
-			destinations[data.destination] = data
-	
-	
-	for destination in destinations:
-		var pathway = crossroad.get_pathway(destination)
-		var data = destinations[destination]
-		
-		for token in data.solution:
-			pathway.add_tokens("input", token, data.solution[token])
-		
-		for reward in data.reward:
-			if Global.arr.token.has(reward):
-				pathway.add_tokens("output", reward, data.reward[reward])
-			if Global.arr.resource.has(reward):
-				pathway.add_resources(reward, data.reward[reward])
-		
-		pathway.sort_puts() 
-	
-	for pathway in crossroad.pathways.get_children():
-		pathway.visible = pathway.output.visible
 
 
 func solution_availability_check(solution_: Dictionary) -> bool:

@@ -14,9 +14,22 @@ func set_attributes(input_: Dictionary) -> void:
 
 
 func set_shortest_routes_based_on_dijkstra() -> void:
-	length = crossroad.core.gameboard.get_token_stack_value("motion")
+	var motion = crossroad.core.gameboard.get_token_stack_value("motion")
+	var fuel = crossroad.core.gameboard.get_resource_stack_value("fuel")
+	length = min(motion, fuel)
+	
+	if crossroad.pathway != null:
+		motion = crossroad.pathway.get_token("input", "motion")
+		
+		if motion != null:
+			length -= crossroad.pathway.get_token_stack_value("input", "motion")
+		
+		motion = crossroad.pathway.get_token("output", "motion")
+		
+		if motion != null:
+			length += crossroad.pathway.get_token_stack_value("output", "motion")
+	
 	add_destination(crossroad.room)
-	var end = false
 	compare_two_rooms(crossroad.room, crossroad.room)
 	
 	while !departures.is_empty():
@@ -25,8 +38,10 @@ func set_shortest_routes_based_on_dijkstra() -> void:
 		
 		for door in departure.doors:
 			var neighbor = departure.doors[door]
-			add_destination(neighbor)
-			compare_two_rooms(departure, neighbor)
+			
+			if crossroad.core.intelligence.room.has(neighbor):
+					add_destination(neighbor)
+					compare_two_rooms(departure, neighbor)
 	
 	for destination in destinations.keys():
 		if destinations[destination].parent == null:
