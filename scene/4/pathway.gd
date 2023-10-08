@@ -33,16 +33,21 @@ func set_attributes(input_: Dictionary) -> void:
 	
 	set_icons(input_.length)
 	
-	if crossroad.pathway != null:
-		for token in crossroad.pathway.inputtokens.get_children():
+	if crossroad.origin != null:
+		for token in crossroad.origin.inputtokens.get_children():
 			var subtype = token.title.subtype
 			var value = token.stack.get_number()
 			add_tokens("input", subtype, value)
 		
-		for token in crossroad.pathway.outputtokens.get_children():
+		for token in crossroad.origin.outputtokens.get_children():
 			var subtype = token.title.subtype
 			var value = token.stack.get_number()
 			add_tokens("output", subtype, value)
+		
+		for resource in crossroad.origin.outputresources.get_children():
+			var subtype = resource.title.subtype
+			var value = resource.stack.get_number()
+			add_resources(subtype, value)
 
 
 func set_icons(length_: int) -> void:
@@ -154,10 +159,19 @@ func get_token_stack_value(put_: String, subtype_: String) -> Variant:
 	return null
 
 
-func get_resource(resource_: String) -> Variant:
+func get_resource(subtype_: String) -> Variant:
 	for resource in outputresources.get_children():
-		if resource.title.subtype == resource_:
+		if resource.title.subtype == subtype_:
 			return resource
+	
+	return null
+
+
+func get_resource_stack_value(subtype_: String) -> Variant:
+	var resource = get_resource(subtype_)
+	
+	if resource != null:
+		return resource.stack.get_number()
 	
 	return null
 
@@ -186,7 +200,7 @@ func update_continuation() -> void:
 		continuation.visible = true
 		var input = {}
 		input.core = core
-		input.pathway = self
+		input.origin = self
 		continuation.set_attributes(input)
 		continuation.set_room(rooms.destination)
 		continuation.set_local_ambition()

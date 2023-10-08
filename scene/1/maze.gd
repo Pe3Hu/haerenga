@@ -428,8 +428,8 @@ func init_room_obstacles_and_contents() -> void:
 
 
 func focus_on_room(room_: Polygon2D) -> void:
-	focus = room_
-	onfocus()
+	#focus = room_
+	#onfocus()
 	camera.focus = room_
 	camera.onfocus()
 

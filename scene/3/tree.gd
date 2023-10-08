@@ -18,16 +18,16 @@ func set_shortest_routes_based_on_dijkstra() -> void:
 	var fuel = crossroad.core.gameboard.get_resource_stack_value("fuel")
 	length = min(motion, fuel)
 	
-	if crossroad.pathway != null:
-		motion = crossroad.pathway.get_token("input", "motion")
+	if crossroad.origin != null:
+		motion = crossroad.origin.get_token("input", "motion")
 		
 		if motion != null:
-			length -= crossroad.pathway.get_token_stack_value("input", "motion")
+			length -= crossroad.origin.get_token_stack_value("input", "motion")
 		
-		motion = crossroad.pathway.get_token("output", "motion")
+		motion = crossroad.origin.get_token("output", "motion")
 		
 		if motion != null:
-			length += crossroad.pathway.get_token_stack_value("output", "motion")
+			length += crossroad.origin.get_token_stack_value("output", "motion")
 	
 	add_destination(crossroad.room)
 	compare_two_rooms(crossroad.room, crossroad.room)

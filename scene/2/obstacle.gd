@@ -121,3 +121,23 @@ func update_color_based_on_core_intelligence(core_) -> void:
 
 func set_default_color() -> void:
 	color = Global.color.obstacle[subtype]
+
+
+func check_solution(pathway_: MarginContainer) -> bool:
+	if active:
+		if requirement > 0:
+			var solution = {}
+			
+			for token in pathway_.inputtokens.get_children():
+				var subtype_ = token.title.subtype
+				solution[subtype_] = pathway_.get_resource_stack_value("input", subtype_)
+			
+			solution["motion"] -= pathway_.motionvalue.get_number()
+			var value = 0
+			
+			for subtype_ in solution:
+				value += Global.dict.room.obstacle[subtype].impact[subtype_]
+			
+			return value >= requirement
+	
+	return true

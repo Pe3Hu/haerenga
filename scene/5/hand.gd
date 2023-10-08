@@ -15,6 +15,8 @@ func set_attributes(input_: Dictionary) -> void:
 
 
 func refill() -> void:
+	gameboard.reshuffle_available()
+	
 	while cards.get_child_count() < capacity.current and gameboard.available.cards.get_child_count() > 0:
 		draw_card()
 

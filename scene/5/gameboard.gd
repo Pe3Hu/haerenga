@@ -23,8 +23,7 @@ func set_attributes(input_: Dictionary) -> void:
 	broken.set_attributes(input_)
 	hand.set_attributes(input_)
 	
-	hand.refill()
-	hand.apply()
+	#next_turn()
 
 
 func init_tokens() -> void:
@@ -52,7 +51,7 @@ func init_resources() -> void:
 		resource.set_attributes(input)
 		#resource.visible = false
 	
-	change_resource_stack_value("fuel", 30)
+	change_resource_stack_value("fuel", 120)
 
 
 func init_starter_kit_cards() -> void:
@@ -137,3 +136,73 @@ func get_resource_stack_value(subtype_: String) -> Variant:
 func change_resource_stack_value(subtype_: String, value_: int) -> void:
 	var resource = get_resource(subtype_)
 	resource.stack.change_number(value_)
+
+
+func recharge_card() -> void:
+	var options = []
+	
+	options.append_array(discharged.get_children())
+	
+	if options.is_empty():
+		for card in available.cards:
+			if card.charge.current < card.charge.limit:
+				options.append(card)
+	
+	if !options.is_empty():
+		var card = options.pick_random()
+		card.recharge()
+
+
+func overload_card() -> void:
+	var options = []
+	options.append_array(available.get_children())
+	
+	if !options.is_empty():
+		var card = options.pick_random()
+		card.overload()
+
+
+func repair_card() -> void:
+	var options = []
+	
+	options.append_array(broken.get_children())
+	
+	if options.is_empty():
+		for card in available.cards:
+			if card.toughness.current < card.toughness.limit:
+				options.append(card)
+	
+	if !options.is_empty():
+		var card = options.pick_random()
+		card.recharge()
+
+
+func breakage_card() -> void:
+	var options = []
+	options.append_array(available.get_children())
+	
+	if !options.is_empty():
+		var card = options.pick_random()
+		card.overload()
+
+
+func next_turn() -> void:
+	#reset_resources()
+	
+	hand.refill()
+	hand.apply()
+
+
+func reset_tokens() -> void:
+	for token in tokens.get_children():
+		token.stack.set_number(0)
+		token.visible = false
+		#tokens.remove_child(token)
+		#token.queue_free()
+
+
+func reset_resources() -> void:
+	for resource in resources.get_children():
+		resource.stack.set_number(0)
+		#resources.remove_child(resource)
+		#resource.queue_free()

@@ -67,6 +67,9 @@ func init_num() -> void:
 	
 	num.relevance.token = {}
 	num.relevance.token.recharge = 4
+	num.relevance.token.boost = -2
+	num.relevance.token.overload = -4
+	num.relevance.token.breakage = -8
 
 
 func init_dict() -> void:
@@ -110,6 +113,21 @@ func init_also() -> void:
 	dict.conversion.token.resource["extraction"] = "mineral"
 	dict.conversion.token.resource["acceleration"] = "knowledge"
 	dict.conversion.token.resource["scan"] = "intelligence"
+	dict.conversion.token.resource["recharge"] = "energy"
+	dict.conversion.token.resource["motion"] = "fuel"
+	dict.conversion.token.resource["boost"] = "fuel"
+	dict.conversion.token.resource["overload"] = "energy"
+	dict.conversion.token.resource["breakage"] = "malfunction"
+	
+	dict.conversion.token.sign = {}
+	dict.conversion.token.sign["extraction"] = 1
+	dict.conversion.token.sign["acceleration"] = 1
+	dict.conversion.token.sign["scan"] = 1
+	dict.conversion.token.sign["motion"] = -1
+	dict.conversion.token.sign["boost"] = -2
+	dict.conversion.token.sign["overload"] = -1
+	dict.conversion.token.sign["breakage"] = 1
+	dict.conversion.token.sign["salvo"] = 0
 
 
 func init_neighbor() -> void:
