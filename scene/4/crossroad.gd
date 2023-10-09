@@ -82,7 +82,6 @@ func get_local_solutions() -> Dictionary:
 					#solution[token.title.subtype] += pathway.get_token_stack_value("input", token.title.subtype)
 				
 				if core.solution_availability_check(solution, origin):
-					#print([destination.index, destination.obstacle.subtype, solution])
 					solution["motion"] -= pathway.motionvalue.get_number()
 					destinations[destination].append(solution)
 	
@@ -167,7 +166,6 @@ func prepare_local_options(destinations_: Dictionary) -> void:
 			data.reward = {}
 			data.weight = {}
 			data.weight.total = 0
-			#print("!",destination.index)
 			
 			if destination.obstacle.subtype == "empty" and destination.obstacle.active and destinations_[destination].free:
 				data.reward = destinations_[destination].reward
@@ -294,7 +292,25 @@ func compare_continuations() -> void:
 		datas.append(data)
 	
 	datas.sort_custom(func(a, b): return a.weight.total > b.weight.total)
-	for data_ in datas:
-		print(data_)
+
 	var pathway = datas.front().pathway
 	core.follow_pathway(pathway)
+
+
+func tap_into_intelligence() -> void:
+	var options = []
+	
+	for door in room.doors:
+		var neighbor = room.doors[door]
+		if !core.intelligence.room.has(neighbor):
+			options.append(neighbor)
+	
+	while !options.is_empty() and core.gameboard.get_resource_stack_value("intelligence") > 0:
+		apply_intelligence(options)
+
+
+func apply_intelligence(rooms_: Array) -> void:
+	var option = rooms_.pick_random()
+	rooms_.erase(option)
+	core.get_intelligence(option, false)
+	option.update_colors_based_on_core_intelligence(core)

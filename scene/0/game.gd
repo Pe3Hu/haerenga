@@ -16,7 +16,10 @@ func _input(event) -> void:
 		match event.keycode:
 			KEY_SPACE:
 				if event.is_pressed() && !event.is_echo():
-					Global.node.sketch.nexus.cores.get_child(0).make_decision()
+					Global.node.sketch.nexus.cores.get_child(0).follow_phase()
+			KEY_1:
+				if event.is_pressed() && !event.is_echo():
+					Global.node.sketch.nexus.cores.get_child(0).skip_phases()
 			KEY_W:
 				if event.is_pressed():
 					Global.node.sketch.maze.camera.move_camera("up")

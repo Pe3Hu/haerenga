@@ -130,14 +130,32 @@ func check_solution(pathway_: MarginContainer) -> bool:
 			
 			for token in pathway_.inputtokens.get_children():
 				var subtype_ = token.title.subtype
-				solution[subtype_] = pathway_.get_resource_stack_value("input", subtype_)
+				solution[subtype_] = pathway_.get_token_stack_value("input", subtype_)
 			
-			solution["motion"] -= pathway_.motionvalue.get_number()
+			#solution["motion"] -= pathway_.motionvalue.get_number()
+			
+			if pathway_.crossroad.origin != null:
+				solution["motion"] -= pathway_.crossroad.origin.motionvalue.get_number()
+				
+				for token in pathway_.crossroad.origin.inputtokens.get_children():
+					var subtype_ = token.title.subtype
+					solution[subtype_] -= pathway_.get_token_stack_value("input", subtype_)
+			
 			var value = 0
-			
 			for subtype_ in solution:
-				value += Global.dict.room.obstacle[subtype].impact[subtype_]
+				var kind = Global.get_token_kind_based_on_obstacle(subtype, subtype_)
+				if kind != null:
+					value += Global.dict.room.obstacle[subtype].impact[kind] * solution[subtype_]
 			
+			print([solution, value, requirement])
 			return value >= requirement
 	
 	return true
+
+
+func deactivate() -> void:
+	active = false
+	requirement = 0
+	type = "empty"
+	subtype = "empty"
+	set_default_color()

@@ -27,6 +27,7 @@ func init_arr() -> void:
 	arr.sequence["A000040"] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 	arr.edge = [1, 2, 3, 4, 5, 6]
 	
+	arr.phase = ["draw_hand", "get_pathways", "choose_pathway", "halt"]
 	arr.token = ["motion", "acceleration", "salvo", "extraction", "scan", "recharge"]
 	arr.resource = ["mineral", "knowledge", "intelligence", "fuel"]
 	arr.output = []
@@ -53,6 +54,9 @@ func init_num() -> void:
 	
 	num.content = {}
 	num.content.r = num.room.r * 0.75
+	
+	num.areola = {}
+	num.areola.r = num.room.r * 2
 	
 	num.sectors = {}
 	num.sectors.primary = 4
@@ -117,16 +121,17 @@ func init_also() -> void:
 	dict.conversion.token.resource["motion"] = "fuel"
 	dict.conversion.token.resource["boost"] = "fuel"
 	dict.conversion.token.resource["overload"] = "energy"
-	dict.conversion.token.resource["breakage"] = "malfunction"
+	dict.conversion.token.resource["breakage"] = "spares"
 	
 	dict.conversion.token.sign = {}
 	dict.conversion.token.sign["extraction"] = 1
 	dict.conversion.token.sign["acceleration"] = 1
 	dict.conversion.token.sign["scan"] = 1
+	dict.conversion.token.sign["recharge"] = 1
 	dict.conversion.token.sign["motion"] = -1
 	dict.conversion.token.sign["boost"] = -2
 	dict.conversion.token.sign["overload"] = -1
-	dict.conversion.token.sign["breakage"] = 1
+	dict.conversion.token.sign["breakage"] = -1
 	dict.conversion.token.sign["salvo"] = 0
 
 
@@ -443,3 +448,11 @@ func get_random_obstacle_and_content(sector_: int) -> Dictionary:
 	
 	result.obstacle = get_random_key(weights.obstacle)
 	return result
+
+
+func get_token_kind_based_on_obstacle(obstacle_: String, token_: String) -> Variant:
+	for kind in Global.dict.room.obstacle[obstacle_].token:
+		if Global.dict.room.obstacle[obstacle_].token[kind] == token_:
+			return kind
+	
+	return null

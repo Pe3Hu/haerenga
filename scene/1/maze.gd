@@ -25,6 +25,10 @@ var focus = null
 
 func set_attributes(input_: Dictionary) -> void:
 	sketch = input_.sketch
+	
+	var input = {}
+	input.maze = self
+	camera.set_attributes(input)
 	init_rooms()
 	init_sectors()
 	init_outposts()
@@ -465,9 +469,4 @@ func move_icons(direction_: String) -> void:
 
 func update_rooms_color_based_on_core_intelligence(core_) -> void:
 	for room in rooms.get_children():
-		if core_ != null:
-			room.obstacle.update_color_based_on_core_intelligence(core_)
-			room.content.update_color_based_on_core_intelligence(core_)
-		else:
-			room.obstacle.set_default_color()
-			room.content.set_default_color()
+		room.update_colors_based_on_core_intelligence(core_)

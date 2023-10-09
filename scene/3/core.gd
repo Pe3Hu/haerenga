@@ -7,6 +7,7 @@ var nexus = null
 var maze = null
 var outpost = null
 var room = null
+var phase = null
 var intelligence = {}
 
 
@@ -19,22 +20,24 @@ func set_attributes(input_: Dictionary) -> void:
 	input.core = self
 	input.origin = null
 	crossroad.set_attributes(input)
-	spaw_on_outpost()
 	gameboard.set_attributes(input)
-	
-	#make_decision()
+	spaw_on_outpost()
+	for _i in 6:
+		skip_phases()
+	#follow_phase()
+	#follow_phase()
+	#follow_phase()
 
 
 func spaw_on_outpost() -> void:
 	outpost = maze.outposts.get_children().pick_random()
-	move_in_room(outpost.room)
-	maze.focus_on_room(room)
-	crossroad.set_room(room)
+	return_to_outpost()
 	get_outpost_intelligence()
 
 
 func move_in_room(room_: Polygon2D) -> void:
 	room = room_
+	crossroad.set_room(room)
 	maze.focus_on_room(room)
 
 
@@ -50,8 +53,7 @@ func get_intelligence(room_: Polygon2D, free_: bool) -> void:
 	intelligence.room.append(room_)
 	
 	if !free_:
-		var resource = gameboard.get_resource("intelligence")
-		resource.stack.change_number(-1)
+		gameboard.change_resource_stack_value("intelligence", -1)
 
 
 func solution_availability_check(solution_: Dictionary, origin_: Variant) -> bool:
@@ -90,31 +92,27 @@ func token_availability_check(subtype_: String, value_: int) -> bool:
 	return gameboard.get_token_stack_value(subtype_) >= value_
 
 
-func expedition_check_for_continuation(destination_: Dictionary) -> bool:
-	
-	return false
-
-
-func make_decision() -> void:
-	gameboard.next_turn()
-	crossroad.set_local_ambition()
-	crossroad.update_continuations()
-	crossroad.compare_continuations()
-	crossroad.reset_pathways()
-	
-	gameboard.reset_tokens()
+func skip_phases() -> void:
+#	crossroad.set_local_ambition()
+#	crossroad.update_continuations()
+#	crossroad.compare_continuations()
+#	crossroad.reset_pathways()
+#	gameboard.reset_tokens()
+	for phase_ in Global.arr.phase:
+		follow_phase()
 
 
 func follow_pathway(pathway_: Variant) -> void:
 	if pathway_ != null:
-		var a = []
 		if pathway_.crossroad.origin != null:
-			a.append(pathway_.crossroad.origin.rooms.destination.index)
+			pathway_.crossroad.origin.rooms.destination.passage_test(pathway_.crossroad.origin)
+			#print(pathway_.crossroad.origin.rooms.destination.index)
 		
-		a.append(pathway_.rooms.destination.index)
-		print(a)
+		pathway_.rooms.destination.passage_test(pathway_)
+		#print(pathway_.rooms.destination.index)
+		
 		move_in_room(pathway_.rooms.destination)
-		var subtype = {}
+		#var subtype = {}
 		var motion = pathway_.get_token("input", "motion")
 		token_conversion(motion)
 		
@@ -123,6 +121,8 @@ func follow_pathway(pathway_: Variant) -> void:
 		
 		for resource in pathway_.outputresources.get_children():
 			apply_resource(resource)
+	else:
+		crossroad.reset_pathways()
 
 
 func token_conversion(token_: MarginContainer) -> void:
@@ -155,9 +155,53 @@ func apply_resource(resource_: MarginContainer) -> void:
 						gameboard.recharge_card()
 					else:
 						gameboard.overload_card()
-			"malfunction":
+			"spares":
 				for _i in abs(value):
 					if value > 0:
-						gameboard.breakage_card()
-					else:
 						gameboard.repair_card()
+					else:
+						gameboard.breakage_card()
+
+
+func follow_phase() -> void:
+	if phase == null:
+		phase = Global.arr.phase.front()
+	else:
+		var index = (Global.arr.phase.find(phase) + 1) % Global.arr.phase.size()
+		phase = Global.arr.phase[index]
+	
+	#print(phase)
+	call(phase)
+
+
+func draw_hand() -> void:
+	gameboard.hand.refill()
+	gameboard.hand.apply()
+
+
+func get_pathways() -> void:
+	crossroad.set_local_ambition()
+	crossroad.update_continuations()
+
+
+func choose_pathway() -> void:
+	crossroad.compare_continuations()
+
+
+func halt() -> void:
+	gameboard.reset_tokens()
+	gameboard.change_resource_stack_value("intelligence", 1)
+	crossroad.tap_into_intelligence()
+	
+	if gameboard.available.cards.get_child_count() == 0:
+		return_to_outpost()
+
+
+func return_to_outpost() -> void:
+	move_in_room(outpost.room)
+	var value = 120 - gameboard.get_resource_stack_value("fuel")
+	gameboard.change_resource_stack_value("fuel", value)
+	
+	gameboard.repair_all_cards()
+	gameboard.recharge_all_cards()
+

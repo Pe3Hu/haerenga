@@ -26,7 +26,7 @@ func fill_tokens() -> void:
 	charge.limit = description.charge
 	charge.current = charge.limit
 	toughness.limit = description.toughness
-	charge.current = charge.limit
+	toughness.current = toughness.limit
 	
 	for key in description.token:
 		var input = {}
@@ -39,7 +39,6 @@ func fill_tokens() -> void:
 		get(description.token[key].definiteness).add_child(token)
 		token.set_attributes(input)
 	
-	
 	for node in tokens.get_children():
 		if node.get_child_count() > 0:
 			node.visible = true
@@ -48,27 +47,28 @@ func fill_tokens() -> void:
 func recharge() -> void:
 	charge.current += 1
 	
-	if area == gameboard.discharged:
-		gameboard.discharged.remove_child(self)
-		gameboard.available.add_child(self)
+	if charge.current == charge.limit and area == gameboard.discharged:
+		gameboard.discharged.cards.remove_child(self)
+		gameboard.available.cards.add_child(self)
 		area = gameboard.available
+	print(area.name, charge, area.name)
 
 
 func overload() -> void:
 	charge.current -= 1
 	
 	if charge.current == 0 and area == gameboard.available:
-		gameboard.available.remove_child(self)
-		gameboard.discharged.add_child(self)
+		gameboard.available.cards.remove_child(self)
+		gameboard.discharged.cards.add_child(self)
 		area = gameboard.discharged
 
 
 func repair() -> void:
 	toughness.current += 1
 	
-	if area == gameboard.broken:
-		gameboard.broken.remove_child(self)
-		gameboard.available.add_child(self)
+	if toughness.current > 0 and area == gameboard.broken:
+		gameboard.broken.cards.remove_child(self)
+		gameboard.available.cards.add_child(self)
 		area = gameboard.available
 
 
@@ -76,6 +76,6 @@ func breakage() -> void:
 	toughness.current -= 1
 	
 	if toughness.current == 0 and area == gameboard.available:
-		gameboard.available.add_child(self)
-		gameboard.broken.remove_child(self)
+		gameboard.available.cards.add_child(self)
+		gameboard.broken.cards.remove_child(self)
 		area = gameboard.broken

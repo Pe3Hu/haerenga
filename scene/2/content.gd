@@ -47,3 +47,9 @@ func update_color_based_on_core_intelligence(core_) -> void:
 func set_default_color() -> void:
 	color = Global.color.content[type]
 
+
+func deactivate() -> void:
+	active = false
+	value = 0
+	type = "empty"
+	set_default_color()

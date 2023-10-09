@@ -23,6 +23,9 @@ script = ExtResource("1_i47v1")
 handle_input_locally = false
 render_target_update_mode = 4
 
+[node name="Camera" parent="SubViewport" instance=ExtResource("2_tr7ue")]
+position = Vector2(20, 20)
+
 [node name="Polygons" type="Node2D" parent="SubViewport"]
 position = Vector2(20, 20)
 
@@ -66,9 +69,6 @@ offset_bottom = 40.0
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="Camera" parent="SubViewport" instance=ExtResource("2_tr7ue")]
-position = Vector2(20, 20)
 
 [node name="BG" type="ColorRect" parent="SubViewport"]
 visible = false

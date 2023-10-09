@@ -1,3 +1,4 @@
+Polygon2D
 HBoxContainer
 VBoxContainer
 GridContainer
@@ -7,4 +8,3 @@ Node2D
 Camera2D
 TextureRect
 Control
-Polygon2D

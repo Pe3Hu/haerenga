@@ -40,7 +40,10 @@ func init_tokens() -> void:
 
 
 func init_resources() -> void:
-	for subtype in Global.arr.resource:
+	var subtypes = ["energy", "spares"]
+	subtypes.append_array(Global.arr.resource)
+	
+	for subtype in subtypes:
 		var input = {}
 		input.proprietor = self
 		input.resource = subtype
@@ -49,9 +52,7 @@ func init_resources() -> void:
 		var resource = Global.scene.resource.instantiate()
 		resources.add_child(resource)
 		resource.set_attributes(input)
-		#resource.visible = false
-	
-	change_resource_stack_value("fuel", 120)
+		resource.visible = Global.arr.resource.has(subtype)
 
 
 func init_starter_kit_cards() -> void:
@@ -140,11 +141,10 @@ func change_resource_stack_value(subtype_: String, value_: int) -> void:
 
 func recharge_card() -> void:
 	var options = []
-	
-	options.append_array(discharged.get_children())
+	options.append_array(discharged.cards.get_children())
 	
 	if options.is_empty():
-		for card in available.cards:
+		for card in available.cards.get_children():
 			if card.charge.current < card.charge.limit:
 				options.append(card)
 	
@@ -155,7 +155,7 @@ func recharge_card() -> void:
 
 func overload_card() -> void:
 	var options = []
-	options.append_array(available.get_children())
+	options.append_array(available.cards.get_children())
 	
 	if !options.is_empty():
 		var card = options.pick_random()
@@ -165,10 +165,10 @@ func overload_card() -> void:
 func repair_card() -> void:
 	var options = []
 	
-	options.append_array(broken.get_children())
+	options.append_array(broken.cards.get_children())
 	
 	if options.is_empty():
-		for card in available.cards:
+		for card in available.cards.get_children():
 			if card.toughness.current < card.toughness.limit:
 				options.append(card)
 	
@@ -179,7 +179,7 @@ func repair_card() -> void:
 
 func breakage_card() -> void:
 	var options = []
-	options.append_array(available.get_children())
+	options.append_array(available.cards.get_children())
 	
 	if !options.is_empty():
 		var card = options.pick_random()
@@ -206,3 +206,32 @@ func reset_resources() -> void:
 		resource.stack.set_number(0)
 		#resources.remove_child(resource)
 		#resource.queue_free()
+
+
+func repair_all_cards() -> void:
+	var spares = 0
+	var cards = []
+	cards.append_array(available.cards.get_children())
+	cards.append_array(discharged.cards.get_children())
+	cards.append_array(broken.cards.get_children())
+	
+	for card in cards:
+		while card.toughness.current < card.toughness.limit: 
+			card.repair()
+			spares += 1
+	
+	print("spares: ", spares)
+
+
+func recharge_all_cards() -> void:
+	var energy = 0
+	var cards = []
+	cards.append_array(available.cards.get_children())
+	cards.append_array(discharged.cards.get_children())
+	
+	for card in cards:
+		while card.charge.current < card.charge.limit: 
+			card.recharge()
+			energy += 1
+	
+	print("energy: ", energy)

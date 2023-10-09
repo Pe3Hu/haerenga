@@ -134,3 +134,22 @@ func get_door_based_on_neighbor(neighbor_: Polygon2D) -> Variant:
 			return door
 	
 	return null
+
+
+func update_colors_based_on_core_intelligence(core_) -> void:
+	if core_ != null:
+		obstacle.update_color_based_on_core_intelligence(core_)
+		content.update_color_based_on_core_intelligence(core_)
+	else:
+		obstacle.set_default_color()
+		content.set_default_color()
+
+
+func passage_test(pathway_: MarginContainer) -> void:
+	print([index, obstacle.subtype, content.type])
+	if obstacle.check_solution(pathway_):
+		#print([index, obstacle.subtype, content.type])
+		obstacle.deactivate()
+		
+		if Global.dict.room.content[content.type].repetition == "no":
+			content.deactivate()
