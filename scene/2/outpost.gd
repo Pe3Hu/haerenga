@@ -11,6 +11,7 @@ func set_attributes(input_: Dictionary) -> void:
 	position = room.position
 	
 	init_vertexs()
+	init_milestones()
 
 
 func init_vertexs() -> void:
@@ -23,3 +24,27 @@ func init_vertexs() -> void:
 		vertexs.append(vertex)
 	
 	set_polygon(vertexs)
+
+
+func init_milestones() -> void:
+	var tide = {}
+	tide.n = 0
+	tide.high = []
+	tide.low = [room]
+	var n = 10
+	
+	while tide.n < n:
+		for room_ in tide.low:
+			room_.milestones[room] = tide.n
+			
+			for door in room_.doors:
+				var neighbor = room_.doors[door]
+				
+				if !neighbor.milestones.has(room) and !tide.high.has(neighbor) and !tide.low.has(neighbor):#!tide.all.has(neighbor) 
+					tide.high.append(neighbor)
+			
+		tide.low = []
+		tide.low.append_array(tide.high)
+		tide.high = []
+		tide.n += 1 
+	

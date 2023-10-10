@@ -1,8 +1,11 @@
 extends MarginContainer
 
 
-@onready var tree = $Tree
-@onready var pathways = $Pathways
+@onready var tree = $HBox/Tree
+@onready var pathways = $HBox/Pathways
+@onready var departureicon = $HBox/Departure/Icon
+@onready var departureindex = $HBox/Departure/Index
+
 
 var core = null
 var origin = null
@@ -14,17 +17,28 @@ func set_attributes(input_: Dictionary) -> void:
 	origin = input_.origin
 	
 	var input = {}
+	input.type = "node"
+	input.subtype = "door"
+	departureicon.set_attributes(input)
+	
+	input = {}
 	input.crossroad = self
 	tree.set_attributes(input)
 
 
 func set_room(room_: Polygon2D) -> void:
 	room = room_
+	
+	var input = {}
+	input.type = "number"
+	input.subtype = room.index
+	departureindex.set_attributes(input)
 	reset_pathways()
 
 
 func reset_pathways() -> void:
-	for pathway in pathways.get_children():
+	while pathways.get_child_count() > 0:
+		var pathway = pathways.get_child(0)
 		pathways.remove_child(pathway)
 		pathway.queue_free()
 
@@ -42,17 +56,25 @@ func fill_pathways() -> void:
 	destinations.sort_custom(func(a, b): return  tree.destinations[a].length <  tree.destinations[b].length)
 	
 	for destination in destinations:
-		if room != destination:
+		var flag = true
+		
+		if origin != null:
+			if origin.rooms.destination == destination:
+				flag = false
+		
+		if flag:
 			var input = {}
-			input.core = core
-			input.crossroad = self
 			input.length = tree.destinations[destination].length
-			input.departure = room
-			input.destination = destination
 			
-			var pathway = Global.scene.pathway.instantiate()
-			pathways.add_child(pathway)
-			pathway.set_attributes(input)
+			if core.token_availability_check("motion", input.length):
+				input.core = core
+				input.crossroad = self
+				input.departure = room
+				input.destination = destination
+				
+				var pathway = Global.scene.pathway.instantiate()
+				pathways.add_child(pathway)
+				pathway.set_attributes(input)
 		#pathway.add_tokens("input", "motion", input.length)
 
 
@@ -95,6 +117,7 @@ func get_local_rewards(destinations_: Dictionary) -> Dictionary:
 		rewards[destination] = {}
 		rewards[destination].reward = {}
 		rewards[destination].solutions = []
+		rewards[destination].access = false
 		rewards[destination].free = false
 		
 		if destination.content.active:
@@ -113,7 +136,7 @@ func get_local_rewards(destinations_: Dictionary) -> Dictionary:
 					if solution.has(description.input):
 						fee += solution[description.input]
 					
-					if description.input == "free" or core.token_availability_check(description.input, fee):
+					if description.input == "free" or core.token_availability_check(description.input, fee) or destination.obstacle.subtype == "empty":
 						if description.input != "free":
 							if !solution.has(description.input):
 								solution[description.input] = 0
@@ -220,30 +243,32 @@ func update_continuations() -> void:
 
 func compare_continuations() -> void:
 	var datas = []
-	var data = {}
-	data.index = core.room.index
-	data.pathway = null
-	data.weight = {}
-	data.weight.output = 0
-	data.weight.unspent = 0
-	#data.weight.distance = 0
-	
-	var unspent = {}
-	var subtype = {}
-	
-	for token in core.gameboard.tokens.get_children():
-		subtype.token = token.title.subtype
-		unspent[subtype.token] = core.gameboard.get_token_stack_value(subtype.token)
-		
-		if unspent[subtype.token] > 0:
-			if Global.dict.conversion.token.sign[subtype.token] > 0:
-				subtype.resource = Global.dict.conversion.token.resource[subtype.token]
-				
-				if Global.num.relevance.resource.has(subtype.resource):
-					data.weight.unspent += unspent[subtype.token] * Global.num.relevance.resource[subtype.resource]
-	
-	data.weight.total = data.weight.unspent
-	datas.append(data)
+#	var data = {}
+#	data.index = core.room.index
+#	data.pathway = null
+#	data.weight = {}
+#	data.weight.output = 0
+#	data.weight.unspent = 0
+#	data.weight.milestone = 0
+#
+#	var unspent = {}
+#	var subtype = {}
+#	unspent.total = 0
+#
+#	for token in core.gameboard.tokens.get_children():
+#		subtype.token = token.title.subtype
+#		unspent[subtype.token] = core.gameboard.get_token_stack_value(subtype.token)
+#		unspent.total += unspent[subtype.token]
+
+#		if unspent[subtype.token] > 0:
+#			if Global.dict.conversion.token.sign[subtype.token] > 0:
+#				subtype.resource = Global.dict.conversion.token.resource[subtype.token]
+#
+#				if Global.num.relevance.resource.has(subtype.resource):
+#					data.weight.unspent += unspent[subtype.token] * Global.num.relevance.resource[subtype.resource]
+#
+#	data.weight.total = data.weight.unspent
+#	datas.append(data)
 	
 	var options = []
 	options.append_array(pathways.get_children())
@@ -252,25 +277,28 @@ func compare_continuations() -> void:
 		options.append_array(pathway.continuation.pathways.get_children())
 	
 	for pathway_ in options:
-		data = {}
+		var data = {}
 		data.index = pathway_.rooms.destination.index
 		data.pathway = pathway_
 		data.weight = {}
 		data.weight.output = 0
-		#data.weight.distance = 0
+		data.weight.milestone = pathway_.rooms.destination.milestones[core.outpost.room] * 2
 		data.weight.total = 0
 		data.weight.unspent = 0
-		subtype = {}
+		var subtype = {}
 		
 		for token in core.gameboard.tokens.get_children():
 			subtype.token = token.title.subtype
 			
-			if unspent[subtype.token] > 0:
+			#if unspent[subtype.token] > 0:
 			#unspent[subtype.token] = core.gameboard.get_token_stack_value(subtype.token)
 			
-				if Global.dict.conversion.token.sign[subtype.token] > 0:
-					subtype.resource = Global.dict.conversion.token.resource[subtype.token]
-					data.weight.unspent += unspent[subtype.token] * Global.num.relevance.resource[subtype.resource]
+			if Global.dict.conversion.token.sign[subtype.token] > 0:
+				subtype.resource = Global.dict.conversion.token.resource[subtype.token]
+				var unspent = core.gameboard.get_token_stack_value(subtype.token)
+				
+				if unspent > 0:
+					data.weight.unspent += unspent * Global.num.relevance.resource[subtype.resource]
 					var spent = pathway_.get_token_stack_value("input", subtype.token)
 				
 					if Global.num.relevance.resource.has(subtype.resource) and spent != null:
@@ -288,11 +316,13 @@ func compare_continuations() -> void:
 			if Global.num.relevance.token.has(subtype.token):
 				data.weight.output += pathway_.get_token_stack_value("output", subtype.token) * Global.num.relevance.token[subtype.token]
 		
-		data.weight.total = data.weight.unspent + data.weight.output
+		data.weight.total = data.weight.unspent + data.weight.output + data.weight.milestone
 		datas.append(data)
 	
 	datas.sort_custom(func(a, b): return a.weight.total > b.weight.total)
-
+	
+	for data_ in datas:
+		print(data_)
 	var pathway = datas.front().pathway
 	core.follow_pathway(pathway)
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://chr2t5lcie6fw"]
 
-[ext_resource type="Script" path="res://scene/3/tree.gd" id="1_j0ttr"]
+[ext_resource type="Script" path="res://scene/4/tree.gd" id="1_4ar1o"]
 [ext_resource type="FontFile" uid="uid://bvnpo88mdytkv" path="res://asset/font/letter/JosefinSans-Bold.ttf" id="2_mdopr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-script = ExtResource("1_j0ttr")
+script = ExtResource("1_4ar1o")
 
 [node name="BG" type="Panel" parent="."]
 layout_mode = 2

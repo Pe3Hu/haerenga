@@ -86,7 +86,7 @@ func get_solutions() -> Array:
 		
 		return result
 	
-	return []
+	return [{"motion": 0}]
 
 
 func replace_primary_with_alternative(kinds_: Array) -> Array:
@@ -124,6 +124,9 @@ func set_default_color() -> void:
 
 
 func check_solution(pathway_: MarginContainer) -> bool:
+	if subtype == "empty":
+		return true
+	
 	if active:
 		if requirement > 0:
 			var solution = {}
@@ -154,8 +157,11 @@ func check_solution(pathway_: MarginContainer) -> bool:
 
 
 func deactivate() -> void:
-	active = false
-	requirement = 0
-	type = "empty"
-	subtype = "empty"
-	set_default_color()
+	if subtype != "empty":
+		print([room.index, subtype])
+		active = false
+		requirement = 0
+		type = "empty"
+		subtype = "empty"
+		penalty = {}
+		set_default_color()

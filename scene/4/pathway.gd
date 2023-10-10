@@ -23,6 +23,7 @@ var core = null
 var crossroad = null
 var doors = null
 var rooms = {}
+var access = false
 
 
 func set_attributes(input_: Dictionary) -> void:
@@ -196,11 +197,11 @@ func sort_puts() -> void:
 
 
 func update_continuation() -> void:
-	if rooms.destination != core.room:
-		continuation.visible = true
-		var input = {}
-		input.core = core
-		input.origin = self
-		continuation.set_attributes(input)
-		continuation.set_room(rooms.destination)
-		continuation.set_local_ambition()
+	#if rooms.destination != core.room:
+	continuation.visible = true
+	var input = {}
+	input.core = core
+	input.origin = self
+	continuation.set_attributes(input)
+	continuation.set_room(rooms.destination)
+	continuation.set_local_ambition()

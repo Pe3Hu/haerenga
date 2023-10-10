@@ -15,11 +15,11 @@ func set_attributes(input_: Dictionary) -> void:
 
 
 func refill() -> void:
-	print(["before", cards.get_child_count(), capacity.current, gameboard.available.cards.get_child_count()])
+	#print(["before", cards.get_child_count(), capacity.current, gameboard.available.cards.get_child_count()])
 	gameboard.reshuffle_available()
 	while cards.get_child_count() < capacity.current and gameboard.available.cards.get_child_count() > 0:
 		draw_card()
-	print(["after", cards.get_child_count(), capacity.current, gameboard.available.cards.get_child_count()])
+	#print(["after", cards.get_child_count(), capacity.current, gameboard.available.cards.get_child_count()])
 
 
 func draw_card() -> void:

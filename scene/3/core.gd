@@ -22,10 +22,12 @@ func set_attributes(input_: Dictionary) -> void:
 	crossroad.set_attributes(input)
 	gameboard.set_attributes(input)
 	spaw_on_outpost()
-	for _i in 6:
+	
+	for _i in 0:
 		skip_phases()
-	#follow_phase()
-	#follow_phase()
+	
+	follow_phase()
+	follow_phase()
 	#follow_phase()
 
 
@@ -126,18 +128,21 @@ func follow_pathway(pathway_: Variant) -> void:
 
 
 func token_conversion(token_: MarginContainer) -> void:
-	var subtype = token_.title.subtype
-	var input = {}
-	input.proprietor = self
-	input.resource = Global.dict.conversion.token.resource[subtype]
-	input.stack = token_.stack.get_number() * Global.dict.conversion.token.sign[subtype]
+	if token_ != null:
+		var subtype = token_.title.subtype
+		var input = {}
+		input.proprietor = self
+		input.resource = Global.dict.conversion.token.resource[subtype]
+		input.stack = token_.stack.get_number() * Global.dict.conversion.token.sign[subtype]
 
-	var resource = Global.scene.resource.instantiate()
-	add_child(resource)
-	resource.set_attributes(input)
-	apply_resource(resource)
-	remove_child(resource)
-	resource.queue_free()
+		var resource = Global.scene.resource.instantiate()
+		add_child(resource)
+		resource.set_attributes(input)
+		apply_resource(resource)
+		remove_child(resource)
+		resource.queue_free()
+	else:
+		print("error: token is null")
 
 
 func apply_resource(resource_: MarginContainer) -> void:

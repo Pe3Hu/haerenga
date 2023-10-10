@@ -14,11 +14,14 @@ func set_attributes(input_: Dictionary) -> void:
 
 
 func set_shortest_routes_based_on_dijkstra() -> void:
+	destinations = {}
+	departures = []
 	var motion = crossroad.core.gameboard.get_token_stack_value("motion")
 	var fuel = crossroad.core.gameboard.get_resource_stack_value("fuel")
 	length = min(motion, fuel)
 	
 	if crossroad.origin != null:
+		
 		motion = crossroad.origin.get_token("input", "motion")
 		
 		if motion != null:
@@ -32,20 +35,25 @@ func set_shortest_routes_based_on_dijkstra() -> void:
 	add_destination(crossroad.room)
 	compare_two_rooms(crossroad.room, crossroad.room)
 	
-	while !departures.is_empty():
-		departures.sort_custom(func(a, b): return  destinations[a].length <  destinations[b].length)
-		var departure = departures.pop_front()
-		
-		for door in departure.doors:
-			var neighbor = departure.doors[door]
+	if length > 0:
+		while !departures.is_empty():
+			departures.sort_custom(func(a, b): return  destinations[a].length <  destinations[b].length)
+			var departure = departures.pop_front()
 			
-			if crossroad.core.intelligence.room.has(neighbor):
-					add_destination(neighbor)
-					compare_two_rooms(departure, neighbor)
+			for door in departure.doors:
+				var neighbor = departure.doors[door]
+				
+				if crossroad.core.intelligence.room.has(neighbor):
+						add_destination(neighbor)
+						compare_two_rooms(departure, neighbor)
+		
+		for destination in destinations.keys():
+			if destinations[destination].parent == null:
+				destinations.erase(destination)
 	
-	for destination in destinations.keys():
-		if destinations[destination].parent == null:
-			destinations.erase(destination)
+#	print(length, "___", crossroad.room.index)
+#	for destination in destinations:
+#		print([length, destination.index, destinations[destination].parent.index, destinations[destination].length, crossroad.origin])
 
 
 func add_destination(room_: Polygon2D) -> void:
@@ -56,9 +64,9 @@ func add_destination(room_: Polygon2D) -> void:
 
 
 func compare_two_rooms(parent_: Polygon2D, child_: Polygon2D) -> void:
-	if parent_ == child_:
-		destinations[parent_].parent = child_
-		destinations[parent_].length = 0
+	if parent_ == crossroad.room and child_ == crossroad.room:
+		destinations[child_].length = 0
+		destinations[child_].parent = parent_
 		departures.append(child_)
 	else:
 		var door = parent_.get_door_based_on_neighbor(child_)
@@ -70,3 +78,5 @@ func compare_two_rooms(parent_: Polygon2D, child_: Polygon2D) -> void:
 			destinations[child_].length = l.new
 			destinations[child_].parent = parent_
 			departures.append(child_)
+	
+	#print(parent_.index, child_.index, destinations[child_])

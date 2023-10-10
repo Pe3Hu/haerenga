@@ -47,7 +47,7 @@ func init_num() -> void:
 	num.room.r = 8
 	
 	num.outpost = {}
-	num.outpost.r = num.room.r * 1.5
+	num.outpost.r = num.room.r * 2
 	
 	num.obstacle = {}
 	num.obstacle.r = num.room.r * 1.25

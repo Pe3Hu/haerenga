@@ -12,6 +12,7 @@ var index = null
 var icon = null
 var sector = null
 var doors = {}
+var milestones = {}
 
 
 func set_attributes(input_: Dictionary) -> void:

@@ -51,7 +51,7 @@ func recharge() -> void:
 		gameboard.discharged.cards.remove_child(self)
 		gameboard.available.cards.add_child(self)
 		area = gameboard.available
-	print(area.name, charge, area.name)
+	#print(area.name, charge, area.name)
 
 
 func overload() -> void:

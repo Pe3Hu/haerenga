@@ -3,5 +3,5 @@
 [ext_resource type="Script" path="res://scene/2/outpost.gd" id="1_ad0vr"]
 
 [node name="Outpost" type="Polygon2D"]
-color = Color(0, 0, 0, 1)
+color = Color(0.368627, 0.368627, 0.368627, 1)
 script = ExtResource("1_ad0vr")
