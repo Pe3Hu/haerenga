@@ -49,8 +49,8 @@ func set_default_color() -> void:
 
 
 func deactivate() -> void:
-	if type != null:
-		print([room.index, type])
+	if type != "empty":
+		print([room.index, "deactivate", type])
 		active = false
 		value = 0
 		type = "empty"

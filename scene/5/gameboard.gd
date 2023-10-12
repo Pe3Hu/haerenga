@@ -235,3 +235,18 @@ func recharge_all_cards() -> void:
 			energy += 1
 	
 	print("energy: ", energy)
+
+
+func get_tokens_as_dict() -> Dictionary:
+	var result = {}
+	result["motion"] = 0
+	
+	for token in tokens.get_children():
+		var subtype = token.title.subtype
+		result[subtype] = core.gameboard.get_token_stack_value(subtype)
+	
+		if result[subtype] == 0 and subtype != "motion":
+			result.erase(subtype)
+	
+	return result
+	

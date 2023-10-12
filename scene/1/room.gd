@@ -147,7 +147,7 @@ func update_colors_based_on_core_intelligence(core_) -> void:
 
 
 func passage_test(pathway_: MarginContainer) -> void:
-	print([index, obstacle.subtype, content.type])
+	print([index, "passage_test", obstacle.subtype, content.type])
 	if obstacle.check_solution(pathway_):
 		#print([index, obstacle.subtype, content.type])
 		obstacle.deactivate()

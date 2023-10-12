@@ -84,6 +84,7 @@ func get_solutions() -> Array:
 			
 			result.append(tokens)
 		
+		#print([room.index, subtype, requirement, result])
 		return result
 	
 	return [{"motion": 0}]
@@ -138,7 +139,7 @@ func check_solution(pathway_: MarginContainer) -> bool:
 			#solution["motion"] -= pathway_.motionvalue.get_number()
 			
 			if pathway_.crossroad.origin != null:
-				solution["motion"] -= pathway_.crossroad.origin.motionvalue.get_number()
+				#solution["motion"] -= pathway_.crossroad.origin.motionvalue.get_number()
 				
 				for token in pathway_.crossroad.origin.inputtokens.get_children():
 					var subtype_ = token.title.subtype
@@ -158,7 +159,7 @@ func check_solution(pathway_: MarginContainer) -> bool:
 
 func deactivate() -> void:
 	if subtype != "empty":
-		print([room.index, subtype])
+		print([room.index, "deactivate", subtype])
 		active = false
 		requirement = 0
 		type = "empty"

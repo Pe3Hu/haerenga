@@ -23,7 +23,9 @@ var core = null
 var crossroad = null
 var doors = null
 var rooms = {}
-var access = false
+var solutions = []
+var rewards = {}
+var medal = false
 
 
 func set_attributes(input_: Dictionary) -> void:

@@ -9,6 +9,7 @@ var outpost = null
 var room = null
 var phase = null
 var intelligence = {}
+var empowerment = {}
 
 
 func set_attributes(input_: Dictionary) -> void:
@@ -23,12 +24,11 @@ func set_attributes(input_: Dictionary) -> void:
 	gameboard.set_attributes(input)
 	spaw_on_outpost()
 	
-	for _i in 0:
-		skip_phases()
+	follow_phase()
+	follow_phase()
 	
-	follow_phase()
-	follow_phase()
-	#follow_phase()
+	for _i in 1:
+		skip_phases()
 
 
 func spaw_on_outpost() -> void:
@@ -115,8 +115,10 @@ func follow_pathway(pathway_: Variant) -> void:
 		
 		move_in_room(pathway_.rooms.destination)
 		#var subtype = {}
+		var a = pathway_.inputtokens.get_children()
 		var motion = pathway_.get_token("input", "motion")
-		token_conversion(motion)
+		if motion != null:
+			token_conversion(motion)
 		
 		for token in pathway_.outputtokens.get_children():
 			token_conversion(token)
@@ -200,6 +202,7 @@ func halt() -> void:
 	
 	if gameboard.available.cards.get_child_count() == 0:
 		return_to_outpost()
+		drones_assembly()
 
 
 func return_to_outpost() -> void:
@@ -210,3 +213,14 @@ func return_to_outpost() -> void:
 	gameboard.repair_all_cards()
 	gameboard.recharge_all_cards()
 
+
+func empowerment_request(tokens_: Dictionary) -> void:
+	for token in tokens_:
+		if !empowerment.has(token):
+			empowerment[token] = 0
+		
+		empowerment[token] += tokens_[token]
+
+
+func drones_assembly() -> void:
+	pass
