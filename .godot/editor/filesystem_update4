@@ -17,3 +17,5 @@ res://scene/5/gameboard.gd
 res://scene/5/hand.gd
 res://scene/3/market.gd
 res://scene/4/pathway.gd
+res://scene/4/crossroad.gd
+res://scene/2/obstacle.gd

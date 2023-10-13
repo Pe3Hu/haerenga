@@ -307,11 +307,14 @@ func init_card() -> void:
 	dict.card.starte_kit = {}
 	dict.card.starte_kit[4] = 1
 	dict.card.starte_kit[7] = 1
-	#dict.card.starte_kit[38] = 1
-	dict.card.starte_kit[61] = 4
-	dict.card.starte_kit[113] = 6
-	dict.card.starte_kit[116] = 1
-	dict.card.starte_kit[179] = 1
+#	dict.card.starte_kit[61] = 4
+#	dict.card.starte_kit[113] = 6
+#	dict.card.starte_kit[116] = 1
+#	dict.card.starte_kit[179] = 1
+	dict.card.starte_kit[121] = 6
+	dict.card.starte_kit[64] = 4
+	dict.card.starte_kit[206] = 1
+	dict.card.starte_kit[124] = 1
 	dict.market = {}
 	dict.market.card = {}
 	var pairs = []
@@ -345,8 +348,7 @@ func init_card() -> void:
 	
 	#print("____", dict.market.card[30].keys().size())
 	
-	
-	print(Time.get_unix_time_from_system() - serif)
+	#print(Time.get_unix_time_from_system() - serif)
 
 
 func token_parameterizations(weights_: Dictionary, childs_: Dictionary,  limit_: int) -> void:
@@ -429,6 +431,7 @@ func add_card(weights_: Dictionary, subtypes_: Dictionary, charge_: int) -> void
 				dict.card.index[num.index.card].limit.charge = subtypes.charge
 				dict.card.index[num.index.card].limit.toughness = 1
 				dict.card.index[num.index.card].rarity = get_rarity(conversion)
+				dict.card.index[num.index.card].price = conversion
 				
 				if !dict.card.rarity.has(dict.card.index[num.index.card].rarity):
 					dict.card.rarity[dict.card.index[num.index.card].rarity] = []
@@ -439,6 +442,7 @@ func add_card(weights_: Dictionary, subtypes_: Dictionary, charge_: int) -> void
 					if subtypes.has(subtype):
 						dict.card.index[num.index.card].token[subtype] = subtypes[subtype]
 				
+				#print(num.index.card, subtypes)
 				num.index.card += 1
 
 

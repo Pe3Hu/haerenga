@@ -82,8 +82,6 @@ func fill_pathways() -> void:
 
 
 func get_local_solutions() -> void:
-	var destinations = {}
-	
 	for pathway in pathways.get_children():
 		var destination = pathway.rooms.destination
 		
@@ -97,10 +95,10 @@ func get_local_solutions() -> void:
 				if !solution.has("motion"):
 					solution["motion"] = 0
 				
-				solution["motion"] += pathway.motionvalue.get_number()
+				solution["motion"] += pathway.motionValue.get_number()
 				
 				if core.solution_availability_check(solution, origin):
-					#solution["motion"] -= pathway.motionvalue.get_number()
+					#solution["motion"] -= pathway.motionValue.get_number()
 					pathway.solutions.append(solution)
 			
 					if destination.obstacle.subtype != "empty" and !pathway.medal:
@@ -179,7 +177,7 @@ func prepare_local_options() -> void:
 			data.pathway = pathway
 			data.destination = pathway.rooms.destination
 			data.solution = {}
-			data.solution["motion"] = data.pathway.motionvalue.get_number()
+			data.solution["motion"] = data.pathway.motionValue.get_number()
 			data.reward = {}
 			data.weight = {}
 			data.weight.total = 0
@@ -195,8 +193,8 @@ func prepare_local_options() -> void:
 	
 	for pathway in best:
 		var data = best[pathway]
-		#pathway.add_tokens("input", "motion", pathway.motionvalue.get_number())
-		#print([pathway.rooms.departure.index, pathway.rooms.destination.index, pathway.motionvalue.get_number()])
+		#pathway.add_tokens("input", "motion", pathway.motionValue.get_number())
+		#print([pathway.rooms.departure.index, pathway.rooms.destination.index, pathway.motionValue.get_number()])
 		
 		for token in data.solution:
 			pathway.add_tokens("input", token, data.solution[token])
@@ -270,13 +268,13 @@ func compare_continuations() -> void:
 			
 				#print(["weight", data.weight.unspent])
 		
-		for resource in pathway_.outputresources.get_children():
+		for resource in pathway_.outputResources.get_children():
 			subtype.resource = resource.title.subtype
 			
 			if Global.num.relevance.resource.has(subtype.resource):
 				data.weight.output += pathway_.get_resource_stack_value(subtype.resource) * Global.num.relevance.resource[subtype.resource]
 		
-		for token in pathway_.outputtokens.get_children():
+		for token in pathway_.outputTokens.get_children():
 			subtype.token = token.title.subtype
 			
 			if Global.num.relevance.token.has(subtype.token):
@@ -323,7 +321,7 @@ func impediment_analysis() -> void:
 		var motion = 0
 		
 		for pathway in impediments[obstacle]:
-			motion = max(motion, pathway.motionvalue.get_number())
+			motion = max(motion, pathway.motionValue.get_number())
 		
 		data.tokens.available["motion"] -= motion
 		print([obstacle.room.index, data.tokens])

@@ -132,7 +132,7 @@ func check_solution(pathway_: MarginContainer) -> bool:
 		if requirement > 0:
 			var solution = {}
 			
-			for token in pathway_.inputtokens.get_children():
+			for token in pathway_.inputTokens.get_children():
 				var subtype_ = token.title.subtype
 				solution[subtype_] = pathway_.get_token_stack_value("input", subtype_)
 			
@@ -141,7 +141,7 @@ func check_solution(pathway_: MarginContainer) -> bool:
 			if pathway_.crossroad.origin != null:
 				#solution["motion"] -= pathway_.crossroad.origin.motionvalue.get_number()
 				
-				for token in pathway_.crossroad.origin.inputtokens.get_children():
+				for token in pathway_.crossroad.origin.inputTokens.get_children():
 					var subtype_ = token.title.subtype
 					solution[subtype_] -= pathway_.get_token_stack_value("input", subtype_)
 			

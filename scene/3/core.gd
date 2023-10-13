@@ -66,7 +66,7 @@ func solution_availability_check(solution_: Dictionary, origin_: Variant) -> boo
 	subtypes.append_array(solution_.keys())
 	
 	if origin_ != null:
-		for token in origin_.inputtokens.get_children():
+		for token in origin_.inputTokens.get_children():
 			var subtype = token.title.subtype
 			
 			if !subtypes.has(subtype):
@@ -116,16 +116,14 @@ func follow_pathway(pathway_: Variant) -> void:
 		#print(pathway_.rooms.destination.index)
 		
 		move_in_room(pathway_.rooms.destination)
-		#var subtype = {}
-		var a = pathway_.inputtokens.get_children()
 		var motion = pathway_.get_token("input", "motion")
 		if motion != null:
 			token_conversion(motion)
 		
-		for token in pathway_.outputtokens.get_children():
+		for token in pathway_.outputTokens.get_children():
 			token_conversion(token)
 		
-		for resource in pathway_.outputresources.get_children():
+		for resource in pathway_.outputResources.get_children():
 			apply_resource(resource)
 	else:
 		crossroad.reset_pathways()
@@ -231,6 +229,7 @@ func drones_assembly() -> void:
 func buy_market_card(slot_: int) -> void:
 	var card = nexus.market.cards.get_child(slot_)
 	nexus.market.cards.remove_child(card)
-	gameboard.available.add_child(card)
+	gameboard.available.cards.add_child(card)
 	card.area = gameboard.available
+	card.gameboard = gameboard
 	gameboard.change_resource_stack_value("mineral", card.price)

@@ -1,6 +1,8 @@
 extends MarginContainer
 
 
+@onready var priceIcon = $VBox/Price/Icon
+@onready var priceValue = $VBox/Price/Value
 @onready var chargeIcon = $VBox/Charge/Icon
 @onready var chargeValue = $VBox/Charge/Value
 @onready var toughnessIcon = $VBox/Toughness/Icon
@@ -23,7 +25,7 @@ func set_attributes(input_: Dictionary) -> void:
 	var description = Global.dict.card.index[input_.index]
 	market = input_.market
 	rarity = description.rarity
-	price = input_.price
+	price = description.price
 	charge.limit = description.limit.charge
 	charge.current = charge.limit
 	toughness.limit = description.limit.toughness
@@ -57,6 +59,16 @@ func set_icons() -> void:
 	input.type = "number"
 	input.subtype = toughness.current
 	toughnessValue.set_attributes(input)
+	
+	input = {}
+	input.type = "resource"
+	input.subtype = "mineral"
+	priceIcon.set_attributes(input)
+	
+	input = {}
+	input.type = "number"
+	input.subtype = price
+	priceValue.set_attributes(input)
 
 
 func fill_tokens() -> void:

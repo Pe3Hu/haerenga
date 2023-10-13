@@ -107,8 +107,8 @@ func set_icons(length_: int) -> void:
 
 func add_tokens(put_: String, subtype_: String, value_: int) -> void:
 	if value_ != 0:
-		var tokens = get(put_+"tokens")
-		var hbox = get(put_+"box")
+		var tokens = get(put_+"Tokens")
+		var hbox = get(put_+"Box")
 		hbox.visible = true
 		var token = get_token(put_, subtype_)
 		
@@ -144,7 +144,7 @@ func add_resources(resource_: String, value_: int) -> void:
 
 
 func get_token(put_: String, subtype_: String) -> Variant:
-	var tokens = get(put_+"tokens")
+	var tokens = get(put_+"Tokens")
 	
 	for token in tokens.get_children():
 		if token.title.subtype == subtype_:

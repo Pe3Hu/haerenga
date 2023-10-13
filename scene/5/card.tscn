@@ -49,6 +49,16 @@ theme_override_fonts/font = ExtResource("1_hnxxy")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Price" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Icon" parent="VBox/Price" instance=ExtResource("3_ilr0a")]
+layout_mode = 2
+
+[node name="Value" parent="VBox/Price" instance=ExtResource("3_ilr0a")]
+layout_mode = 2
+
 [node name="Tokens" type="VBoxContainer" parent="VBox"]
 layout_mode = 2
 alignment = 1

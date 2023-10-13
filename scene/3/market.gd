@@ -9,11 +9,11 @@ var capacity = null
 
 func set_attributes(input_: Dictionary) -> void:
 	nexus = input_.nexus
-	capacity = 6
+	capacity = 10
 	
 	var input = {}
 	input.type = "number"
-	input.subtype = 12
+	input.subtype = 1
 	level.set_attributes(input)
 	
 	refill_cards()
@@ -22,6 +22,19 @@ func set_attributes(input_: Dictionary) -> void:
 func refill_cards() -> void:
 	while cards.get_child_count() < capacity:
 		generate_card()
+	
+	var cards_ = []
+	
+	while cards.get_child_count() > 0:
+		var card = cards.get_child(0)
+		cards.remove_child(card)
+		cards_.append(card)
+	
+	cards_.sort_custom(func(a, b): return a.price < b.price)
+	
+	for card in cards_:
+		cards.add_child(card)
+		
 
 
 func generate_card() -> void:
@@ -30,7 +43,6 @@ func generate_card() -> void:
 	var input = {}
 	input.market = self
 	input.index = Global.dict.card.rarity[rarity].pick_random()
-	input.price = 0
 
 	var card = Global.scene.card.instantiate()
 	cards.add_child(card)

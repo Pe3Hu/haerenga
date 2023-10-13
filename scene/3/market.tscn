@@ -43,6 +43,6 @@ alignment = 1
 [node name="Level" parent="VBox" instance=ExtResource("3_xtflf")]
 layout_mode = 2
 
-[node name="Cards" type="HBoxContainer" parent="VBox"]
+[node name="Cards" type="GridContainer" parent="VBox"]
 layout_mode = 2
-alignment = 1
+columns = 5
