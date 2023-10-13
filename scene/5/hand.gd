@@ -15,11 +15,9 @@ func set_attributes(input_: Dictionary) -> void:
 
 
 func refill() -> void:
-	#print(["before", cards.get_child_count(), capacity.current, gameboard.available.cards.get_child_count()])
 	gameboard.reshuffle_available()
 	while cards.get_child_count() < capacity.current and gameboard.available.cards.get_child_count() > 0:
 		draw_card()
-	#print(["after", cards.get_child_count(), capacity.current, gameboard.available.cards.get_child_count()])
 
 
 func draw_card() -> void:
@@ -36,7 +34,7 @@ func apply() -> void:
 
 
 func apply_card(card_: MarginContainer) -> void:
-	for token in card_.definitely.get_children():
+	for token in card_.tokens.get_children():
 		var value = token.stack.get_number()
 		gameboard.change_token_value(token.title.subtype, value)
 

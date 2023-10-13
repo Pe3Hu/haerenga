@@ -1,7 +1,8 @@
 extends MarginContainer
 
 
-@onready var cores = $Cores
+@onready var market = $VBox/Market
+@onready var cores = $VBox/Cores
 
 var sketch = null
 
@@ -10,6 +11,9 @@ func set_attributes(input_: Dictionary) -> void:
 	sketch = input_.sketch
 	
 	init_cores()
+	var input = {}
+	input.nexus = self
+	market.set_attributes(input)
 
 
 func init_cores() -> void:

@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ctrii0wv0wctk"]
+[gd_scene load_steps=5 format=3 uid="uid://ctrii0wv0wctk"]
 
+[ext_resource type="Script" path="res://scene/3/market.gd" id="1_jhp7d"]
 [ext_resource type="FontFile" uid="uid://bvnpo88mdytkv" path="res://asset/font/letter/JosefinSans-Bold.ttf" id="1_p8qfr"]
+[ext_resource type="PackedScene" uid="uid://ciw38iqel0v5a" path="res://scene/0/icon.tscn" id="3_xtflf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 
@@ -19,6 +21,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+script = ExtResource("1_jhp7d")
 
 [node name="BG" type="Panel" parent="."]
 layout_mode = 2
@@ -32,3 +35,14 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("1_p8qfr")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Level" parent="VBox" instance=ExtResource("3_xtflf")]
+layout_mode = 2
+
+[node name="Cards" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+alignment = 1

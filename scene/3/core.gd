@@ -23,12 +23,14 @@ func set_attributes(input_: Dictionary) -> void:
 	crossroad.set_attributes(input)
 	gameboard.set_attributes(input)
 	spaw_on_outpost()
+	nexus.sketch.add_serif()
 	
-	follow_phase()
-	follow_phase()
-	
-	for _i in 1:
-		skip_phases()
+#	follow_phase()
+#	follow_phase()
+#
+#	for _i in 6:
+#		skip_phases()
+#	nexus.sketch.add_serif()
 
 
 func spaw_on_outpost() -> void:
@@ -224,3 +226,11 @@ func empowerment_request(tokens_: Dictionary) -> void:
 
 func drones_assembly() -> void:
 	pass
+
+
+func buy_market_card(slot_: int) -> void:
+	var card = nexus.market.cards.get_child(slot_)
+	nexus.market.cards.remove_child(card)
+	gameboard.available.add_child(card)
+	card.area = gameboard.available
+	gameboard.change_resource_stack_value("mineral", card.price)

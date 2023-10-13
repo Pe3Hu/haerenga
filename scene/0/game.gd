@@ -8,6 +8,8 @@ func _ready() -> void:
 	#012 description
 	#Global.rng.randomize()
 	#var value = Global.rng.randi_range(min, max)
+	
+	#Global.node.sketch.print_serifs()
 	pass
 
 

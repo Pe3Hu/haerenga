@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cplgmfcyecxlj"]
+[gd_scene load_steps=5 format=3 uid="uid://cplgmfcyecxlj"]
 
 [ext_resource type="Script" path="res://scene/3/nexus.gd" id="1_ea54j"]
 [ext_resource type="FontFile" uid="uid://bvnpo88mdytkv" path="res://asset/font/letter/JosefinSans-Bold.ttf" id="2_5icot"]
+[ext_resource type="PackedScene" uid="uid://ctrii0wv0wctk" path="res://scene/3/market.tscn" id="3_b4elb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 
@@ -35,5 +36,12 @@ theme_override_fonts/font = ExtResource("2_5icot")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Cores" type="GridContainer" parent="."]
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Market" parent="VBox" instance=ExtResource("3_b4elb")]
+layout_mode = 2
+
+[node name="Cores" type="GridContainer" parent="VBox"]
 layout_mode = 2

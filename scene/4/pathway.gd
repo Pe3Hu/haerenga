@@ -1,22 +1,22 @@
 extends MarginContainer
 
 
-@onready var destinationicon = $HBox/Destination/Icon
-@onready var destinationindex = $HBox/Destination/Index
-@onready var motionicon = $HBox/Motion/Icon
-@onready var motionvalue = $HBox/Motion/Value
-@onready var roomicon = $HBox/Room/Icon
-@onready var roomobstacle = $HBox/Room/Obstacle
-@onready var roomrequirement = $HBox/Room/Requirement
-@onready var roomcontent = $HBox/Room/Content
-@onready var roomvalue = $HBox/Room/Value
-@onready var inputbox = $HBox/Input
-@onready var inputicon = $HBox/Input/Icon
-@onready var inputtokens = $HBox/Input/Tokens
-@onready var outputbox = $HBox/Output
-@onready var outputicon = $HBox/Output/Icon
-@onready var outputtokens = $HBox/Output/Tokens
-@onready var outputresources = $HBox/Output/Resources
+@onready var destinationIcon = $HBox/Destination/Icon
+@onready var destinationIndex = $HBox/Destination/Index
+@onready var motionIcon = $HBox/Motion/Icon
+@onready var motionValue = $HBox/Motion/Value
+@onready var roomIcon = $HBox/Room/Icon
+@onready var roomObstacle = $HBox/Room/Obstacle
+@onready var roomRequirement = $HBox/Room/Requirement
+@onready var roomContent = $HBox/Room/Content
+@onready var roomValue = $HBox/Room/Value
+@onready var inputBox = $HBox/Input
+@onready var inputIcon = $HBox/Input/Icon
+@onready var inputTokens = $HBox/Input/Tokens
+@onready var outputBox = $HBox/Output
+@onready var outputIcon = $HBox/Output/Icon
+@onready var outputTokens = $HBox/Output/Tokens
+@onready var outputResources = $HBox/Output/Resources
 @onready var continuation = $HBox/Continuation
 
 var core = null
@@ -37,17 +37,17 @@ func set_attributes(input_: Dictionary) -> void:
 	set_icons(input_.length)
 	
 	if crossroad.origin != null:
-		for token in crossroad.origin.inputtokens.get_children():
+		for token in crossroad.origin.inputTokens.get_children():
 			var subtype = token.title.subtype
 			var value = token.stack.get_number()
 			add_tokens("input", subtype, value)
 		
-		for token in crossroad.origin.outputtokens.get_children():
+		for token in crossroad.origin.outputTokens.get_children():
 			var subtype = token.title.subtype
 			var value = token.stack.get_number()
 			add_tokens("output", subtype, value)
 		
-		for resource in crossroad.origin.outputresources.get_children():
+		for resource in crossroad.origin.outputResources.get_children():
 			var subtype = resource.title.subtype
 			var value = resource.stack.get_number()
 			add_resources(subtype, value)
@@ -57,52 +57,52 @@ func set_icons(length_: int) -> void:
 	var input = {}
 	input.type = "node"
 	input.subtype = "door"
-	destinationicon.set_attributes(input)
+	destinationIcon.set_attributes(input)
 	
 	input = {}
 	input.type = "number"
 	input.subtype = rooms.destination.index
-	destinationindex.set_attributes(input)
+	destinationIndex.set_attributes(input)
 	
 	input = {}
 	input.type = "token"
 	input.subtype = "motion"
-	motionvalue.set_attributes(input)
+	motionValue.set_attributes(input)
 	
 	input = {}
 	input.type = "number"
 	input.subtype = length_
-	motionvalue.set_attributes(input)
+	motionValue.set_attributes(input)
 	
 	input = {}
 	input.type = "obstacle"
 	input.subtype = rooms.destination.obstacle.subtype
-	roomobstacle.set_attributes(input)
+	roomObstacle.set_attributes(input)
 	
 	input = {}
 	input.type = "number"
 	input.subtype = rooms.destination.obstacle.requirement
-	roomrequirement.set_attributes(input)
+	roomRequirement.set_attributes(input)
 
 	input = {}
 	input.type = "content"
 	input.subtype = rooms.destination.content.type
-	roomcontent.set_attributes(input)
+	roomContent.set_attributes(input)
 	
 	input = {}
 	input.type = "number"
 	input.subtype = rooms.destination.content.value
-	roomvalue.set_attributes(input)
+	roomValue.set_attributes(input)
 	
 	input = {}
 	input.type = "node"
 	input.subtype = "minus"
-	inputicon.set_attributes(input)
+	inputIcon.set_attributes(input)
 	
 	input = {}
 	input.type = "node"
 	input.subtype = "plus"
-	outputicon.set_attributes(input)
+	outputIcon.set_attributes(input)
 
 
 func add_tokens(put_: String, subtype_: String, value_: int) -> void:
@@ -127,7 +127,7 @@ func add_tokens(put_: String, subtype_: String, value_: int) -> void:
 
 func add_resources(resource_: String, value_: int) -> void:
 	if value_ != 0:
-		outputbox.visible = true
+		outputBox.visible = true
 		var resource = get_resource(resource_)
 		
 		if resource == null:
@@ -137,7 +137,7 @@ func add_resources(resource_: String, value_: int) -> void:
 			input.stack = value_
 			
 			resource = Global.scene.resource.instantiate()
-			outputresources.add_child(resource)
+			outputResources.add_child(resource)
 			resource.set_attributes(input)
 		else:
 			resource.change_stack(value_)
@@ -163,7 +163,7 @@ func get_token_stack_value(put_: String, subtype_: String) -> Variant:
 
 
 func get_resource(subtype_: String) -> Variant:
-	for resource in outputresources.get_children():
+	for resource in outputResources.get_children():
 		if resource.title.subtype == subtype_:
 			return resource
 	
@@ -180,7 +180,7 @@ func get_resource_stack_value(subtype_: String) -> Variant:
 
 
 func sort_puts() -> void:
-	var keys = ["inputtokens", "outputtokens", "outputresources"]
+	var keys = ["inputTokens", "outputTokens", "outputResources"]
 	
 	for key in keys:
 		var parent = get(key)

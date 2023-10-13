@@ -27,6 +27,7 @@ func init_arr() -> void:
 	arr.sequence["A000040"] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 	arr.edge = [1, 2, 3, 4, 5, 6]
 	
+	arr.rarity = ["ordinary" , "unusual", "rare", "epic", "legendary", "mythical"]
 	arr.phase = ["draw_hand", "get_pathways", "choose_pathway", "halt"]
 	arr.token = ["motion", "acceleration", "salvo", "extraction", "scan", "recharge"]
 	arr.resource = ["mineral", "knowledge", "intelligence", "fuel"]
@@ -38,6 +39,7 @@ func init_num() -> void:
 	num.index = {}
 	num.index.room = 0
 	num.index.door = 0
+	num.index.card = 0
 	
 	num.ring = {}
 	num.ring.r = 50
@@ -64,13 +66,15 @@ func init_num() -> void:
 	
 	num.relevance = {}
 	num.relevance.resource = {}
+	num.relevance.resource.fuel = 1
 	num.relevance.resource.mineral = 2
 	num.relevance.resource.knowledge = 3
+	num.relevance.resource.energy = 4
+	num.relevance.resource.damage = 5
 	num.relevance.resource.intelligence = 6
-	num.relevance.resource.fuel = 1
 	
 	num.relevance.token = {}
-	num.relevance.token.recharge = 4
+	num.relevance.token.recharge = 1
 	num.relevance.token.boost = -2
 	num.relevance.token.overload = -4
 	num.relevance.token.breakage = -8
@@ -82,6 +86,7 @@ func init_dict() -> void:
 	init_door()
 	init_content()
 	init_obstacle()
+	init_loot()
 	init_card()
 
 
@@ -114,25 +119,26 @@ func init_also() -> void:
 	dict.conversion = {}
 	dict.conversion.token = {}
 	dict.conversion.token.resource = {}
-	dict.conversion.token.resource["extraction"] = "mineral"
+	dict.conversion.token.resource["motion"] = "fuel"
 	dict.conversion.token.resource["acceleration"] = "knowledge"
+	dict.conversion.token.resource["salvo"] = "damage"
+	dict.conversion.token.resource["extraction"] = "mineral"
 	dict.conversion.token.resource["scan"] = "intelligence"
 	dict.conversion.token.resource["recharge"] = "energy"
-	dict.conversion.token.resource["motion"] = "fuel"
 	dict.conversion.token.resource["boost"] = "fuel"
 	dict.conversion.token.resource["overload"] = "energy"
 	dict.conversion.token.resource["breakage"] = "spares"
 	
 	dict.conversion.token.sign = {}
-	dict.conversion.token.sign["extraction"] = 1
+	dict.conversion.token.sign["motion"] = -1
 	dict.conversion.token.sign["acceleration"] = 1
+	dict.conversion.token.sign["salvo"] = 1
+	dict.conversion.token.sign["extraction"] = 3
 	dict.conversion.token.sign["scan"] = 1
 	dict.conversion.token.sign["recharge"] = 1
-	dict.conversion.token.sign["motion"] = -1
 	dict.conversion.token.sign["boost"] = -2
 	dict.conversion.token.sign["overload"] = -1
 	dict.conversion.token.sign["breakage"] = -1
-	dict.conversion.token.sign["salvo"] = 0
 
 
 func init_neighbor() -> void:
@@ -259,28 +265,190 @@ func init_obstacle() -> void:
 		dict.room.obstacle[obstacle.subtype] = data
 
 
-func init_card() -> void:
-	dict.card = {}
-	var path = "res://asset/json/haerenga_card.json"
+func init_loot() -> void:
+	dict.loot = {}
+	dict.loot.chance = {}
+	dict.loot.chance.level = {}
+	dict.loot.chance.level.rarity = {}
+	var path = "res://asset/json/haerenga_loot.json"
 	var array = load_data(path)
 	
-	for card in array:
-		var data = {}
-		data.token = {}
+	for loot in array:
+		var level = int(loot.level)
+		dict.loot.chance.level.rarity[level] = {}
 		
-		for key in card:
-			if key.contains("token"):
-				var words = key.split(" ")
-				
-				if !data.token.has(words[0]):
-					data.token[words[0]] = {}
-				
-				data.token[words[0]][words[2]] = card[key]
-			else:
-				data[key] = card[key]
+		for rarity in arr.rarity:
+			if loot[rarity] > 0:
+				dict.loot.chance.level.rarity[level][rarity] = loot[rarity]
+	
+	dict.loot.limit = {}
+	dict.loot.limit.rarity = {}
+	dict.loot.limit.rarity["ordinary"] = {}
+	dict.loot.limit.rarity["ordinary"].min = 15
+	dict.loot.limit.rarity["ordinary"].max = 18
+	
+	for _i in arr.rarity.size():
+		if _i > 0:
+			var rarity = {}
+			rarity.current = arr.rarity[_i]
+			rarity.previous = arr.rarity[_i - 1]
+			var l = dict.loot.limit.rarity[rarity.previous].max - dict.loot.limit.rarity[rarity.previous].min + 1 
+			dict.loot.limit.rarity[rarity.current] = {}
+			dict.loot.limit.rarity[rarity.current].min = dict.loot.limit.rarity[rarity.previous].max + 1
+			dict.loot.limit.rarity[rarity.current].max = dict.loot.limit.rarity[rarity.current].min + l
+	
+	dict.loot.limit.rarity["legendary"].max += 2
+
+
+func init_card() -> void:
+	dict.card = {}
+	dict.card.index = {}
+	dict.card.rarity = {}
+	dict.card.starte_kit = {}
+	dict.card.starte_kit[4] = 1
+	dict.card.starte_kit[7] = 1
+	#dict.card.starte_kit[38] = 1
+	dict.card.starte_kit[61] = 4
+	dict.card.starte_kit[113] = 6
+	dict.card.starte_kit[116] = 1
+	dict.card.starte_kit[179] = 1
+	dict.market = {}
+	dict.market.card = {}
+	var pairs = []
+	var childs = {}
+	var weights = {}
+	var serif = Time.get_unix_time_from_system()
+	
+	for token in arr.token:
+		var resource = dict.conversion.token.resource[token]
+		weights[token] = dict.conversion.token.sign[token] * num.relevance.resource[resource]
+	
+	weights["motion"] = 2
+	
+	
+	for first in arr.token:
+		childs[first] = []
 		
-		dict.card[card.title] = data
- 
+		for second in arr.token:
+			var pair = [first, second]
+			
+			if arr.token.find(first) > arr.token.find(second):
+				pair = [second, first]
+			
+			if !pairs.has(pair) and first != second:
+				pairs.append(pair)
+				childs[first].append(second)
+	
+	#dict.loot.limit.rarity["legendary"].max
+	token_parameterizations(weights, childs, dict.loot.limit.rarity["mythical"].max)
+	dict.market = {}
+	
+	#print("____", dict.market.card[30].keys().size())
+	
+	
+	print(Time.get_unix_time_from_system() - serif)
+
+
+func token_parameterizations(weights_: Dictionary, childs_: Dictionary,  limit_: int) -> void:
+	var charges = [1, 2,3,4,5]
+	var limit = ceil(limit_ / 2)
+	
+	for conversion in range(2, limit):
+		for parent in weights_:
+			for child in childs_[parent]:
+				for charge in charges:
+					var subtypes = {}
+					subtypes = get_subtypes_based_on_value(weights_, subtypes, parent, conversion, charge)
+					
+					while subtypes.has(parent):
+						subtypes = replace_parent_with_child(weights_, subtypes, parent, child, conversion, charge)
+
+
+func replace_parent_with_child(weights_: Dictionary, subtypes_: Dictionary, parent_: String, child_: String, conversion_: int, charge_: int) -> Dictionary:
+	subtypes_[parent_] -= 1
+	
+	if !subtypes_.has(child_):
+		subtypes_[child_] = 0
+	subtypes_[child_] += 1
+	
+	if subtypes_[parent_] == 0:
+		subtypes_.erase(parent_)
+	
+	return get_subtypes_based_on_value(weights_, subtypes_, child_, conversion_, charge_)
+
+
+func get_subtypes_based_on_value(weights_: Dictionary, subtypes_: Dictionary, child_: String, conversion_: int, charge_: int) -> Dictionary:
+	var subtypes = {}
+	var conversion = 0
+	
+	for subtype in subtypes_:
+		subtypes[subtype] = subtypes_[subtype]
+		conversion += weights_[subtype] * subtypes[subtype]
+	
+		add_card(weights_, subtypes, charge_)
+	
+	while conversion < conversion_:
+		if !subtypes.has(child_):
+			subtypes[child_] = 0
+		
+		subtypes[child_] += 1
+		conversion += weights_[child_]
+		
+		add_card(weights_, subtypes, charge_)
+	
+	return subtypes
+
+
+func add_card(weights_: Dictionary, subtypes_: Dictionary, charge_: int) -> void:
+	var conversion = 0
+	var keys = subtypes_.keys()
+	
+	keys.sort_custom(func(a, b): return arr.token.find(a) < arr.token.find(b))
+	var subtypes = {}
+	
+	for key in keys:
+		subtypes[key] = subtypes_[key]
+		conversion += subtypes[key] * weights_[key] * charge_
+	
+	subtypes.charge = charge_
+	
+	if conversion >= dict.loot.limit.rarity["ordinary"].min and conversion <= dict.loot.limit.rarity["mythical"].max:
+		if !dict.market.card.has(conversion):
+			dict.market.card[conversion] = {}
+		
+		if !dict.market.card[conversion].has(subtypes):
+			if charge_ > 1 or conversion >= dict.loot.limit.rarity["epic"].min:
+				#print([num.index.card, conversion, subtypes])
+				dict.market.card[conversion][subtypes] = num.index.card#{}
+				#dict.market.card[conversion][subtypes].index = num.index.card
+				#dict.market.card[conversion][subtypes].charge = charge_
+				#print([conversion, subtypes])
+				dict.card.index[num.index.card] = {}
+				dict.card.index[num.index.card].token = {}
+				dict.card.index[num.index.card].limit = {}
+				dict.card.index[num.index.card].limit.charge = subtypes.charge
+				dict.card.index[num.index.card].limit.toughness = 1
+				dict.card.index[num.index.card].rarity = get_rarity(conversion)
+				
+				if !dict.card.rarity.has(dict.card.index[num.index.card].rarity):
+					dict.card.rarity[dict.card.index[num.index.card].rarity] = []
+				
+				dict.card.rarity[dict.card.index[num.index.card].rarity].append(num.index.card)
+				
+				for subtype in arr.token:
+					if subtypes.has(subtype):
+						dict.card.index[num.index.card].token[subtype] = subtypes[subtype]
+				
+				num.index.card += 1
+
+
+func get_rarity(conversion_: int) -> Variant:
+	for rarity in dict.loot.limit.rarity:
+		if dict.loot.limit.rarity[rarity].min <= conversion_ and dict.loot.limit.rarity[rarity].max >= conversion_:
+			return rarity
+	
+	return null
+
 
 func init_node() -> void:
 	node.game = get_node("/root/Game")
@@ -337,8 +505,8 @@ func init_color():
 	var max_h = 360.0
 	
 	color.obstacle = {}
-	color.obstacle["unknown"] =  Color.from_hsv(6 / max_h, 0.61, 0.83)
-	color.obstacle["empty"] =  Color.from_hsv(47 / max_h, 1.0, 0.96)
+	color.obstacle["unknown"] = Color.from_hsv(6 / max_h, 0.61, 0.83)
+	color.obstacle["empty"] = Color.from_hsv(47 / max_h, 1.0, 0.96)
 	color.obstacle["conundrum"] = Color.from_hsv(277 / max_h, 0.58, 0.91)
 	color.obstacle["raid"] = Color.from_hsv(5 / max_h, 0.92, 0.98)
 	color.obstacle["labyrinth"] = Color.from_hsv(152 / max_h, 0.87, 0.85)
@@ -347,15 +515,29 @@ func init_color():
 	color.obstacle["anomaly"] = Color.from_hsv(224 / max_h, 0.71, 1.0)
 	
 	color.content = {}
-	color.content["unknown"] =  Color.from_hsv(6 / max_h, 0.61, 0.83)
-	color.content["empty"] =  Color.from_hsv(47 / max_h, 1.0, 0.96)
-	color.content["mine"] =  Color.from_hsv(29 / max_h, 0.44, 0.94)
+	color.content["unknown"] = Color.from_hsv(6 / max_h, 0.61, 0.83)
+	color.content["empty"] = Color.from_hsv(47 / max_h, 1.0, 0.96)
+	color.content["mine"] = Color.from_hsv(29 / max_h, 0.44, 0.94)
 	color.content["terminal"] = Color.from_hsv(218 / max_h, 0.68, 0.48)
 	color.content["ruin"] = Color.from_hsv(20 / max_h, 0.8, 1.0)
 	color.content["watchtower"] = Color.from_hsv(168 / max_h, 0.74, 0.83)
 	color.content["powerhouse"] = Color.from_hsv(210 / max_h, 0.14, 0.97)
 	color.content["warehouse"] = Color.from_hsv(207 / max_h, 0.15, 0.23)
 	color.content["library"] = Color.from_hsv(10 / max_h, 0.1, 0.47)
+	
+	color.rarity = {}
+	#color.rarity["ordinary"] = Color.from_hsv(210 / max_h, 0.5, 0.2)
+	color.rarity["ordinary"] = Color.from_hsv(210 / max_h, 0.2, 0.6)
+	#color.rarity["unusual"] = Color.from_hsv(140 / max_h, 0.8, 0.3)
+	color.rarity["unusual"] = Color.from_hsv(140 / max_h, 0.9, 0.6)
+	#color.rarity["rare"] = Color.from_hsv(210 / max_h, 0.9, 0.3)
+	color.rarity["rare"] = Color.from_hsv(210 / max_h, 0.9, 0.6)
+	#color.rarity["epic"] = Color.from_hsv(300 / max_h, 0.7, 0.4)
+	color.rarity["epic"] = Color.from_hsv(300 / max_h, 0.9, 0.6)
+	#color.rarity["legendary"] = Color.from_hsv(50 / max_h, 0.8, 0.5)
+	color.rarity["legendary"] = Color.from_hsv(60 / max_h, 0.9, 0.8)
+	#color.rarity["mythical"] = Color.from_hsv(0 / max_h, 0.9, 0.6)
+	color.rarity["mythical"] = Color.from_hsv(0 / max_h, 0.8, 0.9)
 
 
 func save(path_: String, data_: String):

@@ -8,7 +8,6 @@ extends MarginContainer
 @onready var tokens = $VBox/Tokens
 @onready var resources = $VBox/Resources
 
-
 var core = null
 
 
@@ -56,15 +55,20 @@ func init_resources() -> void:
 
 
 func init_starter_kit_cards() -> void:
-	for title in Global.dict.card:
-		for _i in Global.dict.card[title]["starter kit"]:
+	for index in Global.dict.card.starte_kit:
+		for _i in Global.dict.card.starte_kit[index]:
 			var input = {}
-			input.gameboard = self
-			input.title = title
+			input.market = null
+			input.index = index
+			input.price = 0
 		
 			var card = Global.scene.card.instantiate()
-			available.cards.add_child(card)
+			core.nexus.market.cards.add_child(card)
 			card.set_attributes(input)
+	
+	while core.nexus.market.cards.get_child_count() > 0:
+		var index = 0
+		core.buy_market_card(index)
 	
 	reshuffle_available()
 

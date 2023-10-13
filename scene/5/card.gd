@@ -1,42 +1,79 @@
 extends MarginContainer
 
 
-@onready var title = $VBox/Title
+@onready var chargeIcon = $VBox/Charge/Icon
+@onready var chargeValue = $VBox/Charge/Value
+@onready var toughnessIcon = $VBox/Toughness/Icon
+@onready var toughnessValue = $VBox/Toughness/Value
+@onready var bg = $BG
+@onready var index = $VBox/Index
 @onready var tokens = $VBox/Tokens
-@onready var definitely = $VBox/Tokens/Definitely
-@onready var alternative = $VBox/Tokens/Alternative
 
 
 var area = null
 var gameboard = null
+var market = null
+var price = null
+var rarity = null
 var charge = {}
 var toughness = {}
 
 
 func set_attributes(input_: Dictionary) -> void:
-	gameboard = input_.gameboard
-	area = gameboard.available
-	title.text = input_.title
+	var description = Global.dict.card.index[input_.index]
+	market = input_.market
+	rarity = description.rarity
+	price = input_.price
+	charge.limit = description.limit.charge
+	charge.current = charge.limit
+	toughness.limit = description.limit.toughness
+	toughness.current = toughness.limit
+	index.text = str(input_.index)
 	
+	set_icons()
 	fill_tokens()
+
+func set_icons() -> void:
+	var style = StyleBoxFlat.new()
+	bg.set("theme_override_styles/panel", style)
+	style.bg_color = Global.color.rarity[rarity]
+	
+	var input = {}
+	input.type = "resource"
+	input.subtype = "energy"
+	chargeIcon.set_attributes(input)
+	
+	input = {}
+	input.type = "number"
+	input.subtype = charge.current
+	chargeValue.set_attributes(input)
+	
+	input = {}
+	input.type = "resource"
+	input.subtype = "spares"
+	toughnessIcon.set_attributes(input)
+	
+	input = {}
+	input.type = "number"
+	input.subtype = toughness.current
+	toughnessValue.set_attributes(input)
 
 
 func fill_tokens() -> void:
-	var description = Global.dict.card[title.text]
-	charge.limit = description.charge
+	var description = Global.dict.card.index[int(index.text)]
+	charge.limit = description.limit.charge
 	charge.current = charge.limit
-	toughness.limit = description.toughness
+	toughness.limit = description.limit.toughness
 	toughness.current = toughness.limit
 	
-	for key in description.token:
+	for subtype in description.token:
 		var input = {}
 		input.proprietor = self
-		input.subtype = description.token[key].subtype
-		input.value = description.token[key].value
-		input.definiteness = description.token[key].definiteness
+		input.subtype = subtype
+		input.value = description.token[subtype]
 	
 		var token = Global.scene.token.instantiate()
-		get(description.token[key].definiteness).add_child(token)
+		tokens.add_child(token)
 		token.set_attributes(input)
 	
 	for node in tokens.get_children():
