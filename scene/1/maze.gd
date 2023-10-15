@@ -1,16 +1,18 @@
 extends SubViewportContainer
 
-@onready var sv = $SubViewport
+@onready var subViewport = $SubViewport
 @onready var polygons = $SubViewport/Polygons
 @onready var rooms = $SubViewport/Polygons/Rooms
 @onready var doors = $SubViewport/Polygons/Doors
 @onready var outposts = $SubViewport/Polygons/Outposts
+@onready var lairs = $SubViewport/Polygons/Lairs
 @onready var obstacles = $SubViewport/Polygons/Obstacles
 @onready var contents = $SubViewport/Polygons/Obstacles
 @onready var icons = $SubViewport/Icons
-@onready var iroom = $SubViewport/Icons/Room
-@onready var idoor = $SubViewport/Icons/Door
-@onready var ilength = $SubViewport/Icons/Length
+@onready var iRoom = $SubViewport/Icons/Room
+@onready var iDoor = $SubViewport/Icons/Door
+@onready var iLength = $SubViewport/Icons/Length
+@onready var iTide = $SubViewport/Icons/Tide
 @onready var camera = $SubViewport/Camera
 
 var sketch = null
@@ -25,13 +27,18 @@ var focus = null
 
 func set_attributes(input_: Dictionary) -> void:
 	sketch = input_.sketch
+	sketch.add_serif()
 	
 	var input = {}
 	input.maze = self
 	camera.set_attributes(input)
 	init_rooms()
 	init_sectors()
+	sketch.add_serif()
+	set_lair()
+	sketch.add_serif()
 	init_outposts()
+	sketch.add_serif()
 	init_room_obstacles_and_contents()
 	#init_minimap()
 
@@ -342,7 +349,7 @@ func update_size() -> void:
 		corners.rightbot.x = max(room.position.x, corners.rightbot.x)
 		corners.rightbot.y = max(room.position.x, corners.rightbot.y)
 	
-	polygons.position += sv.size * 0.5# - Vector2(Global.vec.size.number) * 0.5
+	polygons.position += subViewport.size * 0.5# - Vector2(Global.vec.size.number) * 0.5
 	camera.maze = self
 	camera.zoom += Vector2.ONE * 0.5 
 
@@ -390,6 +397,11 @@ func init_sectors() -> void:
 		door.add_length()
 
 
+func set_lair() -> void:
+	var room = rooms.get_child(0)
+	room.add_lair()
+
+
 func init_outposts() -> void:
 	var options = []
 	var ring = rings.room.size() - 1
@@ -403,7 +415,7 @@ func init_outposts() -> void:
 		else:
 			var option = options.back()
 			option.append(room)
-			remoteness[room] = round(sv.size.length() / 10)
+			remoteness[room] = round(subViewport.size.length() / 10)
 	
 	
 	for backdoor in backdoors:
@@ -425,7 +437,7 @@ func init_outposts() -> void:
 func init_room_obstacles_and_contents() -> void:
 	for sector in sectors:
 		for room in sectors[sector]:
-			if room.outpost == null:
+			if room.outpost == null and room.lair == null:
 				var result = Global.get_random_obstacle_and_content(sector)
 				room.add_obstacle(result.obstacle)
 				room.add_content(result.content)

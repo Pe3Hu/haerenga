@@ -1,6 +1,6 @@
-GridContainer
-HBoxContainer
 VBoxContainer
+HBoxContainer
+GridContainer
 Polygon2D
 SubViewport
 SubViewportContainer

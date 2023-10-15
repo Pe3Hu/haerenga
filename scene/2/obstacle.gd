@@ -151,7 +151,6 @@ func check_solution(pathway_: MarginContainer) -> bool:
 				if kind != null:
 					value += Global.dict.room.obstacle[subtype].impact[kind] * solution[subtype_]
 			
-			print([solution, value, requirement])
 			return value >= requirement
 	
 	return true

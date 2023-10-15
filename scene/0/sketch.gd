@@ -17,6 +17,7 @@ func _ready() -> void:
 	var core = nexus.cores.get_child(0)
 	maze.update_rooms_color_based_on_core_intelligence(core)
 
+
 func add_serif() -> void:
 	var serif = Time.get_unix_time_from_system()
 	serifs.append(serif)

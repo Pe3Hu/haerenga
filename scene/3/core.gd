@@ -1,7 +1,9 @@
 extends MarginContainer
 
-@onready var gameboard = $HBox/Gameboard
-@onready var crossroad = $HBox/Crossroad
+@onready var market = $VBox/Market
+@onready var train = $VBox/Train
+@onready var gameboard = $VBox/HBox/Gameboard
+@onready var crossroad = $VBox/HBox/Crossroad
 
 var nexus = null
 var maze = null
@@ -15,22 +17,35 @@ var empowerment = {}
 func set_attributes(input_: Dictionary) -> void:
 	nexus = input_.nexus
 	maze = nexus.sketch.maze
-	
 	intelligence.room = []
+	
 	var input = {}
 	input.core = self
 	input.origin = null
 	crossroad.set_attributes(input)
 	gameboard.set_attributes(input)
+	market.set_attributes(input)
+	init_starter_train()
 	spaw_on_outpost()
 	nexus.sketch.add_serif()
 	
 #	follow_phase()
 #	follow_phase()
 #
-#	for _i in 6:
-#		skip_phases()
+	for _i in 0:
+		skip_phases()
 #	nexus.sketch.add_serif()
+
+
+func init_starter_train() -> void:
+	var input = {}
+	input.core = self
+	input.blueprint = []
+	input.blueprint.append({"motion": 1})
+	input.blueprint.append({"acceleration": 1})
+	input.blueprint.append({"extraction": 1})
+	
+	train.set_attributes(input)
 
 
 func spaw_on_outpost() -> void:
@@ -97,11 +112,6 @@ func token_availability_check(subtype_: String, value_: int) -> bool:
 
 
 func skip_phases() -> void:
-#	crossroad.set_local_ambition()
-#	crossroad.update_continuations()
-#	crossroad.compare_continuations()
-#	crossroad.reset_pathways()
-#	gameboard.reset_tokens()
 	for phase_ in Global.arr.phase:
 		follow_phase()
 
@@ -182,6 +192,7 @@ func follow_phase() -> void:
 
 
 func draw_hand() -> void:
+	train.active_next_van()
 	gameboard.hand.refill()
 	gameboard.hand.apply()
 
@@ -202,7 +213,12 @@ func halt() -> void:
 	
 	if gameboard.available.cards.get_child_count() == 0:
 		return_to_outpost()
-		drones_assembly()
+		market.progression()
+		market.matchmaking()
+		
+		train.van.switch_active()
+		train.van = null
+		#drones_assembly()
 
 
 func return_to_outpost() -> void:
@@ -222,14 +238,23 @@ func empowerment_request(tokens_: Dictionary) -> void:
 		empowerment[token] += tokens_[token]
 
 
-func drones_assembly() -> void:
-	pass
-
-
 func buy_market_card(slot_: int) -> void:
-	var card = nexus.market.cards.get_child(slot_)
-	nexus.market.cards.remove_child(card)
+	var card = market.cards.get_child(slot_)
+	market.cards.remove_child(card)
 	gameboard.available.cards.add_child(card)
 	card.area = gameboard.available
 	card.gameboard = gameboard
-	gameboard.change_resource_stack_value("mineral", card.price)
+	gameboard.change_resource_stack_value("mineral", -card.price)
+	update_empowerment(card)
+
+
+func update_empowerment(card_: MarginContainer) -> void:
+	for token in card_.tokens.get_children():
+		var subtype = token.title.subtype
+		
+		if empowerment.has(subtype):
+			var value = token.stack.get_number() * card_.get_current_charge()
+			empowerment[subtype] -= value
+			
+			if empowerment[subtype] <= 0:
+				empowerment.erase(subtype)

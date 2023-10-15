@@ -26,7 +26,7 @@ func set_attributes(input_: Dictionary) -> void:
 	input.subtype = index
 	
 	icon = Global.scene.icon.instantiate()
-	maze.idoor.add_child(icon)
+	maze.iDoor.add_child(icon)
 	icon.set_attributes(input)
 	icon.position = center
 	
@@ -52,7 +52,7 @@ func collapse() -> void:
 	rooms.back().doors.erase(self)
 	
 	maze.doors.remove_child(self)
-	maze.idoor.remove_child(icon)
+	maze.iDoor.remove_child(icon)
 	queue_free()
 
 
@@ -70,7 +70,7 @@ func add_length() -> void:
 	input.subtype = length
 	
 	var icon_ = Global.scene.icon.instantiate()
-	maze.ilength.add_child(icon_)
+	maze.iLength.add_child(icon_)
 	icon_.set_attributes(input)
 	icon_.position = center
 

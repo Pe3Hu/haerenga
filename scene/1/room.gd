@@ -3,6 +3,7 @@ extends Polygon2D
 
 var maze = null
 var outpost = null
+var lair = null
 var obstacle = null
 var content = null
 var backdoor = null
@@ -28,7 +29,7 @@ func set_attributes(input_: Dictionary) -> void:
 	input.type = "number"
 	input.subtype = index
 	icon = Global.scene.icon.instantiate()
-	maze.iroom.add_child(icon)
+	maze.iRoom.add_child(icon)
 	icon.set_attributes(input)
 	icon.position = position
 	
@@ -95,6 +96,18 @@ func update_color_based_on_sector() -> void:
 	set_color(color_)
 
 
+func add_lair() -> void:
+	var input = {}
+	input.maze = maze
+	input.room = self
+	
+	lair = Global.scene.lair.instantiate()
+	maze.lairs.add_child(lair)
+	lair.set_attributes(input)
+	add_obstacle("empty")
+	add_content("empty")
+
+
 func add_outpost() -> void:
 	var input = {}
 	input.maze = maze
@@ -147,7 +160,7 @@ func update_colors_based_on_core_intelligence(core_) -> void:
 
 
 func passage_test(pathway_: MarginContainer) -> void:
-	print([index, "passage_test", obstacle.subtype, content.type])
+	#print([index, "passage_test", obstacle.subtype, content.type])
 	if obstacle.check_solution(pathway_):
 		#print([index, obstacle.subtype, content.type])
 		obstacle.deactivate()

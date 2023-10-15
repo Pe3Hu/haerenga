@@ -62,11 +62,11 @@ func init_starter_kit_cards() -> void:
 			input.index = index
 		
 			var card = Global.scene.card.instantiate()
-			core.nexus.market.cards.add_child(card)
+			core.market.cards.add_child(card)
 			card.set_attributes(input)
 			card.price = 0
 	
-	while core.nexus.market.cards.get_child_count() > 0:
+	while core.market.cards.get_child_count() > 0:
 		var index = 0
 		core.buy_market_card(index)
 	
@@ -253,4 +253,4 @@ func get_tokens_as_dict() -> Dictionary:
 			result.erase(subtype)
 	
 	return result
-	
+

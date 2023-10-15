@@ -230,10 +230,10 @@ func compare_continuations() -> void:
 	var datas = []
 	var options = []
 	options.append_array(pathways.get_children())
+	var lair = core.nexus.goal
 	
 	for pathway in pathways.get_children():
 		options.append_array(pathway.continuation.pathways.get_children())
-	
 	
 	for pathway_ in options:
 		var data = {}
@@ -241,7 +241,15 @@ func compare_continuations() -> void:
 		data.pathway = pathway_
 		data.weight = {}
 		data.weight.output = 0
-		data.weight.milestone = pathway_.rooms.destination.milestones[core.outpost.room] * 2
+		var a = pathway_.rooms.destination.milestones
+		data.weight.milestone = pathway_.rooms.destination.milestones[lair.room]
+		
+		if pathway_.rooms.destination.milestones.has(core.outpost.room):
+			data.weight.milestone += pathway_.rooms.destination.milestones[core.outpost.room]
+		else:
+			data.weight.milestone += core.outpost.coverage
+		
+		data.weight.milestone *= 2
 		data.weight.total = 0
 		data.weight.unspent = 0
 		var subtype = {}
@@ -324,7 +332,7 @@ func impediment_analysis() -> void:
 			motion = max(motion, pathway.motionValue.get_number())
 		
 		data.tokens.available["motion"] -= motion
-		print([obstacle.room.index, data.tokens])
+		#print([obstacle.room.index, data.tokens])
 		
 		for token in data.tokens.necessary:
 			var value = data.tokens.necessary[token] 

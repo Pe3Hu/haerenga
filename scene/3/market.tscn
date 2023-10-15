@@ -40,7 +40,28 @@ vertical_alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="Level" parent="VBox" instance=ExtResource("3_xtflf")]
+[node name="HBox" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Level" type="HBoxContainer" parent="VBox/HBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Icon" parent="VBox/HBox/Level" instance=ExtResource("3_xtflf")]
+layout_mode = 2
+
+[node name="Value" parent="VBox/HBox/Level" instance=ExtResource("3_xtflf")]
+layout_mode = 2
+
+[node name="Knowledge" type="HBoxContainer" parent="VBox/HBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Icon" parent="VBox/HBox/Knowledge" instance=ExtResource("3_xtflf")]
+layout_mode = 2
+
+[node name="Value" parent="VBox/HBox/Knowledge" instance=ExtResource("3_xtflf")]
 layout_mode = 2
 
 [node name="Cards" type="GridContainer" parent="VBox"]

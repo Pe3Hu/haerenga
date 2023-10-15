@@ -35,6 +35,7 @@ func set_attributes(input_: Dictionary) -> void:
 	set_icons()
 	fill_tokens()
 
+
 func set_icons() -> void:
 	var style = StyleBoxFlat.new()
 	bg.set("theme_override_styles/panel", style)
@@ -128,3 +129,7 @@ func breakage() -> void:
 		gameboard.available.cards.add_child(self)
 		gameboard.broken.cards.remove_child(self)
 		area = gameboard.broken
+
+
+func get_current_charge() -> int:
+	return chargeValue.get_number()

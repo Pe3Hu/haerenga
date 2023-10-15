@@ -9,7 +9,7 @@ func _ready() -> void:
 	#Global.rng.randomize()
 	#var value = Global.rng.randi_range(min, max)
 	
-	#Global.node.sketch.print_serifs()
+	Global.node.sketch.print_serifs()
 	pass
 
 

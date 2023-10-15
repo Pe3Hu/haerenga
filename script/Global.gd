@@ -467,11 +467,13 @@ func init_scene() -> void:
 	scene.room = load("res://scene/1/room.tscn")
 	
 	scene.outpost = load("res://scene/2/outpost.tscn")
+	scene.lair = load("res://scene/2/lair.tscn")
 	scene.obstacle = load("res://scene/2/obstacle.tscn")
 	scene.content = load("res://scene/2/content.tscn")
 	
 	scene.nexus = load("res://scene/3/nexus.tscn")
 	scene.core = load("res://scene/3/core.tscn")
+	scene.van = load("res://scene/3/van.tscn")
 	
 	scene.crossroad = load("res://scene/4/crossroad.tscn")
 	scene.pathway = load("res://scene/4/pathway.tscn")
@@ -542,6 +544,10 @@ func init_color():
 	color.rarity["legendary"] = Color.from_hsv(60 / max_h, 0.9, 0.8)
 	#color.rarity["mythical"] = Color.from_hsv(0 / max_h, 0.9, 0.6)
 	color.rarity["mythical"] = Color.from_hsv(0 / max_h, 0.8, 0.9)
+	
+	color.van = {}
+	color.van["active"] = Color.from_hsv(140 / max_h, 0.4, 0.6)
+	color.van["inactive"] = Color.from_hsv(0 / max_h, 0.3, 0.6)
 
 
 func save(path_: String, data_: String):

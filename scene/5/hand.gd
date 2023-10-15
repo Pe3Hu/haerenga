@@ -33,9 +33,7 @@ func apply() -> void:
 
 
 func apply_card(card_: MarginContainer) -> void:
-	#print(card_.index.text)
 	for token in card_.tokens.get_children():
-		#print(token.title.subtype)
 		var value = token.stack.get_number()
 		gameboard.change_token_value(token.title.subtype, value)
 

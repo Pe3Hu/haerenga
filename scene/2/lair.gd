@@ -32,11 +32,21 @@ func init_milestones() -> void:
 	tide.n = 0
 	tide.high = []
 	tide.low = [room]
-	coverage = 10
+	
+	coverage = maze.rings.room.size()
 	
 	while tide.n < coverage:
 		for room_ in tide.low:
-			room_.milestones[room] = tide.n
+			room_.milestones[room] = coverage - tide.n
+			
+			var input = {}
+			input.type = "number"
+			input.subtype = room_.milestones[room]
+			
+			var icon = Global.scene.icon.instantiate()
+			maze.iTide.add_child(icon)
+			icon.set_attributes(input)
+			icon.position = room_.position
 			
 			for door in room_.doors:
 				var neighbor = room_.doors[door]
