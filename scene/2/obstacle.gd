@@ -5,6 +5,7 @@ var maze = null
 var room = null
 var type = null
 var subtype = null
+var hazard = null
 var requirement = 0
 var penalty = {}
 var active = true
@@ -47,6 +48,30 @@ func roll_requirement() -> void:
 			complexities[base + _i] = int(limit - _i)
 		
 		requirement = Global.get_random_key(complexities)
+
+
+func set_hazard(hazard_: Variant) -> void:
+	hazard = hazard_
+	
+	if hazard == null:
+		if room.backdoor:
+			hazard = 3
+			
+			if room.doors.size() == 2:
+				hazard += 1
+		else:
+			hazard = Global.get_random_hazard(room.sector)
+	
+	var description = Global.dict.hazard[hazard]
+	requirement = ceil(description["requirement multiplier"] * requirement)
+	
+	var input = {}
+	input.type = "number"
+	input.subtype = hazard
+	var icon = Global.scene.icon.instantiate()
+	maze.iHazard.add_child(icon)
+	icon.set_attributes(input)
+	icon.position = room.position
 
 
 func get_solutions() -> Array:

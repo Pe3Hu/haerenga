@@ -57,6 +57,7 @@ auto_translate = false
 localize_numeral_system = false
 
 [node name="Room" type="Control" parent="SubViewport/Icons"]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -74,6 +75,11 @@ offset_bottom = 40.0
 
 [node name="Tide" type="Control" parent="SubViewport/Icons"]
 visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Hazard" type="Control" parent="SubViewport/Icons"]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0

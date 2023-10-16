@@ -52,9 +52,9 @@
 		"input": "free",
 		"output": "recharge",
 		"repetition": "yes",
-		"value sector 2": 5,
-		"value sector 1": 7,
-		"value sector 0": 10,
+		"value sector 2": 1,
+		"value sector 1": 2,
+		"value sector 0": 3,
 		"rarity sector 2": 2,
 		"rarity sector 1": 4,
 		"rarity sector 0": 6

@@ -35,6 +35,7 @@ func init_arr() -> void:
 	arr.output.append_array(arr.token)
 	arr.output.append_array(arr.resource)
 
+
 func init_num() -> void:
 	num.index = {}
 	num.index.room = 0
@@ -86,6 +87,7 @@ func init_dict() -> void:
 	init_door()
 	init_content()
 	init_obstacle()
+	init_hazard()
 	init_loot()
 	init_card()
 
@@ -263,6 +265,33 @@ func init_obstacle() -> void:
 				data[key] = obstacle[key]
 		
 		dict.room.obstacle[obstacle.subtype] = data
+
+
+func init_hazard() -> void:
+	dict.hazard = {}
+	var path = "res://asset/json/haerenga_hazard.json"
+	var array = load_data(path)
+	
+	for hazard in array:
+		var data = {}
+		data.sector = {}
+		var rank = int(hazard.rank)
+		
+		for key in hazard:
+			var words = key.split(" ")
+			
+			if words.size() > 1:
+				if words.has("sector"):
+					var sector = int(words[2])
+					
+					if !data.sector.has(sector):
+						data.sector[sector] = {}
+					
+					data.sector[sector][words[0]] = hazard[key]
+				else:
+					data[key] = hazard[key]
+		
+		dict.hazard[rank] = data
 
 
 func init_loot() -> void:
@@ -482,6 +511,7 @@ func init_scene() -> void:
 	scene.card = load("res://scene/5/card.tscn")
 	scene.token = load("res://scene/5/token.tscn")
 	scene.resource = load("res://scene/5/resource.tscn")
+	scene.crown = load("res://scene/5/crown.tscn")
 	
 	pass
 
@@ -490,12 +520,14 @@ func init_vec():
 	vec.size = {}
 	vec.size.letter = Vector2(20, 20)
 	vec.size.icon = Vector2(48, 48)
-	vec.size.number = Vector2(32, 32)
+	vec.size.number = Vector2(5, 32)
 	
 	
 	for key in vec.size:
 		if key != "letter":
 			vec.size[key] = Vector2(32, 32)
+	
+	vec.size.number = Vector2(16, 32)
 	
 	init_window_size()
 
@@ -639,6 +671,16 @@ func get_random_obstacle_and_content(sector_: int) -> Dictionary:
 		weights.obstacle["empty"] *= 3
 	
 	result.obstacle = get_random_key(weights.obstacle)
+	return result
+
+
+func get_random_hazard(sector_: int) -> int:
+	var weights = {}
+	
+	for hazard in dict.hazard:
+		weights[hazard] = dict.hazard[hazard].sector[sector_].rarity
+	
+	var result = get_random_key(weights)
 	return result
 
 

@@ -163,6 +163,10 @@ func passage_test(pathway_: MarginContainer) -> void:
 	#print([index, "passage_test", obstacle.subtype, content.type])
 	if obstacle.check_solution(pathway_):
 		#print([index, obstacle.subtype, content.type])
+		
+		if obstacle.subtype != "empty":
+			pathway_.core.gameboard.change_crown_stack_value(str(obstacle.hazard), 1)
+		
 		obstacle.deactivate()
 		
 		if Global.dict.room.content[content.type].repetition == "no":

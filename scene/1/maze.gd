@@ -13,6 +13,7 @@ extends SubViewportContainer
 @onready var iDoor = $SubViewport/Icons/Door
 @onready var iLength = $SubViewport/Icons/Length
 @onready var iTide = $SubViewport/Icons/Tide
+@onready var iHazard = $SubViewport/Icons/Hazard
 @onready var camera = $SubViewport/Camera
 
 var sketch = null
@@ -29,6 +30,7 @@ func set_attributes(input_: Dictionary) -> void:
 	sketch = input_.sketch
 	sketch.add_serif()
 	
+	#subViewport.size *= 2
 	var input = {}
 	input.maze = self
 	camera.set_attributes(input)
@@ -40,6 +42,13 @@ func set_attributes(input_: Dictionary) -> void:
 	init_outposts()
 	sketch.add_serif()
 	init_room_obstacles_and_contents()
+	init_obstacle_hazards()
+	
+#	var room = rooms.get_child(0)
+#	focus_on_room(room)
+#
+#	for _i in 7:
+#		camera.zoom_it("-")
 	#init_minimap()
 
 
@@ -51,18 +60,40 @@ func init_rooms() -> void:
 	add_ring("triple", false)
 	add_ring("single", true)
 	add_ring("triple", true) #equal trapeze double
+	add_ring("equal", true)
+	add_ring("trapeze", true)
+	add_ring("equal", true)
+	add_ring("double", true)
+	add_ring("equal", true)
+	add_ring("single", true)
+	add_ring("equal", true)
+	add_ring("double", true)
+	add_ring("equal", true)
+	add_ring("single", true)
+	add_ring("equal", true)
+	add_ring("single", true)
+#	add_ring("equal", true)
+#	add_ring("equal", true)
+#	add_ring("double", true)
+#	add_ring("equal", true)
+#	add_ring("double", true)
+#	add_ring("equal", true)
+#	add_ring("equal", true)
+#	add_ring("single", true)
+#	add_ring("single", true)
+	#add_ring("single", true)
 	
-	while !complete:
-		var types = Global.dict.ring.weight.duplicate()
-		var n = rings.type.size() - 1
-		if rings.type[n] == rings.type[n - 1] and  rings.type[n] == "equal":
-			types.erase("equal")
-
-		var type = Global.get_random_key(types)
-		add_ring(type, true)
-
-		if Global.num.ring.segment < rings.room.back().size() / 3 - 1:
-			complete = true
+#	while !complete:
+#		var types = Global.dict.ring.weight.duplicate()
+#		var n = rings.type.size() - 1
+#		if rings.type[n] == rings.type[n - 1] and  rings.type[n] == "equal":
+#			types.erase("equal")
+#
+#		var type = Global.get_random_key(types)
+#		add_ring(type, true)
+#
+#		if Global.num.ring.segment < rings.room.back().size() / 3 - 1:
+#			complete = true
 
 	update_doors()
 	update_size()
@@ -441,6 +472,37 @@ func init_room_obstacles_and_contents() -> void:
 				var result = Global.get_random_obstacle_and_content(sector)
 				room.add_obstacle(result.obstacle)
 				room.add_content(result.content)
+
+
+func init_obstacle_hazards() -> void:
+	var max_hazard = 6 
+	var lair = lairs.get_child(0)
+	lair.room.obstacle.set_hazard(max_hazard)
+	
+	for door in lair.room.doors:
+		var room = lair.room.doors[door]
+		room.obstacle.set_hazard(max_hazard - 1)
+		
+		for door_ in room.doors:
+			var room_ = room.doors[door_]
+			
+			if room_.obstacle.hazard == null:
+				room_.obstacle.set_hazard(max_hazard - 2)
+	
+	#var datas = {}
+	
+	for sector in sectors:
+		for room in sectors[sector]:
+			if room.obstacle.hazard == null:
+				room.obstacle.set_hazard(null)
+			
+#			if !datas.has(room.obstacle.hazard):
+#				datas[room.obstacle.hazard] = 0
+#
+#			datas[room.obstacle.hazard] += 1
+#
+#	for _i in 6:
+#		print([_i, datas[_i]])
 
 
 func focus_on_room(room_: Polygon2D) -> void:

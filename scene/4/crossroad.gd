@@ -11,11 +11,13 @@ var core = null
 var origin = null
 var room = null
 var impediments = {}
+var index = {}
 
 
 func set_attributes(input_: Dictionary) -> void:
 	core = input_.core
 	origin = input_.origin
+	index.pathway = null
 	
 	var input = {}
 	input.type = "node"
@@ -39,6 +41,7 @@ func set_room(room_: Polygon2D) -> void:
 
 func reset_pathways() -> void:
 	impediments = {}
+	index.pathway = null
 	
 	while pathways.get_child_count() > 0:
 		var pathway = pathways.get_child(0)
@@ -79,6 +82,9 @@ func fill_pathways() -> void:
 				pathways.add_child(pathway)
 				pathway.set_attributes(input)
 		#pathway.add_tokens("input", "motion", input.length)
+	
+	if pathways.get_child_count() > 0:
+		shift_visible_pathway(0)
 
 
 func get_local_solutions() -> void:
@@ -382,3 +388,20 @@ func apply_intelligence(rooms_: Array) -> void:
 	rooms_.erase(option)
 	core.get_intelligence(option, false)
 	option.update_colors_based_on_core_intelligence(core)
+
+
+func set_pathways_visible(flag_: bool) -> void:
+	for pathway in pathways.get_children():
+		pathway.visible = flag_
+
+
+func shift_visible_pathway(shift_: int) -> void:
+	set_pathways_visible(false)
+	
+	if index.pathway == null:
+		index.pathway = 0
+	else:
+		index.pathway = (index.pathway + shift_ + pathways.get_child_count()) % pathways.get_child_count()
+	
+	var pathway = pathways.get_child(index.pathway)
+	pathway.visible = true

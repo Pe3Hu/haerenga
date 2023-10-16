@@ -7,6 +7,7 @@ extends MarginContainer
 @onready var hand = $VBox/Cards/Hand
 @onready var tokens = $VBox/Tokens
 @onready var resources = $VBox/Resources
+@onready var crowns = $VBox/Crowns
 
 var core = null
 
@@ -16,6 +17,7 @@ func set_attributes(input_: Dictionary) -> void:
 	input_.gameboard = self
 	init_tokens()
 	init_resources()
+	init_crowns()
 	init_starter_kit_cards()
 	available.set_attributes(input_)
 	discharged.set_attributes(input_)
@@ -52,6 +54,18 @@ func init_resources() -> void:
 		resources.add_child(resource)
 		resource.set_attributes(input)
 		resource.visible = Global.arr.resource.has(subtype)
+
+
+func init_crowns() -> void:
+	for cogs in 6:
+		var input = {}
+		input.proprietor = self
+		input.cogs = str(cogs)
+		input.value = 0
+	
+		var crown = Global.scene.crown.instantiate()
+		crowns.add_child(crown)
+		crown.set_attributes(input)
 
 
 func init_starter_kit_cards() -> void:
@@ -141,6 +155,25 @@ func get_resource_stack_value(subtype_: String) -> Variant:
 func change_resource_stack_value(subtype_: String, value_: int) -> void:
 	var resource = get_resource(subtype_)
 	resource.stack.change_number(value_)
+
+
+func get_crown(subtype_: String) -> Variant:
+	for crown in crowns.get_children():
+		if crown.cogs.subtype == subtype_:
+			return crown
+	
+	print("error: no crown", subtype_)
+	return null
+
+
+func get_crown_stack_value(subtype_: String) -> Variant:
+	var crown = get_resource(subtype_)
+	return crown.stack.get_number()
+
+
+func change_crown_stack_value(subtype_: String, value_: int) -> void:
+	var crown = get_crown(subtype_)
+	crown.change_stack(value_)
 
 
 func recharge_card() -> void:

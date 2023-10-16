@@ -64,6 +64,5 @@ layout_mode = 2
 [node name="Value" parent="VBox/HBox/Knowledge" instance=ExtResource("3_xtflf")]
 layout_mode = 2
 
-[node name="Cards" type="GridContainer" parent="VBox"]
+[node name="Cards" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
-columns = 5

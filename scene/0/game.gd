@@ -40,6 +40,15 @@ func _input(event) -> void:
 			KEY_E:
 				if event.is_pressed():
 					Global.node.sketch.maze.camera.zoom_it("-")
+			KEY_Z:
+				if event.is_pressed():
+					Global.node.sketch.nexus.cores.get_child(0).crossroad.shift_visible_pathway(1)
+			KEY_C:
+				if event.is_pressed():
+					Global.node.sketch.nexus.cores.get_child(0).crossroad.shift_visible_pathway(-1)
+			KEY_X:
+				if event.is_pressed():
+					Global.node.sketch.nexus.cores.get_child(0).crossroad.set_pathways_visible(true)
 
 
 func _process(delta_) -> void:

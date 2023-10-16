@@ -7,6 +7,7 @@ extends MarginContainer
 
 var serifs = []
 
+
 func _ready() -> void:
 	add_serif()
 	var input = {}

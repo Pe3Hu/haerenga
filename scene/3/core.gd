@@ -124,9 +124,9 @@ func follow_pathway(pathway_: Variant) -> void:
 		
 		pathway_.rooms.destination.passage_test(pathway_)
 		#print(pathway_.rooms.destination.index)
-		
 		move_in_room(pathway_.rooms.destination)
 		var motion = pathway_.get_token("input", "motion")
+		
 		if motion != null:
 			token_conversion(motion)
 		
@@ -211,7 +211,7 @@ func halt() -> void:
 	gameboard.change_resource_stack_value("intelligence", 1)
 	crossroad.tap_into_intelligence()
 	
-	if gameboard.available.cards.get_child_count() == 0:
+	if gameboard.available.cards.get_child_count() == 0 or gameboard.get_resource_stack_value("fuel") <= 0:
 		return_to_outpost()
 		market.progression()
 		market.matchmaking()
