@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://dpq0g6jrlkuea"]
+
+[ext_resource type="Script" path="res://entities/world/world.gd" id="1_sbgiu"]
+[ext_resource type="PackedScene" uid="uid://bm5me58j23h86" path="res://entities/planet/planet.tscn" id="2_convr"]
+
+[node name="World" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_sbgiu")
+
+[node name="FPS" type="Label" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+
+[node name="Planet" parent="CanvasLayer" node_paths=PackedStringArray("world") instance=ExtResource("2_convr")]
+world = NodePath("../..")

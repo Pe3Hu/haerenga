@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://cfw4jyui8cmd"]
+
+[ext_resource type="Script" path="res://entities/door/door.gd" id="1_wy1ih"]
+[ext_resource type="FontFile" uid="uid://33eqagvh85us" path="res://assets/fonts/digital/Inter-Black.ttf" id="2_1vs7j"]
+
+[node name="Door" type="Line2D" node_paths=PackedStringArray("label_length")]
+width = 4.0
+default_color = Color(1, 1, 1, 0.52549)
+script = ExtResource("1_wy1ih")
+label_length = NodePath("Length")
+
+[node name="Length" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -7.5
+offset_top = -12.5
+offset_right = 7.5
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_1vs7j")
+theme_override_font_sizes/font_size = 12
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1

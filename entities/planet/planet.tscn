@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://bm5me58j23h86"]
+
+[ext_resource type="Script" path="res://entities/planet/planet.gd" id="1_piy68"]
+[ext_resource type="PackedScene" uid="uid://c0f5w4dd4rvd5" path="res://entities/maze/maze.tscn" id="2_sver6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0uytx"]
+
+[node name="Planet" type="PanelContainer" node_paths=PackedStringArray("maze")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0uytx")
+script = ExtResource("1_piy68")
+maze = NodePath("HBox/Maze")
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Maze" parent="HBox" instance=ExtResource("2_sver6")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4

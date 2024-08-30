@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://chnmfubm2lwh8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0uytx"]
+
+[node name="empty" type="PanelContainer"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_0uytx")

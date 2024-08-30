@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cglhbwf6hsl8a"]
-
-[ext_resource type="Script" path="res://scene/2/outpost.gd" id="1_ad0vr"]
-
-[node name="Outpost" type="Polygon2D"]
-color = Color(0.368627, 0.368627, 0.368627, 1)
-script = ExtResource("1_ad0vr")

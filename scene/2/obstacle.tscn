@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://m6ev760wpbtj"]
-
-[ext_resource type="Script" path="res://scene/2/obstacle.gd" id="1_0knoe"]
-
-[node name="Obstacle" type="Polygon2D"]
-color = Color(0, 0, 0, 1)
-script = ExtResource("1_0knoe")
