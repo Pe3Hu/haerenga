@@ -26,7 +26,6 @@ func set_maze(maze_: MazeResource) -> RoomResource:
 	maze.rooms.append(self)
 	maze.ring_rooms[ring].append(self)
 	
-	var type_ = "empty"
 	obstacle = ObstacleResource.new()
 	obstacle.room = self
 	content = ContentResource.new()
@@ -34,18 +33,17 @@ func set_maze(maze_: MazeResource) -> RoomResource:
 	return self
 	
 func roll_obstacle_and_content() -> void:
-	var result = {}
 	var weights = {}
 	weights = {}
 	
-	for content in Global.dict.room.content:
-		weights[content] = Global.dict.room.content[content].sector[sector].rarity
+	for type in Global.dict.room.content:
+		weights[type] = Global.dict.room.content[type].sector[sector].rarity
 	
 	content.type = Global.get_random_key(weights)
 	weights = {}
 	
-	for obstacle in Global.dict.room.obstacle:
-		weights[obstacle] = Global.dict.room.obstacle[obstacle].sector[sector].rarity
+	for type in Global.dict.room.obstacle:
+		weights[type] = Global.dict.room.obstacle[type].sector[sector].rarity
 	
 	if content.type == "empty":
 		weights["empty"] *= 3

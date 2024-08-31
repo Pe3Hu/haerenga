@@ -9,6 +9,7 @@
 script = ExtResource("1_xpg8j")
 
 [node name="Areola" type="TextureRect" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_o68vy")
 offset_left = -24.0
 offset_top = -24.0

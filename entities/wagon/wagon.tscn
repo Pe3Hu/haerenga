@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://yl5yindfr2j5"]
+
+[ext_resource type="Script" path="res://entities/wagon/wagon.gd" id="1_fr00g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bpe7t"]
+bg_color = Color(0.435294, 0.615686, 0.619608, 0)
+
+[node name="Wagon" type="PanelContainer" node_paths=PackedStringArray("compartments")]
+clip_children = 1
+custom_minimum_size = Vector2(5, 5)
+offset_right = 5.0
+offset_bottom = 5.0
+script = ExtResource("1_fr00g")
+compartments = NodePath("VBox/BG/Сompartments")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="BG" type="Panel" parent="VBox"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bpe7t")
+
+[node name="Сompartments" type="VBoxContainer" parent="VBox/BG"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1

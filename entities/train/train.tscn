@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://bf6ja1b2kmrhr"]
+
+[ext_resource type="Script" path="res://entities/train/train.gd" id="1_fr00g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0uytx"]
+bg_color = Color(0.398114, 0.640568, 0.727682, 1)
+
+[node name="Train" type="PanelContainer" node_paths=PackedStringArray("wagons")]
+custom_minimum_size = Vector2(80, 80)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0uytx")
+script = ExtResource("1_fr00g")
+wagons = NodePath("HBox/Wagons")
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Wagons" type="HBoxContainer" parent="HBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1

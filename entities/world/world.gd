@@ -35,3 +35,6 @@ func _input(event) -> void:
 	#waffle = waffle_
 	#waffle.ships.append(self)
 	#return self
+
+
+	

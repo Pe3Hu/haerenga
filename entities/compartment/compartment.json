@@ -1,0 +1,323 @@
+[
+ {
+  "index": 0,
+  "part": "head",
+  "size": 2,
+  "module 0": 1,
+  "module 1": 2
+ },
+ {
+  "index": 1,
+  "part": "torso",
+  "size": 2,
+  "module 0": 1,
+  "module 1": 4
+ },
+ {
+  "index": 2,
+  "part": "head",
+  "size": 2,
+  "module 0": 1,
+  "module 1": 8
+ },
+ {
+  "index": 3,
+  "part": "head",
+  "size": 2,
+  "module 0": 1,
+  "module 1": 16
+ },
+ {
+  "index": 4,
+  "part": "torso",
+  "size": 2,
+  "module 0": 1,
+  "module 1": 32
+ },
+ {
+  "index": 5,
+  "part": "tail",
+  "size": 2,
+  "module 0": 2,
+  "module 1": 4
+ },
+ {
+  "index": 6,
+  "part": "head",
+  "size": 2,
+  "module 0": 2,
+  "module 1": 8
+ },
+ {
+  "index": 7,
+  "part": "all",
+  "size": 2,
+  "module 0": 2,
+  "module 1": 16
+ },
+ {
+  "index": 8,
+  "part": "tail",
+  "size": 2,
+  "module 0": 2,
+  "module 1": 32
+ },
+ {
+  "index": 9,
+  "part": "torso",
+  "size": 2,
+  "module 0": 4,
+  "module 1": 8
+ },
+ {
+  "index": 10,
+  "part": "tail",
+  "size": 2,
+  "module 0": 4,
+  "module 1": 16
+ },
+ {
+  "index": 11,
+  "part": "tail",
+  "size": 2,
+  "module 0": 4,
+  "module 1": 32
+ },
+ {
+  "index": 12,
+  "part": "head",
+  "size": 2,
+  "module 0": 8,
+  "module 1": 16
+ },
+ {
+  "index": 13,
+  "part": "torso",
+  "size": 2,
+  "module 0": 8,
+  "module 1": 32
+ },
+ {
+  "index": 14,
+  "part": "tail",
+  "size": 2,
+  "module 0": 16,
+  "module 1": 32
+ },
+ {
+  "index": 15,
+  "part": "head",
+  "size": 3,
+  "module 0": 1,
+  "module 1": 2,
+  "module 2": 8
+ },
+ {
+  "index": 16,
+  "part": "head",
+  "size": 3,
+  "module 0": 1,
+  "module 1": 2,
+  "module 2": 16
+ },
+ {
+  "index": 17,
+  "part": "torso",
+  "size": 3,
+  "module 0": 1,
+  "module 1": 2,
+  "module 2": 32
+ },
+ {
+  "index": 18,
+  "part": "torso",
+  "size": 3,
+  "module 0": 1,
+  "module 1": 4,
+  "module 2": 8
+ },
+ {
+  "index": 19,
+  "part": "torso",
+  "size": 3,
+  "module 0": 1,
+  "module 1": 4,
+  "module 2": 16
+ },
+ {
+  "index": 20,
+  "part": "torso",
+  "size": 3,
+  "module 0": 1,
+  "module 1": 4,
+  "module 2": 32
+ },
+ {
+  "index": 21,
+  "part": "head",
+  "size": 3,
+  "module 0": 1,
+  "module 1": 8,
+  "module 2": 16
+ },
+ {
+  "index": 22,
+  "part": "torso",
+  "size": 3,
+  "module 0": 1,
+  "module 1": 8,
+  "module 2": 32
+ },
+ {
+  "index": 23,
+  "part": "torso",
+  "size": 3,
+  "module 0": 1,
+  "module 1": 16,
+  "module 2": 32
+ },
+ {
+  "index": 24,
+  "part": "torso",
+  "size": 3,
+  "module 0": 2,
+  "module 1": 4,
+  "module 2": 8
+ },
+ {
+  "index": 25,
+  "part": "tail",
+  "size": 3,
+  "module 0": 2,
+  "module 1": 4,
+  "module 2": 16
+ },
+ {
+  "index": 26,
+  "part": "tail",
+  "size": 3,
+  "module 0": 2,
+  "module 1": 4,
+  "module 2": 32
+ },
+ {
+  "index": 27,
+  "part": "head",
+  "size": 3,
+  "module 0": 2,
+  "module 1": 8,
+  "module 2": 16
+ },
+ {
+  "index": 28,
+  "part": "torso",
+  "size": 3,
+  "module 0": 2,
+  "module 1": 8,
+  "module 2": 32
+ },
+ {
+  "index": 29,
+  "part": "tail",
+  "size": 3,
+  "module 0": 2,
+  "module 1": 16,
+  "module 2": 32
+ },
+ {
+  "index": 30,
+  "part": "torso",
+  "size": 3,
+  "module 0": 4,
+  "module 1": 8,
+  "module 2": 16
+ },
+ {
+  "index": 31,
+  "part": "torso",
+  "size": 3,
+  "module 0": 4,
+  "module 1": 8,
+  "module 2": 32
+ },
+ {
+  "index": 32,
+  "part": "tail",
+  "size": 3,
+  "module 0": 4,
+  "module 1": 16,
+  "module 2": 32
+ },
+ {
+  "index": 33,
+  "part": "head",
+  "size": 4,
+  "module 0": 1,
+  "module 1": 2,
+  "module 2": 8,
+  "module 3": 16
+ },
+ {
+  "index": 34,
+  "part": "torso",
+  "size": 4,
+  "module 0": 1,
+  "module 1": 2,
+  "module 2": 8,
+  "module 3": 32
+ },
+ {
+  "index": 35,
+  "part": "torso",
+  "size": 4,
+  "module 0": 1,
+  "module 1": 2,
+  "module 2": 16,
+  "module 3": 32
+ },
+ {
+  "index": 36,
+  "part": "torso",
+  "size": 4,
+  "module 0": 1,
+  "module 1": 4,
+  "module 2": 8,
+  "module 3": 16
+ },
+ {
+  "index": 37,
+  "part": "torso",
+  "size": 4,
+  "module 0": 1,
+  "module 1": 4,
+  "module 2": 8,
+  "module 3": 32
+ },
+ {
+  "index": 38,
+  "part": "torso",
+  "size": 4,
+  "module 0": 2,
+  "module 1": 4,
+  "module 2": 8,
+  "module 3": 16
+ },
+ {
+  "index": 39,
+  "part": "torso",
+  "size": 4,
+  "module 0": 2,
+  "module 1": 4,
+  "module 2": 8,
+  "module 3": 32
+ },
+ {
+  "index": 40,
+  "part": "tail",
+  "size": 4,
+  "module 0": 2,
+  "module 1": 4,
+  "module 2": 16,
+  "module 3": 32
+ }
+]

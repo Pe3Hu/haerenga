@@ -1,0 +1,216 @@
+[
+ {
+  "index": 0,
+  "part": "head",
+  "order": 1,
+  "output type": "acceleration",
+  "output value": 16
+ },
+ {
+  "index": 1,
+  "part": "head",
+  "order": 2,
+  "output type": "acceleration",
+  "output value": 6
+ },
+ {
+  "index": 2,
+  "part": "head",
+  "order": 2,
+  "output type": "mineral",
+  "output value": 3
+ },
+ {
+  "index": 3,
+  "part": "head",
+  "order": 2,
+  "output type": "knowledge",
+  "output value": 5
+ },
+ {
+  "index": 4,
+  "part": "head",
+  "order": 2,
+  "input type": "energy",
+  "input value": 9,
+  "output type": "acceleration",
+  "output value": 11
+ },
+ {
+  "index": 5,
+  "part": "head",
+  "order": 8,
+  "output type": "knowledge",
+  "output value": 4
+ },
+ {
+  "index": 6,
+  "part": "head",
+  "order": 16,
+  "input type": "acceleration",
+  "input value": 2,
+  "output type": "knowledge",
+  "output value": 9
+ },
+ {
+  "index": 7,
+  "part": "head",
+  "order": 16,
+  "input type": "mineral",
+  "input value": 2,
+  "output type": "energy",
+  "output value": 14
+ },
+ {
+  "index": 8,
+  "part": "torso",
+  "order": 1,
+  "output type": "analysis",
+  "output value": 13
+ },
+ {
+  "index": 9,
+  "part": "torso",
+  "order": 2,
+  "output type": "analysis",
+  "output value": 5
+ },
+ {
+  "index": 10,
+  "part": "torso",
+  "order": 2,
+  "output type": "mineral",
+  "output value": 3
+ },
+ {
+  "index": 11,
+  "part": "torso",
+  "order": 2,
+  "output type": "knowledge",
+  "output value": 5
+ },
+ {
+  "index": 12,
+  "part": "torso",
+  "order": 2,
+  "input type": "energy",
+  "input value": 8,
+  "output type": "analysis",
+  "output value": 9
+ },
+ {
+  "index": 13,
+  "part": "torso",
+  "order": 4,
+  "input type": "energy",
+  "input value": 4
+ },
+ {
+  "index": 14,
+  "part": "torso",
+  "order": 8,
+  "output type": "mineral",
+  "output value": 4
+ },
+ {
+  "index": 15,
+  "part": "torso",
+  "order": 8,
+  "output type": "energy",
+  "output value": 9
+ },
+ {
+  "index": 16,
+  "part": "torso",
+  "order": 16,
+  "input type": "analysis",
+  "input value": 2,
+  "output type": "knowledge",
+  "output value": 10
+ },
+ {
+  "index": 17,
+  "part": "torso",
+  "order": 16,
+  "input type": "mineral",
+  "input value": 2,
+  "output type": "energy",
+  "output value": 14
+ },
+ {
+  "index": 18,
+  "part": "torso",
+  "order": 32,
+  "output type": "analysis",
+  "output value": 1
+ },
+ {
+  "index": 19,
+  "part": "tail",
+  "order": 2,
+  "output type": "salvo",
+  "output value": 4
+ },
+ {
+  "index": 20,
+  "part": "tail",
+  "order": 2,
+  "output type": "mineral",
+  "output value": 3
+ },
+ {
+  "index": 21,
+  "part": "tail",
+  "order": 2,
+  "output type": "knowledge",
+  "output value": 5
+ },
+ {
+  "index": 22,
+  "part": "tail",
+  "order": 2,
+  "input type": "energy",
+  "input value": 7,
+  "output type": "salvo",
+  "output value": 7
+ },
+ {
+  "index": 23,
+  "part": "tail",
+  "order": 4,
+  "input type": "energy",
+  "input value": 2
+ },
+ {
+  "index": 24,
+  "part": "tail",
+  "order": 16,
+  "input type": "salvo",
+  "input value": 2,
+  "output type": "mineral",
+  "output value": 7
+ },
+ {
+  "index": 25,
+  "part": "tail",
+  "order": 16,
+  "input type": "mineral",
+  "input value": 2,
+  "output type": "energy",
+  "output value": 14
+ },
+ {
+  "index": 26,
+  "part": "tail",
+  "order": 32,
+  "input type": "salvo",
+  "input value": 1
+ },
+ {
+  "index": 27,
+  "part": "tail",
+  "order": 32,
+  "input type": "mineral",
+  "input value": 1
+ }
+]

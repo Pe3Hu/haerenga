@@ -1,3 +1,4 @@
+HBoxContainer
 TextureRect
 Node2D
 ColorRect
@@ -9,6 +10,5 @@ Line2D
 Control
 SubViewport
 SubViewportContainer
-HBoxContainer
 PanelContainer
 MeshInstance2D

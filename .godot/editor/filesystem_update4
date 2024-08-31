@@ -1,7 +1,7 @@
 res://entities/world/world.tscn
 res://shaders/gradient effects.gdshader
 res://entities/planet/planet.tscn
-res://entities/maze/maze.tscn
-res://entities/room/room.tscn
-res://entities/door/door.tscn
-res://entities/camera/camera.tscn
+res://entities/corporation/corporation.tscn
+res://entities/train/train.tscn
+res://entities/wagon/wagon.tscn
+res://entities/compartment/compartment.tscn

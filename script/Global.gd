@@ -21,23 +21,22 @@ func _ready() -> void:
 
 
 func init_arr() -> void:
-	arr.sequence = {}
-
-
+	arr.part = ["tail", "torso", "head"]
+	
 func init_num() -> void:
 	num.relevance = {}
 	
-
 func init_dict() -> void:
 	init_neighbor()
-	init_also()
+	#init_ring()
 	init_door()
 	init_content()
 	init_obstacle()
 	init_hazard()
-
-
-func init_also() -> void:
+	init_compartment()
+	init_module()
+	
+func init_ring() -> void:
 	dict.ring = {}
 	dict.ring.weight = {}
 	dict.ring.weight["single"] = 7
@@ -46,48 +45,7 @@ func init_also() -> void:
 	dict.ring.weight["double"] = 3
 	#dict.ring.weight["triple"] = 1
 	
-	dict.slot = {}
-	dict.slot.aspect = {}
-	dict.slot.aspect["Head"] = "power"
-	dict.slot.aspect["Torso"] = "autonomy"
-	dict.slot.aspect["Limb"] = "velocity"
 	
-	dict.aspect = {}
-	dict.aspect.slot = {}
-	dict.aspect.slot["power"] = "Head"
-	dict.aspect.slot["autonomy"] = "Torso"
-	dict.aspect.slot["velocity"] = "Limb"
-	
-	dict.thousand = {}
-	dict.thousand[""] = "k"
-	dict.thousand["k"] = "m"
-	dict.thousand["m"] = "b"
-	
-	dict.conversion = {}
-	dict.conversion.token = {}
-	dict.conversion.token.resource = {}
-	dict.conversion.token.resource["motion"] = "fuel"
-	dict.conversion.token.resource["acceleration"] = "knowledge"
-	dict.conversion.token.resource["salvo"] = "damage"
-	dict.conversion.token.resource["extraction"] = "mineral"
-	dict.conversion.token.resource["scan"] = "intelligence"
-	dict.conversion.token.resource["recharge"] = "energy"
-	dict.conversion.token.resource["boost"] = "fuel"
-	dict.conversion.token.resource["overload"] = "energy"
-	dict.conversion.token.resource["breakage"] = "spares"
-	
-	dict.conversion.token.sign = {}
-	dict.conversion.token.sign["motion"] = -1
-	dict.conversion.token.sign["acceleration"] = 1
-	dict.conversion.token.sign["salvo"] = 1
-	dict.conversion.token.sign["extraction"] = 3
-	dict.conversion.token.sign["scan"] = 1
-	dict.conversion.token.sign["recharge"] = 1
-	dict.conversion.token.sign["boost"] = -2
-	dict.conversion.token.sign["overload"] = -1
-	dict.conversion.token.sign["breakage"] = -1
-
-
 func init_neighbor() -> void:
 	dict.neighbor = {}
 	dict.neighbor.linear3 = [
@@ -234,6 +192,96 @@ func init_hazard() -> void:
 		
 		dict.hazard[rank] = data
 	
+func init_compartment() -> void:
+	dict.compartment = {}
+	dict.compartment.index = {}
+	dict.compartment.part = {}
+	dict.compartment.size = {}
+	var exceptions = ["index"]
+	
+	var path = "res://entities/compartment/compartment.json"
+	var array = load_data(path)
+	
+	for compartment in array:
+		compartment.index = int(compartment.index)
+		compartment.size = int(compartment.size)
+		var data = {}
+		data.modules = []
+		
+		for key in compartment:
+			if !exceptions.has(key):
+				if key.contains("module"):
+					data.modules.append(int(compartment[key]))
+				else:
+					data[key] = compartment[key]
+		
+		dict.compartment.index[compartment.index] = data
+		
+		if compartment.part != "all":
+			if !dict.compartment.part.has(compartment.part):
+				dict.compartment.part[compartment.part] = []
+			
+			dict.compartment.part[compartment.part].append(compartment.index)
+		else:
+			for part in dict.compartment.part:
+				dict.compartment.part[part].append(compartment.index)
+		
+		if !dict.compartment.size.has(compartment.size):
+			dict.compartment.size[compartment.size] = []
+		
+		dict.compartment.size[compartment.size].append(compartment.index)
+	
+	#dict.compartment.part["any"] = []
+	#dict.compartment.size["any"] = []
+	
+	#for part in dict.compartment.part:
+		#if part != "any":
+			#dict.compartment.part["any"].append_array(dict.compartment.part[part])
+	
+	#for size in dict.compartment.size:
+		#if size != "any":
+			#dict.compartment.size["any"].append_array(dict.compartment.size[size])
+	
+func init_module() -> void:
+	dict.module = {}
+	dict.module.index = {}
+	dict.module.part = {}
+	dict.module.order = {}
+	var exceptions = ["index"]
+	
+	var path = "res://entities/module/module.json"
+	var array = load_data(path)
+	
+	for module in array:
+		module.index = int(module.index)
+		module.order = int(module.order)
+		var data = {}
+		data.sockets = {}
+		
+		for key in module:
+			if !exceptions.has(key):
+				var words = key.split(" ")
+				
+				if words.size() > 1:
+					if !data.sockets.has(words[0]):
+						data.sockets[words[0]] = {}
+					
+					data.sockets[words[0]][words[1]] = module[key]
+				else:
+					data[key] = module[key]
+		
+		dict.module.index[module.index] = data
+		
+		if !dict.module.part.has(module.part):
+			dict.module.part[module.part] = {}
+		
+		#dict.module.part[module.part].append(module.index)
+		
+		if !dict.module.part[module.part].has(module.order):
+			dict.module.part[module.part][module.order] = []
+		
+		dict.module.part[module.part][module.order].append(module.index)
+	
 func init_vec():
 	vec.size = {}
 	vec.size.letter = Vector2(20, 20)
@@ -260,13 +308,14 @@ func init_color():
 	
 	color.obstacle = {}
 	color.obstacle["unknown"] = Color.from_hsv(6 / max_h, 0.61, 0.83)
-	color.obstacle["empty"] = Color.from_hsv(47 / max_h, 1.0, 0.96)
-	color.obstacle["conundrum"] = Color.from_hsv(277 / max_h, 0.58, 0.91)
-	color.obstacle["raid"] = Color.from_hsv(5 / max_h, 0.92, 0.98)
-	color.obstacle["labyrinth"] = Color.from_hsv(152 / max_h, 0.87, 0.85)
-	color.obstacle["landslide"] = Color.from_hsv(181 / max_h, 1.0, 1.0)
-	color.obstacle["ambush"] = Color.from_hsv(207 / max_h, 0.47, 0.37)
-	color.obstacle["anomaly"] = Color.from_hsv(224 / max_h, 0.71, 1.0)
+	color.obstacle["empty"] = Color.from_hsv(330 / max_h, 0.0, 0.9)
+	
+	color.obstacle["labyrinth"] = Color.from_hsv(150 / max_h, 0.85, 0.9)
+	color.obstacle["landslide"] = Color.from_hsv(90 / max_h, 0.85, 0.9)
+	color.obstacle["anomaly"] = Color.from_hsv(210 / max_h, 0.85, 0.9)
+	color.obstacle["conundrum"] = Color.from_hsv(270 / max_h, 0.85, 0.9)
+	color.obstacle["raid"] = Color.from_hsv(330 / max_h, 0.85, 0.9)
+	color.obstacle["ambush"] = Color.from_hsv(30 / max_h, 0.85, 0.9)
 	
 	color.content = {}
 	color.content["unknown"] = Color.from_hsv(6 / max_h, 0.61, 0.83)
@@ -296,20 +345,19 @@ func init_color():
 	color.van = {}
 	color.van["active"] = Color.from_hsv(140 / max_h, 0.4, 0.6)
 	color.van["inactive"] = Color.from_hsv(0 / max_h, 0.3, 0.6)
-
-
+	
 func save(path_: String, data_: String):
 	var path = path_ + ".json"
 	var file = FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(data_)
-
+	
 func load_data(path_: String):
 	var file = FileAccess.open(path_, FileAccess.READ)
 	var text = file.get_as_text()
 	var json_object = JSON.new()
-	var parse_err = json_object.parse(text)
+	var _parse_err = json_object.parse(text)
 	return json_object.get_data()
-
+	
 func get_random_key(dict_: Dictionary):
 	if dict_.keys().size() == 0:
 		print("!bug! empty array in get_random_key func")
@@ -333,7 +381,7 @@ func get_random_key(dict_: Dictionary):
 	
 	print("!bug! index_r error in get_random_key func")
 	return null
-
+	
 func check_lines_intersection(lines_: Array) -> bool:
 	var intersection = get_lines_intersection(lines_)
 	

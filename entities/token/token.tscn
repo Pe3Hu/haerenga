@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://6x3itquf3d2e"]
+
+[ext_resource type="Shader" path="res://shaders/polygon mask.gdshader" id="1_tmq1s"]
+[ext_resource type="Script" path="res://entities/token/token.gd" id="2_s62lr"]
+[ext_resource type="FontFile" uid="uid://33eqagvh85us" path="res://assets/fonts/digital/Inter-Black.ttf" id="3_jmnmi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_054dw"]
+shader = ExtResource("1_tmq1s")
+shader_parameter/size = 0.5
+shader_parameter/sides = 4
+shader_parameter/rotation = 0.0
+shader_parameter/position_x = 0.5
+shader_parameter/position_y = 0.5
+shader_parameter/border_width = 1.0
+shader_parameter/border_color = Color(0.35, 0.35, 1, 0.670588)
+shader_parameter/maintain_aspect_ratio = false
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_tiulk"]
+
+[node name="Token" type="TextureRect" node_paths=PackedStringArray("label")]
+material = SubResource("ShaderMaterial_054dw")
+custom_minimum_size = Vector2(24, 24)
+offset_right = 16.0
+offset_bottom = 16.0
+texture = SubResource("CanvasTexture_tiulk")
+script = ExtResource("2_s62lr")
+label = NodePath("Label")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.5
+offset_top = -7.5
+offset_right = 8.5
+offset_bottom = 7.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_jmnmi")
+theme_override_font_sizes/font_size = 12
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
